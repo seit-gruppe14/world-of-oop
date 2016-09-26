@@ -5,6 +5,8 @@
  */
 package zuul;
 
+import zuulFramework.worldofzuul.Game;
+
 /**
  *
  * @author frede
@@ -16,6 +18,8 @@ public class Zuul {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        Game game = new Game();
+        game.play();
     }
     
 }
