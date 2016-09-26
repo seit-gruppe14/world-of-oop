@@ -1,4 +1,4 @@
-package worldofzuul;
+package zuulFramework.worldofzuul;
 
 public enum CommandWord
 {
