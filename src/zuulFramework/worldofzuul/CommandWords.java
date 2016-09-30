@@ -1,5 +1,6 @@
 package zuulFramework.worldofzuul;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Handles creating and fetching command words
@@ -24,6 +25,7 @@ public class CommandWords
         // Iterate all the known possible commands words
         // and save them into the hashmap
         for(CommandWord command : CommandWord.values()) {
+
             // If the command word is not unknown, then
             // we'll save it for later, so we can quickly validate
             // if a word is valid.
@@ -67,7 +69,7 @@ public class CommandWords
     }
 
     /**
-     * Prints a list of all the commands to the console.
+     * Prints a list of all the commands to the console that can be used in the game.
      */
     public void showAll() {
         // Iterate all the commands

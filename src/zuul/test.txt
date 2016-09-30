@@ -1,0 +1,19 @@
+nextLine = "go west then"
+arrayMed3Ord = nextLine.split(" ");
+
+
+Scanner tokenizer = new Scanner(nextLine);
+"go next then"
+tokenizer.hasNext() // true
+firstWord = tokenizer.next() // "go"
+"next then"
+
+tokenizer.hasNext() // true
+secondWord = tokenizer.next() // "next"
+
+"then"
+tokenizer.hasNext() // true
+thirdWord = tokenizer.next() // "then"
+
+""
+tokenizer.hasNext() // false

@@ -1,51 +1,96 @@
 package zuulFramework.worldofzuul;
 
-import java.util.Set;
 import java.util.HashMap;
-//Seems to not be in use.
-import java.util.Iterator;
+import java.util.Set;
 
 
 public class Room 
-{ //Creates a variable with the type string. 
+{
+    /**
+     * Describes the current room.
+     */
     private String description;
-  //Creates a map of rooms that can be constructed later.
+
+    /**
+     * A map of rooms used save exits.
+     */
     private HashMap<String, Room> exits;
-  
+
+    /**
+     *
+     * @param description
+     */
     public Room(String description) 
-    {   //The variable 'description' is being named description.  
+    {
+        // Set the description to be whatever the used said the description was.
         this.description = description;
-        //HashMap constructor is being called to create the exits.  
+
+        // Create the hashmaps to save exists.
         exits = new HashMap<String, Room>();
     }
 
+    /**
+     * Set an exit to to points to a certain room
+     * @param direction The direction of the exit
+     * @param neighbor The room the exit goes in to.
+     */
     public void setExit(String direction, Room neighbor) 
-    {   //Gives the direction of the exit and with room the player exits towards.
+    {
+        //Gives the direction of the exit and with room the player exits towards.
         exits.put(direction, neighbor);
     }
 
+    /**
+     * Gets the description of the room
+     * @return
+     */
     public String getShortDescription()
-    {   //Gives the player a short description.
+    {
         return description;
     }
 
+    /**
+     * Gets a longer description of the room
+     * which is description + a list of exists
+     * @return
+     */
     public String getLongDescription()
-    {   //Gives the player the description in a sentence + direction and neighbor.
+    {
+        //Gives the player the description in a sentence + direction and neighbor.
         return "You are " + description + ".\n" + getExitString();
     }
 
+    /**
+     *
+     * @return
+     */
     private String getExitString()
-    {   
-        String returnString = "Exits:";
+    {
+        // The base of our string
+        StringBuilder sb = new StringBuilder();
+        sb.append("Exits:");
+
+        // Get all directions from the room and save to a list
         Set<String> keys = exits.keySet();
+
+        // Iterate all the exits in the exit hashmap
         for(String exit : keys) {
-            returnString += " " + exit;
+            // Assign the exit into a string
+            sb.append(" ").append(exit);
         }
-        return returnString;
+
+        // Return the final string
+        return sb.toString();
     }
 
+    /**
+     * Get the room in the direction we requests
+     * @param direction The direction of the other room, compared to the this
+     * @return The neighbor room
+     */
     public Room getExit(String direction) 
     {
+        // Get the room from the hashmap
         return exits.get(direction);
     }
 }
