@@ -21,30 +21,53 @@ package zuulFramework.worldofzuul;
 
 public class Command
 {
+    // The command word that belongs to the command
     private CommandWord commandWord;
+    // The command word can consist on two words, the following is the second command word
     private String secondWord;
 
+    /**
+     * A command constructor that takes a CommandWord and a String to create a Command.
+     * @param commandWord is a CommandWord type object
+     * @param secondWord is a String type object
+     */
     public Command(CommandWord commandWord, String secondWord)
     {
         this.commandWord = commandWord;
         this.secondWord = secondWord;
     }
 
+    /**
+     * An accessor method that returns the commandWord of the Command
+     * @return a CommandWord type object
+     */
     public CommandWord getCommandWord()
     {
         return commandWord;
     }
 
+    /**
+     * An accessor method that returns the secondWord of the Command
+     * @return a String type Object
+     */
     public String getSecondWord()
     {
         return secondWord;
     }
 
+    /**
+     * Check if the commandWord is unknown
+     * @return a boolean, true if the commandword is unknown
+     */
     public boolean isUnknown()
     {
         return (commandWord == CommandWord.UNKNOWN);
     }
 
+    /**
+     * Check if the secondWord is set
+     * @return a boolean, true if the secondWord is set
+     */
     public boolean hasSecondWord()
     {
         return (secondWord != null);
