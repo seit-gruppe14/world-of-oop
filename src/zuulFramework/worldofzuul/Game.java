@@ -3,23 +3,18 @@ package zuulFramework.worldofzuul;
 /**
  * The "main" in the game
  */
-public class Game 
-{
+public class Game {
     /**
      * Handles reading commands from the user
      */
     private Parser parser;
 
-    /**
-     * Represents the room we are currently in
-     */
-    private Room currentRoom;
+    private int time = 0;
 
     /**
      * Creates a new game, with default values
      */
-    public Game() 
-    {
+    public Game() {
         // Create all the rooms in the game
         createRooms();
 
@@ -30,12 +25,11 @@ public class Game
     /**
      * Create the rooms in the game and any exits between them
      */
-    private void createRooms()
-    {   
+    private void createRooms() {
         //Initializing the different rooms
-        Room entrance, exit, ballroom, kitchen, dinningRoom,livingRoom, canteen,
+        Room entrance, exit, ballroom, kitchen, dinningRoom, livingRoom, canteen,
                 bedroom, childrensRoom, electronics, toilet, office;
-        
+
         //Create all the room in the game (as an object)
         entrance = new Room("The entrance to Ikea");
         exit = new Room("The exit of Ikea, you can pay for your stuff");
@@ -49,7 +43,7 @@ public class Game
         electronics = new Room("electronics");
         toilet = new Room("toilet");
         office = new Room("office");
-        
+
         //
         entrance.setExit(Direction.SOUTH, kitchen);
         exit.setExit(Direction.SOUTH, dinningRoom);
@@ -58,7 +52,7 @@ public class Game
         kitchen.setExit(Direction.WEST, ballroom);
         kitchen.setExit(Direction.SOUTH, canteen);
         kitchen.setExit(Direction.EAST, dinningRoom);
-        canteen.setExit(Direction.NORTH,kitchen);
+        canteen.setExit(Direction.NORTH, kitchen);
         toilet.setExit(Direction.WEST, electronics);
         toilet.setExit(Direction.EAST, office);
         office.setExit(Direction.WEST, toilet);
@@ -74,17 +68,15 @@ public class Game
         livingRoom.setExit(Direction.SOUTH, childrensRoom);
         childrensRoom.setExit(Direction.NORTH, livingRoom);
         childrensRoom.setExit(Direction.WEST, bedroom);
-       
-        
+
+
         //Sets the current location to the outside room
-        currentRoom = entrance;
     }
 
     /**
      * Starts the actual game
      */
-    public void play() 
-    {
+    public void play() {
         // Tell the user about the game
         printWelcome();
 
@@ -104,8 +96,7 @@ public class Game
     /**
      * Prints the welcome message and a description of the current room
      */
-    private void printWelcome()
-    {
+    private void printWelcome() {
         System.out.println();
         System.out.println("Welcome to the World of Zuul!");
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
@@ -116,17 +107,17 @@ public class Game
 
     /**
      * Process the provided command, and acts upon it
+     *
      * @param command The command to process
      * @return true if the game has finished, false otherwise
      */
-    private boolean processCommand(Command command) 
-    {
+    private boolean processCommand(Command command) {
         boolean wantToQuit = false;
 
         CommandWord commandWord = command.getCommandWord();
 
         // If we don't know the command, then tell the user
-        if(commandWord == CommandWord.UNKNOWN) {
+        if (commandWord == CommandWord.UNKNOWN) {
             System.out.println("I don't know what you mean...");
             return false;
         }
@@ -145,27 +136,28 @@ public class Game
         }
         return wantToQuit;
     }
+
     /**
      * Prints a welcome to the user
      * And a list of the commands that can be used
      */
-    private void printHelp() 
-    {
+    private void printHelp() {
         System.out.println("You are lost. You are alone. You wander");
         System.out.println("around at the university.");
         System.out.println();
         System.out.println("Your command words are:");
         parser.showCommands();
     }
+
     /**
      * Checks if there is a second word after the CommandWord "GO"
      * And change to that room if it exists
+     *
      * @param command the command to check
      */
-    private void goRoom(Command command) 
-    {
+    private void goRoom(Command command) {
         // Check if the command has a room to go to
-        if(!command.hasSecondWord()) {
+        if (!command.hasSecondWord()) {
             System.out.println("Go where?");
             return;
         }
@@ -180,20 +172,20 @@ public class Game
         }
         //If there is a next room the current room will be the next room and prints out the method
         else {
-            currentRoom = nextRoom;
             System.out.println(currentRoom.getLongDescription());
         }
     }
+
     /**
-     * Checks if the command QUIT has been used 
+     * Checks if the command QUIT has been used
+     *
      * @param command the command to check
      * @return a boolean expression
      */
-    private boolean quit(Command command) 
-    {
+    private boolean quit(Command command) {
         // There is only one thing to quit, so the user shouldn't specify anything after
         // the command
-        if(command.hasSecondWord()) {
+        if (command.hasSecondWord()) {
             System.out.println("Quit what?");
             return false;
         }
@@ -201,5 +193,20 @@ public class Game
         else {
             return true;
         }
+    }
+
+    public void updateTime(int timeDif) {
+    }
+
+    public void pickUp(Command command) {
+    }
+
+    public void drop(Command command) {
+    }
+
+    public void pay(Command command) {
+    }
+
+    public void askForHelp(Command command) {
     }
 }

@@ -6,9 +6,12 @@
 package zuulFramework.worldofzuul;
 
 /**
- *
  * @author frede
  */
 public enum ItemType {
     BED, LAMP, DESK, DINNERTABLE, DINNERCHAIR, SHELVES, CUTLERY;
+
+    public double getWeight() {
+        return 0;
+    }
 }
