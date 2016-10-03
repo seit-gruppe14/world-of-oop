@@ -15,16 +15,20 @@ public class Player {
     private int life = 100;
     private int money;
     private List<Item> items = new ArrayList<Item>();
-    private Room currentRom;
+    private Room currentRoom;
 
     public double getCarryWeight() {
         return 0;
     }
 
     public void pickUp(String itemName) {
+        Item item = currentRoom.removeItem(itemName);
+        items.add(item);
     }
 
     public void drop(String itemName) {
+        
+        currentRoom.addItem(item);
     }
 
     public boolean goRoom(String direction) {
@@ -55,12 +59,12 @@ public class Player {
         this.items = items;
     }
 
-    public Room getCurrentRom() {
-        return currentRom;
+    public Room getCurrentRoom() {
+        return currentRoom;
     }
 
-    public void setCurrentRom(Room currentRom) {
-        this.currentRom = currentRom;
+    public void setCurrentRoom(Room currentRoom) {
+        this.currentRoom = currentRoom;
     }
 
     public void addLife(int life) {
@@ -68,6 +72,7 @@ public class Player {
 
     public void removeLife(int life) {
     }
+    
 }
 
 
