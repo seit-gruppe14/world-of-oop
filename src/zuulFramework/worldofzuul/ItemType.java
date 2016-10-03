@@ -9,9 +9,15 @@ package zuulFramework.worldofzuul;
  * @author frede
  */
 public enum ItemType {
-    BED, LAMP, DESK, DINNERTABLE, DINNERCHAIR, SHELVES, CUTLERY;
+    BED(100), LAMP(10), DESK(50), DINNERTABLE(70), DINNERCHAIR(15), SHELVES(60), CUTLERY(0.5);
 
+    private double weight;
+    
+    private ItemType(double weight) {
+        this.weight = weight;
+    }
+    
     public double getWeight() {
-        return 0;
+        return (this.weight+(Math.random()*6));
     }
 }

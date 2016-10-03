@@ -25,7 +25,11 @@ public class Room {
         // Set the description to be whatever the used said the description was.
         this.description = description;
         this.itemType = itemType;
-
+        for(int i=0; i<7; i++)
+        {
+            items.add(new Item(itemType));
+        }
+        
         // Create the hashmaps to save exists.
         exits = new HashMap<String, Room>();
     }

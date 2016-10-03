@@ -13,10 +13,10 @@ public class Item {
     private double weight;
     private String name;
 
-    Item(ItemType type, double weight)
+    Item(ItemType type)
     {
         this.type=type;
-        this.weight=weight;
+        this.weight=type.getWeight();
     }
 
     public ItemType getType() {
