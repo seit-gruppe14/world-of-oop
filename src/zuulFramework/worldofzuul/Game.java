@@ -44,7 +44,7 @@ public class Game {
         toilet = new Room("toilet");
         office = new Room("office");
 
-        //
+        //Create exits for each room with directions.
         entrance.setExit(Direction.SOUTH, kitchen);
         exit.setExit(Direction.SOUTH, dinningRoom);
         ballroom.setExit(Direction.EAST, kitchen);
