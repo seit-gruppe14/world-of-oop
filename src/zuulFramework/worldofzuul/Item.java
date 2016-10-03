@@ -10,5 +10,12 @@ package zuulFramework.worldofzuul;
  * @author frede
  */
 public class Item {
+    ItemType type;
+    double weight;
     
+    Item(ItemType type, double weight)
+    {
+        this.type=type;
+        this.weight=weight;
+    }
 }

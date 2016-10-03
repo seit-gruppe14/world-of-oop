@@ -9,6 +9,6 @@ package zuulFramework.worldofzuul;
  *
  * @author frede
  */
-public enum NewEnum {
-    
+public enum ItemType {
+    BED, LAMP, DESK, DINNERTABLE, DINNERCHAIR, SHELVES, CUTLERY;
 }
