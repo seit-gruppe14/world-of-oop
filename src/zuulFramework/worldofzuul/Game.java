@@ -33,35 +33,50 @@ public class Game
     private void createRooms()
     {   
         //Initializing the different rooms
-        Room outside, theatre, pub, lab, office;
-
-        // Construct the different rooms we have in the game
-        outside = new Room("outside the main entrance of the university");
-        theatre = new Room("in a lecture theatre");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
-
-        // Define all the exits for the outside room
-        outside.setExit(Direction.EAST, theatre);
-        outside.setExit(Direction.SOUTH, lab);
-        outside.setExit(Direction.WEST, pub);
-
-        // Define the exits from theater
-        theatre.setExit(Direction.NORTH, outside);
-
-        // Define the exits for the pub
-        pub.setExit("east", outside);
-
-        // Define the exits for the lab
-        lab.setExit("north", outside);
-        lab.setExit("east", office);
-
-        // Define the exits for the office
-        office.setExit("west", lab);
-
+        Room entrance, exit, ballroom, kitchen, dinningRoom,livingRoom, canteen,
+                bedroom, childrensRoom, electronics, toilet, office;
+        
+        //Create all the room in the game (as an object)
+        entrance = new Room("The entrance to Ikea");
+        exit = new Room("The exit of Ikea, you can pay for your stuff");
+        ballroom = new Room("Ballroom");
+        kitchen = new Room("Kitchen");
+        dinningRoom = new Room("dinningRoom");
+        livingRoom = new Room("livingRoom");
+        canteen = new Room("canteen");
+        bedroom = new Room("bedroom");
+        childrensRoom = new Room("childrensRoom");
+        electronics = new Room("electronics");
+        toilet = new Room("toilet");
+        office = new Room("office");
+        
+        //
+        entrance.setExit(Direction.SOUTH, kitchen);
+        exit.setExit(Direction.SOUTH, dinningRoom);
+        ballroom.setExit(Direction.EAST, kitchen);
+        kitchen.setExit(Direction.NORTH, entrance);
+        kitchen.setExit(Direction.WEST, ballroom);
+        kitchen.setExit(Direction.SOUTH, canteen);
+        kitchen.setExit(Direction.EAST, dinningRoom);
+        canteen.setExit(Direction.NORTH,kitchen);
+        toilet.setExit(Direction.WEST, electronics);
+        toilet.setExit(Direction.EAST, office);
+        office.setExit(Direction.WEST, toilet);
+        office.setExit(Direction.NORTH, bedroom);
+        bedroom.setExit(Direction.SOUTH, office);
+        bedroom.setExit(Direction.NORTH, dinningRoom);
+        bedroom.setExit(Direction.EAST, childrensRoom);
+        dinningRoom.setExit(Direction.SOUTH, bedroom);
+        dinningRoom.setExit(Direction.NORTH, exit);
+        dinningRoom.setExit(Direction.EAST, livingRoom);
+        livingRoom.setExit(Direction.WEST, dinningRoom);
+        livingRoom.setExit(Direction.SOUTH, childrensRoom);
+        childrensRoom.setExit(Direction.NORTH, livingRoom);
+        childrensRoom.setExit(Direction.WEST, bedroom);
+       
+        
         //Sets the current location to the outside room
-        currentRoom = outside;
+        currentRoom = entrance;
     }
 
     /**
