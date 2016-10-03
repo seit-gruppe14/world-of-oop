@@ -43,12 +43,12 @@ public class Game
         office = new Room("in the computing admin office");
 
         // Define all the exits for the outside room
-        outside.setExit("east", theatre);
-        outside.setExit("south", lab);
-        outside.setExit("west", pub);
+        outside.setExit(Direction.EAST, theatre);
+        outside.setExit(Direction.SOUTH, lab);
+        outside.setExit(Direction.WEST, pub);
 
         // Define the exits from theater
-        theatre.setExit("west", outside);
+        theatre.setExit(Direction.NORTH, outside);
 
         // Define the exits for the pub
         pub.setExit("east", outside);
@@ -59,7 +59,7 @@ public class Game
 
         // Define the exits for the office
         office.setExit("west", lab);
-        
+
         //Sets the current location to the outside room
         currentRoom = outside;
     }
