@@ -63,6 +63,7 @@ public class Game
         toilet.setExit(Direction.EAST, office);
         office.setExit(Direction.WEST, toilet);
         office.setExit(Direction.NORTH, bedroom);
+        electronics.setExit(Direction.EAST, toilet);
         bedroom.setExit(Direction.SOUTH, office);
         bedroom.setExit(Direction.NORTH, dinningRoom);
         bedroom.setExit(Direction.EAST, childrensRoom);
