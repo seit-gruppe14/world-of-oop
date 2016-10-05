@@ -31,18 +31,18 @@ public class Game {
                 bedroom, childrensRoom, electronics, toilet, office;
 
         //Create all the room in the game (as an object)
-        entrance = new Room("The entrance to Ikea");
-        exit = new Exit("The exit of Ikea, you can pay for your stuff");
-        ballroom = new Ballroom("Ballroom");
-        kitchen = new Room("Kitchen");
-        dinningRoom = new Room("dinningRoom");
-        livingRoom = new Room("livingRoom");
-        canteen = new Canteen("canteen");
-        bedroom = new Room("bedroom");
-        childrensRoom = new Room("childrensRoom");
-        electronics = new Room("electronics");
-        toilet = new Room("toilet");
-        office = new Room("office");
+        entrance = new Room("at the entrance to Ikea");
+        exit = new Exit("at the exit of Ikea, you can pay for your stuff");
+        ballroom = new Ballroom("at the ballroom, here you can play with your kids or yourself");
+        kitchen = new Room("at the room for adults who loves to cook");
+        dinningRoom = new Room("at a place where you probably will eat");
+        livingRoom = new Room("at a place where you can relax");
+        canteen = new Canteen("hungry? Well, then buy some food!");
+        bedroom = new Room("sleepy?");
+        childrensRoom = new Room("at a place that children love");
+        electronics = new Room("at a place where nerds spend their time");
+        toilet = new Room("going to pee? take a bath?");
+        office = new Room("loving the song by rihanna - Work");
 
         //Create exits for each room with directions.
         entrance.setExit(Direction.SOUTH, kitchen);
