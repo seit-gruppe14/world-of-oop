@@ -196,6 +196,8 @@ public class Game {
     }
 
     public void updateTime(int timeDif) {
+        
+        this.time += timeDif;
     }
 
     public void pickUp(Command command) {

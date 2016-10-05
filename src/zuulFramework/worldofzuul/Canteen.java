@@ -20,7 +20,7 @@ public class Canteen extends Room implements ICanPay {
      * @return always returns true when a player buys food
      */
     @Override
-    public boolean buy(Player player, Command command) {
+    public boolean buy(Player player, Command command, Game game) {
         
         // Use command to define how much life a player wishes for, depends on 
         // how much food they buy
