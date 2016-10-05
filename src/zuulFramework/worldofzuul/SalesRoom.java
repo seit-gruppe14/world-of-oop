@@ -8,7 +8,7 @@ package zuulFramework.worldofzuul;
 import java.util.ArrayList;
 
 /**
- *
+ *SalesRoom can create an instance of a room that contains a set of items in a list. It is possible to add and remove items from the room.
  * @author frede
  */
 public class SalesRoom extends Room {
@@ -19,7 +19,11 @@ public class SalesRoom extends Room {
     private java.util.List<Item> items = new ArrayList<Item>();
 
     private ItemType itemType;
-
+    /**
+     * Creates an instance of a SalesRoom with seven items of a specific ItemType, which will be placed in an arraylist.
+     * @param description gives the room a description.
+     * @param itemType specifies the ItemType in the room.
+     */
     public SalesRoom(String description,ItemType itemType) {
         this.description = description;
         this.itemType = itemType;
@@ -28,12 +32,20 @@ public class SalesRoom extends Room {
             items.add(new Item(itemType));
         }
     }
-
+    /**
+     * Moves an item from a player to the room.
+     * @param item is of type Item, and has a specific ItemType. 
+     */
     public void addItem(Item item) {
         items.add(item);
     }
-
+    /**
+     * Removes an item from the room and gives it to the player.
+     * @param itemName is the name of the item that we wish to check for in the room.
+     * @return returns the item if it exists in the room, else return null.
+     */
     public Item removeItem(String itemName) {
+        //loops the arraylist to find the item the player specified.
         for (int itemNumber = 0; itemNumber < items.size(); itemNumber++) {
             if (items.get(itemNumber).getName().equals(itemName)) {
                 return items.remove(itemNumber);

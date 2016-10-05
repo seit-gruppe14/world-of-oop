@@ -14,6 +14,10 @@ public class Item {
     private String name;
     private int price;
 
+    /**
+     * Constructs an item with the type ItemType.
+     * @param type is a specified ItemType.
+     */
     Item(ItemType type)
     {
         this.type=type;
