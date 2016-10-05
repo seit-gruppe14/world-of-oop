@@ -9,16 +9,18 @@ package zuulFramework.worldofzuul;
  * Opret en enum klasse der indeholder de forskellige typer af items.
  */
 public enum ItemType {
-    BED(100), LAMP(10), DESK(50), DINNERTABLE(70), DINNERCHAIR(15), SHELVES(60), CUTLERY(0.5), NONE(0);
+    BED(100, "bed"), LAMP(10, "lamp"), DESK(50, "desk"), DINNERTABLE(70, "dinnertable"), DINNERCHAIR(15, "dinnerchair"), SHELVES(60, "shelves"), CUTLERY(0.5, "cutlery"), NONE(0, "none");
 
     private double weight;
+    private String name;
     
     /**
      * Construct hvert item med en vægt, vægten er en parameter som kommer med når man ønsker at constructer et item.
      * @param weight Vægten af et item som er af typen double.
      */
-    ItemType(double weight) {
+    ItemType(double weight, String name) {
         this.weight = weight;
+        this.name = name;
     }
     
     /**
@@ -28,4 +30,33 @@ public enum ItemType {
     public double getWeight() {
         return this.weight;
     }
+
+
+    /**
+     * Gets a string representation of the enum
+     *
+     * @return the name of the enum
+     */
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
+    /**
+     * Gets an enum representation of the String
+     *
+     * @param s The string to parse
+     * @return The enum value or NONE
+     */
+    public ItemType get(String s) {
+        // Iterate all the values in the itemtype
+        for (ItemType itemType : ItemType.values()) {
+            if (itemType.name.equalsIgnoreCase(s)) {
+                return itemType;
+            }
+        }
+        // No matching enum was found, print none
+        return ItemType.NONE;
+    }
+
 }

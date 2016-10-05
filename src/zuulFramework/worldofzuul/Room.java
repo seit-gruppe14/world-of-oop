@@ -169,6 +169,15 @@ public class Room {
         return shortDirection;
     }
 
+    /**
+     * Recursively looks in rooms for rooms that has a certain itemtype
+     *
+     * @param itemType     The itemtype to look for
+     * @param rooms        The rooms to check. These rooms will have their rooms checked and so on
+     * @param direction    The current direction that has to be moved to get here
+     * @param checkedRooms All the rooms we have crrently checked
+     * @return null if a valid room could not be found. A string of directions if the room was found.
+     */
     private String findRoomWithItems(ItemType itemType, Set<Map.Entry<String, Room>> rooms, String direction, List<Room> checkedRooms) {
         for (Map.Entry<String, Room> subRoomEntry : rooms) {
             String subDirection = direction + "-" + subRoomEntry.getKey();
@@ -187,7 +196,10 @@ public class Room {
         return null;
     }
 
-
+    /**
+     * Gets all the exists of a given room.
+     * @return
+     */
     private Map<String, Room> getExists() {
         return this.exits;
     }
