@@ -26,6 +26,7 @@ public enum ItemType {
      * @return vægten af et item af typen double.
      */
     public double getWeight() {
+        this.weight=this.weight*(Math.random()*0.5);
         return this.weight;
     }
 }
