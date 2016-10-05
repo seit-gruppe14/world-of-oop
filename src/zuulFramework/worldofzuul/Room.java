@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 
-public class Room {
+public class Room extends SalesRoom {
     /**
      * Describes the current room.
      */
@@ -20,7 +20,6 @@ public class Room {
     /**
      * A list containing items for every room
      */
-    private java.util.List<Item> items = new ArrayList<Item>();
 
     /**
      * Construct at room with a description and a set number of items in it, each room has a number of exits.
@@ -28,15 +27,10 @@ public class Room {
      * @param description the description of the room
      * @param ItemType which itemtype the specific room contains.
      */
-    public Room(String description, ItemType itemType) {
+    public Room(String description) {
         // Set the description to be whatever the used said the description was.
         this.description = description;
         this.itemType = itemType;
-        //construct a set number of items every time a new room is created, the items vary from room to room.
-        for(int i=0; i<7; i++)
-        {
-            items.add(new Item(itemType));
-        }
         
         // Create the hashmaps to save exists.
         exits = new HashMap<String, Room>();
