@@ -5,21 +5,16 @@ import java.util.HashMap;
 import java.util.Set;
 
 
-public class Room extends SalesRoom {
+public class Room {
     /**
      * Describes the current room.
      */
-    private String description;
-    private ItemType itemType;
+    protected String description;
 
     /**
      * A map of rooms used save exits.
      */
     private HashMap<String, Room> exits;
-    
-    /**
-     * A list containing items for every room
-     */
 
     /**
      * Construct at room with a description and a set number of items in it, each room has a number of exits.
@@ -29,9 +24,7 @@ public class Room extends SalesRoom {
      */
     public Room(String description) {
         // Set the description to be whatever the used said the description was.
-        this.description = description;
-        this.itemType = itemType;
-        
+        this.description = description;   
         // Create the hashmaps to save exists.
         exits = new HashMap<String, Room>();
     }
@@ -102,11 +95,6 @@ public class Room extends SalesRoom {
     public void askForHelp(ItemType itemType) {
     }
 
-    public Item removeItem(String itemName) {
-        return null;
-    }
 
-    public void addItem(Item item) {
-    }
 }
 
