@@ -6,6 +6,7 @@
 package zuulFramework.worldofzuul;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *SalesRoom can create an instance of a room that contains a set of items in a list. It is possible to add and remove items from the room.
@@ -52,6 +53,11 @@ public class SalesRoom extends Room {
             }
         }
         return null;
+    }
+    
+    
+    public List<Item> getItems() {
+        return items;
     }
 
 }

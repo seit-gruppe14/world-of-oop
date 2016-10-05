@@ -1,5 +1,7 @@
 package zuulFramework.worldofzuul;
 
+import java.util.List;
+
 /**
  * The "main" in the game
  */
@@ -209,12 +211,50 @@ public class Game {
     }
 
     public void pickUp(Command command) {
+        
+        if(command.hasSecondWord()) {
+            player.pickUp(command.getSecondWord());
+        }
+        else {
+            Room currentRoom = player.getCurrentRoom();
+            if(currentRoom instanceof SalesRoom) {
+                System.out.println("The following items can be picked up in this room: ");
+                SalesRoom sr = (SalesRoom)currentRoom;
+                List<Item> items = sr.getItems();
+                for (int i = 0; i < items.size(); i++) {
+                    Item item = items.get(i);
+                    System.out.println(item.getName());
+                }
+            } else {
+                System.out.println("There is nothing in this room that can be picked up");
+            }
+        }
+        
     }
 
     public void drop(Command command) {
+        
+        if(player.getCurrentRoom() instanceof SalesRoom) {
+            
+            if(command.hasSecondWord()) {
+                player.drop(command.getSecondWord());
+            }
+            
+            else {
+                System.out.println("Here is a list of items that you can drop");
+                
+                List<Item> items = player.getItems();
+                for (int i = 0; i < items.size(); i++) {
+                    Item item = items.get(i);
+                    System.out.println(item.getName());
+                }
+            }
+        }
+       
     }
 
     public void pay(Command command) {
+        
     }
 
     public void askForHelp(Command command) {
