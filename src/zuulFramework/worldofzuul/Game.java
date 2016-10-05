@@ -213,7 +213,13 @@ public class Game {
     public void pickUp(Command command) {
         
         if(command.hasSecondWord()) {
-            player.pickUp(command.getSecondWord());
+            boolean succes = player.pickUp(command.getSecondWord());
+            if(succes) {
+                System.out.println("you picked up " + command.getSecondWord() + ".");
+            }
+            else {
+                System.out.println("There is not item named " + command.getSecondWord() + ".");
+            }
         }
         else {
             Room currentRoom = player.getCurrentRoom();
@@ -226,7 +232,7 @@ public class Game {
                     System.out.println(item.getName());
                 }
             } else {
-                System.out.println("There is nothing in this room that can be picked up");
+                System.out.println("There is nothing in this room that can be picked up.");
             }
         }
         
@@ -237,7 +243,13 @@ public class Game {
         if(player.getCurrentRoom() instanceof SalesRoom) {
             
             if(command.hasSecondWord()) {
-                player.drop(command.getSecondWord());
+                boolean succes = player.drop(command.getSecondWord());
+                if(succes) {
+                    System.out.println("You dropped the item " + command.getSecondWord() + " in the room");
+                }
+                else {
+                    System.out.println("You have no such item dropped");
+                }
             }
             
             else {
