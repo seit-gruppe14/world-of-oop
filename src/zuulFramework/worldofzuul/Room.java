@@ -1,16 +1,14 @@
 package zuulFramework.worldofzuul;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
 
 public class Room {
+    protected String description;
     /**
      * Describes the current room.
      */
-    protected String description;
-
+    private ItemType itemType = ItemType.NONE;
     /**
      * A map of rooms used save exits.
      */
@@ -24,7 +22,7 @@ public class Room {
      */
     public Room(String description) {
         // Set the description to be whatever the used said the description was.
-        this.description = description;   
+        this.description = description;
         // Create the hashmaps to save exists.
         exits = new HashMap<String, Room>();
     }
@@ -92,7 +90,106 @@ public class Room {
         return exits.get(direction);
     }
 
+    /**
+     * Searches for a room with the items the user is asking for.
+     *
+     * @param itemType The itemtype to search for
+     */
     public void askForHelp(ItemType itemType) {
+
+        // Check if the user is already in the room they are looking at
+        if (this.itemType == itemType) {
+            // Tell the user they are already in the room
+            System.out.println("The items you are looking for are in this room.");
+            return;
+        }
+
+        // Loop over all the nearby room
+        List<Room> checkedRooms = new ArrayList<Room>();
+        String direction = findRoomWithItems(itemType, this.getExists().entrySet(), "", checkedRooms);
+        // We couldn't find the itemtype anywhere
+        if (direction == null) {
+            System.out.println("Couldn't find any room that contains this item. ");
+        } else {
+            direction = shortenDirection(direction);
+            System.out.printf("The item you are looking for is %s of this room. ", direction);
+        }
+    }
+
+    /**
+     * Normalizes a direction string to be more useable, and less rediculous.
+     *
+     * @param longDirection the long direction string
+     * @return a nice direction string
+     */
+    private String shortenDirection(String longDirection) {
+        // Count all the directions in the direction string
+        int north = 0, east = 0;
+        String[] directions = longDirection.split("-");
+        for (String direction : directions) {
+            switch (direction) {
+                case Direction.NORTH: {
+                    north++;
+                    break;
+                }
+                case Direction.SOUTH: {
+                    north--;
+                    break;
+                }
+                case Direction.EAST: {
+                    east++;
+                    break;
+                }
+                case Direction.WEST: {
+                    east--;
+                    break;
+                }
+            }
+        }
+        // Make sure we don't get some completely stupid directions
+        if (north > 2) north = 2;
+        if (north < -2) north = -2;
+        if (east > 2) east = 2;
+        if (east < -2) east = -2;
+
+        String shortDirection = "";
+        for (int i = 0; i < north; i++) {
+            shortDirection = String.join("-", shortDirection, Direction.NORTH);
+        }
+        for (int i = 0; i > north; i--) {
+            shortDirection = String.join("-", shortDirection, Direction.SOUTH);
+        }
+        for (int i = 0; i < east; i++) {
+            shortDirection = String.join("-", shortDirection, Direction.EAST);
+        }
+        for (int i = 0; i > east; i--) {
+            shortDirection = String.join("-", shortDirection, Direction.WEST);
+        }
+        // Finally done!
+        return shortDirection;
+    }
+
+    private String findRoomWithItems(ItemType itemType, Set<Map.Entry<String, Room>> rooms, String direction, List<Room> checkedRooms) {
+        for (Map.Entry<String, Room> subRoomEntry : rooms) {
+            String subDirection = direction + "-" + subRoomEntry.getKey();
+            Room subRoom = subRoomEntry.getValue();
+
+            if (checkedRooms.contains(subRoom)) {
+                continue;
+            }
+
+            if (subRoom.itemType == itemType) {
+                return subDirection;
+            }
+            checkedRooms.add(subRoom);
+            findRoomWithItems(itemType, subRoom.getExists().entrySet(), subDirection, checkedRooms);
+        }
+        return null;
+    }
+
+
+    private Map<String, Room> getExists() {
+        return this.exits;
     }
 
 
