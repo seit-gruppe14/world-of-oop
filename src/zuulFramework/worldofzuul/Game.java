@@ -11,6 +11,9 @@ public class Game {
 
     private int time = 0;
     
+    /**
+     * The player instance
+     */
     private Player player;
 
     /**
@@ -19,11 +22,13 @@ public class Game {
     public Game() {
         // Create all the rooms in the game
         createRooms();
+        
+        // Initialize a new player
+        player = new Player();
 
         // Initialize the parser for reading in commands
         parser = new Parser();
-        
-        // TODO CREATE PLAYER
+
     }
 
     /**
@@ -155,7 +160,7 @@ public class Game {
 
     /**
      * Checks if there is a second word after the CommandWord "GO"
-     * And change to that room if it exists
+     * And change to that room of the player if it exists
      *
      * @param command the command to check
      */
