@@ -9,7 +9,7 @@ package zuulFramework.worldofzuul;
  * Opret en enum klasse der indeholder de forskellige typer af items.
  */
 public enum ItemType {
-    BED(100), LAMP(10), DESK(50), DINNERTABLE(70), DINNERCHAIR(15), SHELVES(60), CUTLERY(0.5);
+    BED(100), LAMP(10), DESK(50), DINNERTABLE(70), DINNERCHAIR(15), SHELVES(60), CUTLERY(0.5), NONE(0);
 
     private double weight;
     
@@ -17,7 +17,7 @@ public enum ItemType {
      * Construct hvert item med en vægt, vægten er en parameter som kommer med når man ønsker at constructer et item.
      * @param weight Vægten af et item som er af typen double.
      */
-    private ItemType(double weight) {
+    ItemType(double weight) {
         this.weight = weight;
     }
     
