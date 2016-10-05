@@ -32,12 +32,12 @@ public class Game {
 
         //Create all the room in the game (as an object)
         entrance = new Room("The entrance to Ikea");
-        exit = new Room("The exit of Ikea, you can pay for your stuff");
-        ballroom = new Room("Ballroom");
+        exit = new Exit("The exit of Ikea, you can pay for your stuff");
+        ballroom = new Ballroom("Ballroom");
         kitchen = new Room("Kitchen");
         dinningRoom = new Room("dinningRoom");
         livingRoom = new Room("livingRoom");
-        canteen = new Room("canteen");
+        canteen = new Canteen("canteen");
         bedroom = new Room("bedroom");
         childrensRoom = new Room("childrensRoom");
         electronics = new Room("electronics");
@@ -196,6 +196,8 @@ public class Game {
     }
 
     public void updateTime(int timeDif) {
+        
+        this.time += timeDif;
     }
 
     public void pickUp(Command command) {
