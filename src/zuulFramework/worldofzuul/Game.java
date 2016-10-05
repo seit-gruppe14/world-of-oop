@@ -10,6 +10,8 @@ public class Game {
     private Parser parser;
 
     private int time = 0;
+    
+    private Player player;
 
     /**
      * Creates a new game, with default values
@@ -20,6 +22,8 @@ public class Game {
 
         // Initialize the parser for reading in commands
         parser = new Parser();
+        
+        // TODO CREATE PLAYER
     }
 
     /**
@@ -161,18 +165,17 @@ public class Game {
             System.out.println("Go where?");
             return;
         }
-
         // Gets the direction of the room
         String direction = command.getSecondWord();
         // Get to the room we want to go to
-        Room nextRoom = currentRoom.getExit(direction);
+        Room nextRoom = player.goRoom(command.getSecondWord());
         //Checks if there is not a next room and print and error to user
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
         //If there is a next room the current room will be the next room and prints out the method
         else {
-            System.out.println(currentRoom.getLongDescription());
+            System.out.println(nextRoom.getLongDescription());
         }
     }
 

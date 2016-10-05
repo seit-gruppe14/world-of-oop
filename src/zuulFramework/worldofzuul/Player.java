@@ -23,19 +23,33 @@ public class Player {
 
     public void pickUp(String itemName) {
         Item item = currentRoom.removeItem(itemName);
-        items.add(item);
+        if (item == null) {
+            System.out.print("The " + itemName + " you were looking for doesn't exist");
+        } else {
+            items.add(item);
+        }
     }
 
     public void drop(String itemName) {
-        
-        currentRoom.addItem(item);
+        for (int i = 0; i < items.size(); i++){
+            if (items.get(i).getName().equals(itemName)){
+                Item item = items.remove(i);
+                currentRoom.addItem(item);
+                return;
+            }
+        }
+        // TODO throw message on item not found
     }
 
-    public boolean goRoom(String direction) {
-        return false;
+    public Room goRoom(String direction) {
+        Room nextRoom = currentRoom.getExit(direction);
+        if (nextRoom != null){
+            currentRoom = nextRoom;
+        }
+        return nextRoom;
     }
 
-    public int getLife() {
+    public int getLife() { 
         return life;
     }
 
@@ -58,21 +72,26 @@ public class Player {
     public void setItems(List<Item> items) {
         this.items = items;
     }
-
-    public Room getCurrentRoom() {
+    
+    public Room getCurrentRoom () {
         return currentRoom;
     }
 
-    public void setCurrentRoom(Room currentRoom) {
-        this.currentRoom = currentRoom;
-    }
-
     public void addLife(int life) {
+        this.life += life;
     }
 
     public void removeLife(int life) {
+        this.life -= life;
+    }
+    
+    public void addMoney(int money) {
+        this.money += money;
+    }
+    
+    public void removeMoney(int money) {
+        this.money -= money;
     }
     
 }
-
 
