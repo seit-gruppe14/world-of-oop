@@ -205,22 +205,38 @@ public class Game {
         }
     }
 
+    /**
+     * This method updates time for each time a player spends time in a room
+     * @param timeDif The amound of time that has changed
+     */
     public void updateTime(int timeDif) {
         
         this.time += timeDif;
     }
 
+    /**
+     * The player is able to pick up items in the room
+     * @param command the command 
+     */
     public void pickUp(Command command) {
         
+        // Check if the player has choosen an item to pick up
         if(command.hasSecondWord()) {
+            
+            // Ask the player objekt to pick up an item in the room
             boolean succes = player.pickUp(command.getSecondWord());
+            
+            // If the player can pick up the item, then print the item the
+            // player has picked up
             if(succes) {
                 System.out.println("you picked up " + command.getSecondWord() + ".");
             }
+            // Else print an error
             else {
                 System.out.println("There is not item named " + command.getSecondWord() + ".");
             }
         }
+        // else print a list of the items in the room out to the player. 
         else {
             Room currentRoom = player.getCurrentRoom();
             if(currentRoom instanceof SalesRoom) {
@@ -231,6 +247,7 @@ public class Game {
                     Item item = items.get(i);
                     System.out.println(item.getName());
                 }
+            // else print error
             } else {
                 System.out.println("There is nothing in this room that can be picked up.");
             }
@@ -238,20 +255,29 @@ public class Game {
         
     }
 
+    /**
+     * A player can drop their items from their inventory
+     * @param command the command
+     */
+    
     public void drop(Command command) {
         
+        // Check if the player can drop an item off in this room.
         if(player.getCurrentRoom() instanceof SalesRoom) {
             
+            // If the player has typed an item that is avaiable then he can drop 
+            // the item.
             if(command.hasSecondWord()) {
                 boolean succes = player.drop(command.getSecondWord());
                 if(succes) {
                     System.out.println("You dropped the item " + command.getSecondWord() + " in the room");
                 }
+                // else print an error
                 else {
                     System.out.println("You have no such item dropped");
                 }
             }
-            
+            // Else print a list of the items that the player can drop.
             else {
                 System.out.println("Here is a list of items that you can drop");
                 
@@ -265,10 +291,45 @@ public class Game {
        
     }
 
+    /**
+     * A player can pay in a room.
+     * @param command the command
+     */
     public void pay(Command command) {
         
+        // Check if the currentroom is a room where you can pay
+        Room currentRoom = player.getCurrentRoom();
+        // If you can pay, then you pay
+        if(currentRoom instanceof ICanPay) {
+            ICanPay payRoom = (ICanPay)currentRoom;
+            payRoom.buy(player, command, this);
+        }
+        // else print an error
+        else {
+            System.out.println("There is nowhere you can pay in this room");
+        }
     }
 
+    /**
+     * A player can ask for help when he enters a room if he wants to
+     * @param command the command
+     */
     public void askForHelp(Command command) {
+        
+        // Check if the player ask for help with a specific item
+        if(command.hasSecondWord()) {
+            String secondWord = command.getSecondWord();
+            ItemType itemType = ItemType.valueOf(secondWord);
+            player.getCurrentRoom().askForHelp(itemType);
+        }
+        // Else print a list with the items that you can get help with out
+        else {
+            System.out.println("You can ask for help for finding these items:");
+            for (ItemType itemType : ItemType.values()) {
+                System.out.println(itemType.toString());
+            }
+        }
+        
+        
     }
 }

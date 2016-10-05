@@ -32,7 +32,11 @@ public class Canteen extends Room implements ICanPay {
         // Use setter and getter method to calculate how much money a player has 
         // used
         player.setMoney(player.getMoney()-toBuyFor);
+        
+        System.out.println("You bought food for " + toBuyFor);
+        
         // return true because a player has bought food
         return true;
+        
     }
 }
