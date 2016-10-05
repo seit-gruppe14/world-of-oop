@@ -16,15 +16,23 @@ public class Room {
      * A map of rooms used save exits.
      */
     private HashMap<String, Room> exits;
+    
+    /**
+     * A list containing items for every room
+     */
     private java.util.List<Item> items = new ArrayList<Item>();
 
     /**
-     * @param description
+     * Construct at room with a description and a set number of items in it, each room has a number of exits.
+     * whom are stored in a hashmap.
+     * @param description the description of the room
+     * @param ItemType which itemtype the specific room contains.
      */
     public Room(String description, ItemType itemType) {
         // Set the description to be whatever the used said the description was.
         this.description = description;
         this.itemType = itemType;
+        //construct a set number of items every time a new room is created, the items vary from room to room.
         for(int i=0; i<7; i++)
         {
             items.add(new Item(itemType));
