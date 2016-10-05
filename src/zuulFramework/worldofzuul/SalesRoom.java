@@ -25,7 +25,7 @@ public class SalesRoom extends Room {
      * @param itemType specifies the ItemType in the room.
      */
     public SalesRoom(String description,ItemType itemType) {
-        this.description = description;
+        super(description);
         this.itemType = itemType;
         //construct a set number of items every time a new room is created, the items vary from room to room.
         for (int i = 0; i < 7; i++) {
