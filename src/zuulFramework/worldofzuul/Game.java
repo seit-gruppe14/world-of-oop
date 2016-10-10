@@ -46,15 +46,15 @@ public class Game {
         entrance = new Room("at the entrance to Ikea");
         exit = new Exit("at the exit of Ikea, you can pay for your stuff");
         ballroom = new Ballroom("at the ballroom, here you can play with your kids or yourself");
-        kitchen = new Room("at the room for adults who loves to cook");
-        dinningRoom = new Room("at a place where you probably will eat");
-        livingRoom = new Room("at a place where you can relax");
+        kitchen = new SalesRoom("at the room for adults who loves to cook", ItemType.CUTLERY);
+        dinningRoom = new SalesRoom("at a place where you probably will eat", ItemType.DINNERCHAIR, ItemType.DINNERTABLE);
+        livingRoom = new SalesRoom("at a place where you can relax", ItemType.SHELVES);
         canteen = new Canteen("hungry? Well, then buy some food!");
-        bedroom = new Room("sleepy?");
-        childrensRoom = new Room("at a place that children love");
-        electronics = new Room("at a place where nerds spend their time");
-        toilet = new Room("going to pee? take a bath?");
-        office = new Room("loving the song by rihanna - Work");
+        bedroom = new SalesRoom("sleepy?", ItemType.BED);
+        childrensRoom = new SalesRoom("at a place that children love");
+        electronics = new SalesRoom("at a place where nerds spend their time");
+        toilet = new SalesRoom("going to pee? take a bath?");
+        office = new SalesRoom("loving the song by rihanna - Work", ItemType.DESK);
 
         //Create exits for each room with directions.
         entrance.setExit(Direction.SOUTH, kitchen);
@@ -74,7 +74,7 @@ public class Game {
         bedroom.setExit(Direction.NORTH, dinningRoom);
         bedroom.setExit(Direction.EAST, childrensRoom);
         dinningRoom.setExit(Direction.SOUTH, bedroom);
-        dinningRoom.setExit(Direction.NORTH, exit);
+        dinningRoom.setExit(Direction.WEST, kitchen);
         dinningRoom.setExit(Direction.EAST, livingRoom);
         livingRoom.setExit(Direction.WEST, dinningRoom);
         livingRoom.setExit(Direction.SOUTH, childrensRoom);
@@ -136,16 +136,30 @@ public class Game {
         }
 
         // If the user asked for help, print that
-        if (commandWord == CommandWord.HELP) {
-            printHelp();
-        }
-        // If the user ask to go to a certain room, to there
-        else if (commandWord == CommandWord.GO) {
-            goRoom(command);
-        }
-        // If the user asked to quit the game, quit
-        else if (commandWord == CommandWord.QUIT) {
-            wantToQuit = quit(command);
+        switch (commandWord) {
+            case HELP:
+                printHelp();
+                break;
+            // If the user ask to go to a certain room, to there
+            case GO:
+                goRoom(command);
+                break;
+            // If the user asked to quit the game, quit
+            case QUIT:
+                wantToQuit = quit(command);
+                break;
+            case PICKUP:
+                pickUp(command);
+                break;
+            case DROP:
+                drop(command);
+                break;
+            case PAY:
+                pay(command);
+                break;
+            case ASK:
+                askForHelp(command);
+                break;
         }
         return wantToQuit;
     }

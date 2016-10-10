@@ -8,7 +8,7 @@ public class Room {
     /**
      * Describes the current room.
      */
-    protected ItemType[] itemType;
+    protected ArrayList<ItemType> itemTypes = new ArrayList<ItemType>();
     /**
      * A map of rooms used save exits.
      */
@@ -98,7 +98,7 @@ public class Room {
     public void askForHelp(ItemType itemType) {
 
         // Check if the user is already in the room they are looking at
-        if (this.itemType == itemType) {
+        if (this.itemTypes.contains(itemType)) {
             // Tell the user they are already in the room
             System.out.println("The items you are looking for are in this room.");
             return;
@@ -106,13 +106,14 @@ public class Room {
 
         // Loop over all the nearby room
         List<Room> checkedRooms = new ArrayList<Room>();
+        checkedRooms.add(this);
         String direction = findRoomWithItems(itemType, this.getExists().entrySet(), "", checkedRooms);
         // We couldn't find the itemtype anywhere
         if (direction == null) {
             System.out.println("Couldn't find any room that contains this item. ");
         } else {
             direction = shortenDirection(direction);
-            System.out.printf("The item you are looking for is %s of this room. ", direction);
+            System.out.printf("The item you are looking for is %s of this room. \n", direction);
         }
     }
 
@@ -165,6 +166,10 @@ public class Room {
         for (int i = 0; i > east; i--) {
             shortDirection = String.join("-", shortDirection, Direction.WEST);
         }
+        if (shortDirection.charAt(0) == '-') {
+            shortDirection = shortDirection.substring(1);
+        }
+
         // Finally done!
         return shortDirection;
     }
@@ -187,11 +192,15 @@ public class Room {
                 continue;
             }
 
-            if (subRoom.itemType == itemType) {
+            if (subRoom.itemTypes.contains(itemType)) {
                 return subDirection;
             }
             checkedRooms.add(subRoom);
-            findRoomWithItems(itemType, subRoom.getExists().entrySet(), subDirection, checkedRooms);
+
+            String result = findRoomWithItems(itemType, subRoom.getExists().entrySet(), subDirection, checkedRooms);
+            if (result != null) {
+                return result;
+            }
         }
         return null;
     }

@@ -26,15 +26,18 @@ public class SalesRoom extends Room {
      * ItemType, which will be placed in an arraylist.
      *
      * @param description gives the room a description.
-     * @param itemType specifies the ItemType in the room.
+     * @param itemTypes specifies the ItemType in the room.
      */
-    public SalesRoom(String description, ItemType... itemType) {
+    public SalesRoom(String description, ItemType... itemTypes) {
         super(description);
-        this.itemType = itemType;
+        this.itemTypes = new ArrayList<ItemType>(itemTypes.length);
+        for (ItemType itemType : itemTypes) {
+            this.itemTypes.add(itemType);
+        }
         //construct a set number of items every time a new room is created, the items vary from room to room.
-        for (int i = 0; i < itemType.length; i++) {
-            for (int j = 0; j < 7; i++) {
-                items.add(new Item(itemType[i]));
+        for (int i = 0; i < itemTypes.length; i++) {
+            for (int j = 0; j < 7; j++) {
+                items.add(new Item(itemTypes[i]));
             }
         }
     }
