@@ -8,7 +8,7 @@ public class Room {
     /**
      * Describes the current room.
      */
-    private ItemType itemType = ItemType.NONE;
+    protected ItemType[] itemType;
     /**
      * A map of rooms used save exits.
      */
