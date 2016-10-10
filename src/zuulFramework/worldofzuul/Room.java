@@ -17,8 +17,8 @@ public class Room {
     /**
      * Construct at room with a description and a set number of items in it, each room has a number of exits.
      * whom are stored in a hashmap.
+     *
      * @param description the description of the room
-     * @param ItemType which itemtype the specific room contains.
      */
     public Room(String description) {
         // Set the description to be whatever the used said the description was.
@@ -198,12 +198,13 @@ public class Room {
 
     /**
      * Gets all the exists of a given room.
+     *
      * @return
      */
     private Map<String, Room> getExists() {
         return this.exits;
     }
-    
+
 
 }
 

@@ -22,11 +22,12 @@ public class Game {
      * Creates a new game, with default values
      */
     public Game() {
-        // Create all the rooms in the game
-        createRooms();
-        
         // Initialize a new player
         player = new Player();
+
+        // Create all the rooms in the game
+        createRooms();
+
 
         // Initialize the parser for reading in commands
         parser = new Parser();
@@ -82,6 +83,7 @@ public class Game {
 
 
         //Sets the current location to the outside room
+        player.setCurrentRoom(entrance);
     }
 
     /**
@@ -113,7 +115,7 @@ public class Game {
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
-        System.out.println(currentRoom.getLongDescription());
+        System.out.println(player.getCurrentRoom().getLongDescription());
     }
 
     /**
@@ -319,8 +321,12 @@ public class Game {
         // Check if the player ask for help with a specific item
         if(command.hasSecondWord()) {
             String secondWord = command.getSecondWord();
-            ItemType itemType = ItemType.valueOf(secondWord);
-            player.getCurrentRoom().askForHelp(itemType);
+            ItemType itemType = ItemType.get(secondWord);
+            if (itemType == ItemType.NONE) {
+                System.out.println("Item type not recognized");
+            } else {
+                player.getCurrentRoom().askForHelp(itemType);
+            }
         }
         // Else print a list with the items that you can get help with out
         else {

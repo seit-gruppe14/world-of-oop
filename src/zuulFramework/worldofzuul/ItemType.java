@@ -24,13 +24,29 @@ public enum ItemType {
     }
     
     /**
+     * Gets an enum representation of the String
+     *
+     * @param s The string to parse
+     * @return The enum value or NONE
+     */
+    public static ItemType get(String s) {
+        // Iterate all the values in the itemtype
+        for (ItemType itemType : ItemType.values()) {
+            if (itemType.name.equalsIgnoreCase(s)) {
+                return itemType;
+            }
+        }
+        // No matching enum was found, print none
+        return ItemType.NONE;
+    }
+
+    /**
      * Retunere vægten af et item, denne retur værdi kan svinge med +- 5 i værdi.
      * @return vægten af et item af typen double.
      */
     public double getWeight() {
         return this.weight;
     }
-
 
     /**
      * Gets a string representation of the enum
@@ -40,23 +56,6 @@ public enum ItemType {
     @Override
     public String toString() {
         return this.name;
-    }
-
-    /**
-     * Gets an enum representation of the String
-     *
-     * @param s The string to parse
-     * @return The enum value or NONE
-     */
-    public ItemType get(String s) {
-        // Iterate all the values in the itemtype
-        for (ItemType itemType : ItemType.values()) {
-            if (itemType.name.equalsIgnoreCase(s)) {
-                return itemType;
-            }
-        }
-        // No matching enum was found, print none
-        return ItemType.NONE;
     }
 
 }

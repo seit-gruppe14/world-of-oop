@@ -6,7 +6,7 @@ package zuulFramework.worldofzuul;
 public enum CommandWord
 {
     //Initialize values(constants)
-    GO("go"), QUIT("quit"), HELP("help"), UNKNOWN("?"), PICKUP("PICKUP"), DROP("drop"), PAY("pay"), ASK("ask");
+    GO("go"), QUIT("quit"), HELP("help"), UNKNOWN("?"), PICKUP("pickup"), DROP("drop"), PAY("pay"), ASK("ask");
 
     /**
      * A string that can contain the string value of CommandWord

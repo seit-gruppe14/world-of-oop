@@ -15,6 +15,11 @@ public class Player {
 
     //TODO DISCUSS COMMENTS
     /**
+     * The CARRY_WEIGHT indicates the player's maximum carry weight
+     */
+    //TODO ADD A REAL CARRY WEIGHT LIMIT
+    private static final double CARRY_WEIGHT = 100.0;
+    /**
      * The life indicates the remaining life of the Player
      */
     private int life = 100;
@@ -30,11 +35,6 @@ public class Player {
      * The currentRoom indicates the player's current room
      */
     private Room currentRoom;
-    /**
-     * The CARRY_WEIGHT indicates the player's maximum carry weight
-     */
-    //TODO ADD A REAL CARRY WEIGHT LIMIT
-    private static final double CARRY_WEIGHT = 100.0;
 
     /**
      * Returns the player's carry weight.
@@ -146,6 +146,10 @@ public class Player {
         return currentRoom;
     }
 
+    public void setCurrentRoom(Room currentRoom) {
+        this.currentRoom = currentRoom;
+    }
+
     /**
      * Adds a given amount of life to the player's life.
      * @param life which is an int type
@@ -177,5 +181,4 @@ public class Player {
     public void removeMoney(int money) {
         this.money -= money;
     }
-
 }
