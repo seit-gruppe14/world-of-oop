@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 /**
  * The "main" in the game
  */
-public class Game {
+public class Game implements ITimeEventAble {
     /**
      * Handles reading commands from the user
      */
@@ -45,6 +45,9 @@ public class Game {
 
         // Initialize the parser for reading in commands
         parser = new Parser();
+
+        // Add own time callback
+        addTimeEvent(this);
 
     }
 
@@ -130,15 +133,20 @@ public class Game {
         // The user hasn't finished the game when they start
         boolean finished;
 
-        // Ask the user for commands, and do whatever the user told us
-        do {
-            doTimeEvent();
-            // Write the current time
-            System.out.printf("The time is now %s\n", getNiceFormattedTime());
-            Command command = parser.getCommand();
-            finished = processCommand(command);
+        try {
+            // Ask the user for commands, and do whatever the user told us
+            do {
+                doTimeEvent();
+                // Write the current time
+                System.out.printf("The time is now %s\n", getNiceFormattedTime());
+                Command command = parser.getCommand();
+                finished = processCommand(command);
+            }
+            while (!finished);
+        } catch (GameOverException e) {
+            System.out.println("You did not manage to get to the exit before IKEA closed. \n" +
+                    "The security guards threw you out, and destroyed all the things you bought.");
         }
-        while (!finished);
 
         System.out.println("Thank you for playing.  Good bye.");
     }
@@ -148,7 +156,7 @@ public class Game {
      * to hook into things that should happen based on time.
      */
     private void doTimeEvent() {
-        boolean didCallback = false;
+        boolean didCallback;
         do {
             didCallback = false;
             for (TimeCallback callback : this.callbacks) {
@@ -164,7 +172,7 @@ public class Game {
                     // Say we had 50 minutes between doTimeEvent calls, however an event expects to happen every
                     // 5 minute, then we should make sure the event is emitted 10 times. For this reason we
                     // only increment by the timeBetweenEvents specified.
-                    int newTime = timeSinceLastCall + event.getTimeBetweenEvents();
+                    int newTime = timeSinceLastCall - event.getTimeBetweenEvents();
                     callback.setTimeSinceLastCallback(newTime);
 
                     // Calculate the time at which the event "happened"
@@ -289,6 +297,9 @@ public class Game {
         //If there is a next room the current room will be the next room and prints out the method
         else {
             System.out.println(nextRoom.getLongDescription());
+
+            // Change the game time. It always take 15 minutes to change room.
+            updateTime(15);
         }
     }
 
@@ -318,6 +329,9 @@ public class Game {
     public void updateTime(int timeDif) {
         
         this.time += timeDif;
+        for (TimeCallback callback : callbacks) {
+            callback.setTimeSinceLastCallback(callback.getTimeSinceLastCallback() + timeDif);
+        }
     }
 
     /**
@@ -441,6 +455,34 @@ public class Game {
         }
 
 
+    }
+
+    @Override
+    public int getTimeBetweenEvents() {
+        // We want 60 minutes between each and all callbacks
+        return 60;
+    }
+
+    @Override
+    public void timeCallback(int timeAt, Player player) {
+        // If the current time is more than 22 o'clock
+        if (timeAt >= (22 * 60)) {
+            // If the time is up, and the player is in an exit room, then they should end the game
+            if (this.player.getCurrentRoom() instanceof Exit) {
+                // TODO Exit the game once done
+            } else {
+                // The time is up, but the player cannot yet leave.
+                // sooo.. Game over!!
+                gameOver();
+            }
+        }
+    }
+
+    private void gameOver() {
+        // Yes, I'm using exception for flow control.
+        // Yes, I know it's bad.
+        // No, I don't care.
+        throw new GameOverException();
     }
 
     /**
