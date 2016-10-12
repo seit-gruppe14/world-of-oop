@@ -15,9 +15,13 @@ public class Game {
 
     /**
      * The current ingame time in minutes since the start of the day at 10 o'clock
+     * Starts as 10:00
      */
-    private int time = 0;
+    private int time = 60 * 10; // 60 minutes times 10 hours
 
+    /**
+     * All the callbacks that should be done according with different times.
+     */
     private List<TimeCallback> callbacks;
     
     /**
@@ -97,6 +101,26 @@ public class Game {
     }
 
     /**
+     * Gets the current time nicely formatted as a string
+     *
+     * @return A string like "13:37"
+     */
+    private String getNiceFormattedTime() {
+        // Calculate the hours
+        String hours = time / 60 + "";
+        String minutes = time % 60 + "";
+
+        if (hours.length() != 2) {
+            hours = "0" + hours;
+        }
+        if (minutes.length() != 2) {
+            minutes = "0" + minutes;
+        }
+
+        return String.format("%2s:%2s", hours, minutes);
+    }
+
+    /**
      * Starts the actual game
      */
     public void play() {
@@ -109,6 +133,8 @@ public class Game {
         // Ask the user for commands, and do whatever the user told us
         do {
             doTimeEvent();
+            // Write the current time
+            System.out.printf("The time is now %s\n", getNiceFormattedTime());
             Command command = parser.getCommand();
             finished = processCommand(command);
         }
