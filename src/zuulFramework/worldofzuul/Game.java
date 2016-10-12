@@ -111,9 +111,13 @@ public class Game {
      */
     private void printWelcome() {
         System.out.println();
-        System.out.println("Welcome to the World of Zuul!");
-        System.out.println("World of Zuul is a new, incredibly boring adventure game. BAhh");
-        System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
+        System.out.println("Welcöme möney spender.");
+        System.out.println("Tensiön is high at IKEA Ödense as yöu are waiting tö shöp-amök.");
+        System.out.println("It's BLACK FRIDAY and yöu're ön the löököut för the best öffers pössible to furnish your new appartment.");
+        System.out.println("But be careful as the öther shöppers might beat yöu tö it or tramble yöu tö death!");
+        System.out.println("Are yöu ready?");
+        System.out.println("");
+        System.out.println("If you need assistance type '" + CommandWord.HELP + "' tö ask öne öf the blönde IKEA emplöyees.");
         System.out.println();
         System.out.println(player.getCurrentRoom().getLongDescription());
     }
