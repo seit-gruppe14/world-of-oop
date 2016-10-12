@@ -1,6 +1,8 @@
 package zuulFramework.worldofzuul;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The "main" in the game
@@ -11,7 +13,12 @@ public class Game {
      */
     private Parser parser;
 
+    /**
+     * The current ingame time in minutes since the start of the day at 10 o'clock
+     */
     private int time = 0;
+
+    private List<TimeCallback> callbacks;
     
     /**
      * The player instance
@@ -22,6 +29,9 @@ public class Game {
      * Creates a new game, with default values
      */
     public Game() {
+        // Create a list to store all the time based callbacks
+        this.callbacks = new ArrayList<>();
+
         // Initialize a new player
         player = new Player();
 
@@ -98,12 +108,68 @@ public class Game {
 
         // Ask the user for commands, and do whatever the user told us
         do {
+            doTimeEvent();
             Command command = parser.getCommand();
             finished = processCommand(command);
         }
         while (!finished);
 
         System.out.println("Thank you for playing.  Good bye.");
+    }
+
+    /**
+     * This method is called each time the play event happens, and should be used
+     * to hook into things that should happen based on time.
+     */
+    private void doTimeEvent() {
+        boolean didCallback = false;
+        do {
+            didCallback = false;
+            for (TimeCallback callback : this.callbacks) {
+                int timeSinceLastCall = callback.getTimeSinceLastCallback();
+                ITimeEventAble event = callback.getCallback();
+                // Check if it has been at least the requiret amount of time since last callback
+                if (timeSinceLastCall >= event.getTimeBetweenEvents()) {
+                    // Indicate that we have done at least one callback
+                    didCallback = true;
+
+                    // Calculate the new "time since last callback".
+                    // This is actually not the complete case, as we allow events to have a very high rate
+                    // Say we had 50 minutes between doTimeEvent calls, however an event expects to happen every
+                    // 5 minute, then we should make sure the event is emitted 10 times. For this reason we
+                    // only increment by the timeBetweenEvents specified.
+                    int newTime = timeSinceLastCall + event.getTimeBetweenEvents();
+                    callback.setTimeSinceLastCallback(newTime);
+
+                    // Calculate the time at which the event "happened"
+                    int timeAt = time - newTime;
+
+                    // Do the actual callback.
+                    event.timeCallback(timeAt);
+                }
+            }
+            // Keep doing this until we didn't do a callback
+        } while (didCallback);
+    }
+
+    /**
+     * Add a callback to time based events.
+     *
+     * @param callback The callback that should be called when ever a time event has happened.
+     */
+    public void addTimeEvent(ITimeEventAble callback) {
+        this.callbacks.add(new TimeCallback(callback));
+    }
+
+    /**
+     * Removes a time callback from the list.
+     * Call this method before you remove something that is in the callback list, otherwise it
+     * cannot be garbage collected.
+     *
+     * @param callback The callback to remove
+     */
+    public void removeTimeEvent(ITimeEventAble callback) {
+        this.callbacks = this.callbacks.stream().filter(timeCallback -> timeCallback.getCallback() != callback).collect(Collectors.toList());
     }
 
     /**
@@ -347,7 +413,59 @@ public class Game {
                 System.out.println(itemType.toString());
             }
         }
-        
-        
+
+
+    }
+
+    /**
+     * Stored specific callbacks that needs to happen at specific time.
+     */
+    private class TimeCallback {
+        /**
+         * The time since the callback was last called
+         */
+        private int timeSinceLastCallback = 0;
+
+        /**
+         * The callback itself to call
+         */
+        private ITimeEventAble callback;
+
+        /**
+         * Creates a callback store.
+         *
+         * @param callback
+         */
+        public TimeCallback(ITimeEventAble callback) {
+            this.callback = callback;
+        }
+
+        /**
+         * Gets the time since the callback was last called
+         *
+         * @return
+         */
+        public int getTimeSinceLastCallback() {
+            return timeSinceLastCallback;
+        }
+
+        /**
+         * Sets the time since the callback was last called
+         *
+         * @param timeSinceLastCallback
+         */
+        public void setTimeSinceLastCallback(int timeSinceLastCallback) {
+            this.timeSinceLastCallback = timeSinceLastCallback;
+        }
+
+        /**
+         * Gets the callback that should be made
+         *
+         * @return
+         */
+        public ITimeEventAble getCallback() {
+            return callback;
+        }
+
     }
 }
