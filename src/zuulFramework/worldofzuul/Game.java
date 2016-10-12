@@ -145,7 +145,7 @@ public class Game {
                     int timeAt = time - newTime;
 
                     // Do the actual callback.
-                    event.timeCallback(timeAt);
+                    event.timeCallback(timeAt, this.player);
                 }
             }
             // Keep doing this until we didn't do a callback

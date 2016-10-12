@@ -15,5 +15,5 @@ public interface ITimeEventAble {
      *
      * @param timeAt
      */
-    void timeCallback(int timeAt);
+    void timeCallback(int timeAt, Player player);
 }
