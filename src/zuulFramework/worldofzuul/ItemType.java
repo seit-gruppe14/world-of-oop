@@ -9,7 +9,9 @@ package zuulFramework.worldofzuul;
  * Opret en enum klasse der indeholder de forskellige typer af items.
  */
 public enum ItemType {
-    BED(100, "bed"), LAMP(10, "lamp"), DESK(50, "desk"), DINNERTABLE(70, "dinnertable"), DINNERCHAIR(15, "dinnerchair"), SHELVES(60, "shelves"), CUTLERY(0.5, "cutlery"), NONE(0, "none");
+    BED(100, "bed"), LAMP(10, "lamp"), DESK(50, "desk"), DINNERTABLE(70, "dinnertable"), DINNERCHAIR(15, "dinnerchair"),
+    SHELVES(60, "shelves"), CUTLERY(0.5, "cutlery"), TOILET_PAPER(1, "toiletpaper"), COMPUTER(3, "computer"),
+    BEAR(5, "bear"), SOFA(100, "sofa"), NONE(0, "none");
 
     private double weight;
     private String name;

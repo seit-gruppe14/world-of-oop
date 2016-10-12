@@ -62,15 +62,15 @@ public class Game implements ITimeEventAble {
         //Create all the room in the game (as an object)
         entrance = new Room("at the entrance to Ikea");
         exit = new Exit("at the exit of Ikea, you can pay for your stuff");
+        canteen = new Canteen("hungry? Well, then buy some food!");
         ballroom = new Ballroom("at the ballroom, here you can play with your kids or yourself");
         kitchen = new SalesRoom("at the room for adults who loves to cook", ItemType.CUTLERY);
         dinningRoom = new SalesRoom("at a place where you probably will eat", ItemType.DINNERCHAIR, ItemType.DINNERTABLE);
-        livingRoom = new SalesRoom("at a place where you can relax", ItemType.SHELVES);
-        canteen = new Canteen("hungry? Well, then buy some food!");
+        livingRoom = new SalesRoom("at a place where you can relax", ItemType.SHELVES, ItemType.SOFA);
         bedroom = new SalesRoom("sleepy?", ItemType.BED);
-        childrensRoom = new SalesRoom("at a place that children love");
-        electronics = new SalesRoom("at a place where nerds spend their time");
-        toilet = new SalesRoom("going to pee? take a bath?");
+        childrensRoom = new SalesRoom("at a place that children love", ItemType.BEAR, ItemType.SOFA);
+        electronics = new SalesRoom("at a place where nerds spend their time", ItemType.COMPUTER);
+        toilet = new SalesRoom("going to pee? take a bath?", ItemType.TOILET_PAPER);
         office = new SalesRoom("loving the song by rihanna - Work", ItemType.DESK);
 
         //Create exits for each room with directions.
@@ -445,10 +445,11 @@ public class Game implements ITimeEventAble {
             String secondWord = command.getSecondWord();
             ItemType itemType = ItemType.get(secondWord);
             if (itemType == ItemType.NONE) {
-                System.out.println("Item type not recognized");
+                System.out.println("The blonde assistant doesn't know about that thing. ");
             } else {
                 player.getCurrentRoom().askForHelp(itemType);
             }
+            updateTime(5);
         }
         // Else print a list with the items that you can get help with out
         else {
