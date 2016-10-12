@@ -8,22 +8,20 @@ import java.util.stream.Collectors;
  * The "main" in the game
  */
 public class Game implements ITimeEventAble {
+    private static Game instance;
     /**
      * Handles reading commands from the user
      */
     private Parser parser;
-
     /**
      * The current ingame time in minutes since the start of the day at 10 o'clock
      * Starts as 10:00
      */
     private int time = 60 * 10; // 60 minutes times 10 hours
-
     /**
      * All the callbacks that should be done according with different times.
      */
     private List<TimeCallback> callbacks;
-    
     /**
      * The player instance
      */
@@ -32,7 +30,7 @@ public class Game implements ITimeEventAble {
     /**
      * Creates a new game, with default values
      */
-    public Game() {
+    private Game() {
         // Create a list to store all the time based callbacks
         this.callbacks = new ArrayList<>();
 
@@ -49,6 +47,13 @@ public class Game implements ITimeEventAble {
         // Add own time callback
         addTimeEvent(this);
 
+    }
+
+    public static Game getInstance() {
+        if (instance == null) {
+            instance = new Game();
+        }
+        return instance;
     }
 
     /**
