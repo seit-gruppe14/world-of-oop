@@ -112,7 +112,7 @@ public class Game {
     private void printWelcome() {
         System.out.println();
         System.out.println("Welcome to the World of Zuul!");
-        System.out.println("World of Zuul is a new, incredibly boring adventure game.");
+        System.out.println("World of Zuul is a new, incredibly boring adventure game. BAhh");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
         System.out.println(player.getCurrentRoom().getLongDescription());
@@ -188,8 +188,6 @@ public class Game {
             System.out.println("Go where?");
             return;
         }
-        // Gets the direction of the room
-        String direction = command.getSecondWord();
         // Get to the room we want to go to
         Room nextRoom = player.goRoom(command.getSecondWord());
         //Checks if there is not a next room and print and error to user
