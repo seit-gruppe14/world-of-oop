@@ -6,6 +6,7 @@
 package zuulFramework.worldofzuul;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,9 +32,7 @@ public class SalesRoom extends Room {
     public SalesRoom(String description, ItemType... itemTypes) {
         super(description);
         this.itemTypes = new ArrayList<ItemType>(itemTypes.length);
-        for (ItemType itemType : itemTypes) {
-            this.itemTypes.add(itemType);
-        }
+        Collections.addAll(this.itemTypes, itemTypes);
         //construct a set number of items every time a new room is created, the items vary from room to room.
         for (int i = 0; i < itemTypes.length; i++) {
             for (int j = 0; j < 7; j++) {
