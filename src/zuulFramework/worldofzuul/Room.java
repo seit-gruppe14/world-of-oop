@@ -107,7 +107,7 @@ public class Room {
         // Loop over all the nearby room
         List<Room> checkedRooms = new ArrayList<Room>();
         checkedRooms.add(this);
-        String direction = findRoomWithItems(itemType, this.getExists().entrySet(), "", checkedRooms);
+        String direction = findRoomWithItems(itemType, this.getExits().entrySet(), "", checkedRooms);
         // We couldn't find the itemtype anywhere
         if (direction == null) {
             System.out.println("Couldn't find any room that contains this item. ");
@@ -197,7 +197,7 @@ public class Room {
             }
             checkedRooms.add(subRoom);
 
-            String result = findRoomWithItems(itemType, subRoom.getExists().entrySet(), subDirection, checkedRooms);
+            String result = findRoomWithItems(itemType, subRoom.getExits().entrySet(), subDirection, checkedRooms);
             if (result != null) {
                 return result;
             }
@@ -210,7 +210,7 @@ public class Room {
      *
      * @return
      */
-    private Map<String, Room> getExists() {
+    public Map<String, Room> getExits() {
         return this.exits;
     }
 

@@ -30,11 +30,11 @@ public class Player {
     /**
      * The items contains the player's items
      */
-    private List<Item> items = new ArrayList<Item>();
+    protected List<Item> items = new ArrayList<Item>();
     /**
      * The currentRoom indicates the player's current room
      */
-    private Room currentRoom;
+    protected Room currentRoom;
 
     /**
      * Returns the player's carry weight.
