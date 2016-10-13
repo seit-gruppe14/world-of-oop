@@ -97,6 +97,5 @@ public class Monster extends Player implements ITimeEventAble {
         //If none of the above happens the monster moves to a random location
         //linked to the former currentRoom.
         move();
-    }
-    
+    }  
 }
