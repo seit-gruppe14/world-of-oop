@@ -38,6 +38,7 @@ public class Player {
 
     /**
      * Returns the player's carry weight.
+     *
      * @return CARRY_WEIGHT which is a double representation of the player max
      * carry weight.
      */
@@ -49,6 +50,7 @@ public class Player {
      * lets the player pick up items from the room they are in currently. If the
      * item doesn't exist or isn't in the room, the method prints a message
      * telling the player that the item isn't avaiable.
+     *
      * @param itemName which is a item name String
      * @return true if item exists in player's current room, false otherwise
      */
@@ -63,8 +65,10 @@ public class Player {
     }
 
     /**
-     * The method removes an item from the players item list and adds the item to the player's current room. 
-     * @param itemName which is a String itemName. 
+     * The method removes an item from the players item list and adds the item
+     * to the player's current room.
+     *
+     * @param itemName which is a String itemName.
      * @return true if itemName is in player's item list, false otherwise.
      */
     public boolean drop(String itemName) {
@@ -77,10 +81,13 @@ public class Player {
         }
         return false;
     }
+
     /**
      * Sets the current room of the player based on the direction
+     *
      * @param direction which is a direction String
-     * @return next room if the direction exist in the current room, otherwise return null
+     * @return next room if the direction exist in the current room, otherwise
+     * return null
      */
     public Room goRoom(String direction) {
         Room nextRoom = currentRoom.getExit(direction);
@@ -92,6 +99,7 @@ public class Player {
 
     /**
      * Returns the life of the player. The life decides if the player has died.
+     *
      * @return The player's life
      */
     public int getLife() {
@@ -99,7 +107,9 @@ public class Player {
     }
 
     /**
-     * Sets the player's life. The mutator is used for resetting the player's life.
+     * Sets the player's life. The mutator is used for resetting the player's
+     * life.
+     *
      * @param life which is an int
      */
     public void setLife(int life) {
@@ -107,7 +117,9 @@ public class Player {
     }
 
     /**
-     * Returns the player's money. The money decides if a player can afford items.
+     * Returns the player's money. The money decides if a player can afford
+     * items.
+     *
      * @return money which is an int representation of the player's life
      */
     public int getMoney() {
@@ -116,6 +128,7 @@ public class Player {
 
     /**
      * Sets the player's money. The mutator is used for resetting player money.
+     *
      * @param money which is an int representation of the player's money
      */
     public void setMoney(int money) {
@@ -124,6 +137,7 @@ public class Player {
 
     /**
      * Returns the player's list of items.
+     *
      * @return List of Items which is an ArrayList of the Items type
      */
     public List<Item> getItems() {
@@ -131,7 +145,9 @@ public class Player {
     }
 
     /**
-     * Sets the player's items list. The mutator is used for resetting the player's item list.
+     * Sets the player's items list. The mutator is used for resetting the
+     * player's item list.
+     *
      * @param items which is an ArrayList of items
      */
     public void setItems(List<Item> items) {
@@ -140,6 +156,7 @@ public class Player {
 
     /**
      * Returns the Player's current room.
+     *
      * @return currentRoom which is a Room type
      */
     public Room getCurrentRoom() {
@@ -152,6 +169,7 @@ public class Player {
 
     /**
      * Adds a given amount of life to the player's life.
+     *
      * @param life which is an int type
      */
     public void addLife(int life) {
@@ -160,6 +178,7 @@ public class Player {
 
     /**
      * Removes a given amount of life from the player's life.
+     *
      * @param life which is an int type
      */
     public void removeLife(int life) {
@@ -168,6 +187,7 @@ public class Player {
 
     /**
      * Adds a given amount of money to the player's money.
+     *
      * @param money which is an int type
      */
     public void addMoney(int money) {
@@ -176,9 +196,17 @@ public class Player {
 
     /**
      * Removes a given amount of money from the player's money.
+     *
      * @param money which is an int type
      */
     public void removeMoney(int money) {
         this.money -= money;
+    }
+
+    public boolean isPlayerDead() {
+        if (life <= 0) {
+            return true;
+        }
+        return false;
     }
 }

@@ -486,6 +486,9 @@ public class Game implements ITimeEventAble {
                 gameOver();
             }
         }
+        if (player.isPlayerDead()){
+            gameOver();
+        }
     }
 
     private void gameOver() {
