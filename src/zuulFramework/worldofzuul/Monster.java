@@ -85,4 +85,5 @@ public class Monster extends Player implements ITimeEventAble {
         }
         move();
     }
+        
 }
