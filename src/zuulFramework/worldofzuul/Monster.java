@@ -61,7 +61,8 @@ public class Monster extends Player implements ITimeEventAble {
     }
 
     /**
-     * Limits the amount of moves the "monsters" can make in the span of 12 hours in the game. 
+     * Limits the amount of moves the "monsters" can make
+     * in the span of 12 hours in the game. 
      * @return Returns the amount of in-game time between events.
      */
 
@@ -72,7 +73,8 @@ public class Monster extends Player implements ITimeEventAble {
     }
     /**
      * The method defines the "monsters" actions throughout the game. 
-     * @param timeAt It's the given time when the callback happens. For example after 22*60 minutes the game ends. 
+     * @param timeAt It's the given time when the callback happens. 
+     * For example after 22*60 minutes the game ends. 
      * @param player The player object, is used to get items. 
      */
     @Override
@@ -86,12 +88,14 @@ public class Monster extends Player implements ITimeEventAble {
             }  
             //The monster has a 50% chance of picking up an item.
         } else if ( Math.random() * 100 < 50.00) {
-            //Defines currentRoom as SalesRoom in order to remove an item from the room and add it to the monster's itemList. 
+            //Defines currentRoom as SalesRoom in order to remove an item
+            //from the room and add it to the monster's itemList. 
             Item monsterItem = ((SalesRoom) currentRoom).removeRandomItem();
             this.items.add(monsterItem);
             return;
         }
-        //If none of the above happens the monster moves to a random location linked to the former currentRoom.
+        //If none of the above happens the monster moves to a random location
+        //linked to the former currentRoom.
         move();
     }
     
