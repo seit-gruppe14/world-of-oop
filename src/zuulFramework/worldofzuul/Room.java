@@ -4,10 +4,11 @@ import java.util.*;
 
 
 public class Room {
-    protected String description;
     /**
      * Describes the current room.
-     */
+     */   
+    protected String description;
+
     protected ArrayList<ItemType> itemTypes = new ArrayList<ItemType>();
     /**
      * A map of rooms used save exits.

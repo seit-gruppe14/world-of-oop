@@ -20,7 +20,7 @@ public class SalesRoom extends Room {
     /**
      * A list containing items for every room
      */
-    private java.util.List<Item> items = new ArrayList<Item>();
+    private ArrayList <Item> items = new ArrayList<Item>();
 
     /**
      * Creates an instance of a SalesRoom with seven items of a specific
@@ -70,5 +70,11 @@ public class SalesRoom extends Room {
     public List<Item> getItems() {
         return items;
     }
+    
+    public Item removeRandomItem() {
+        int randomIndex = (int) (Math.random() * items.size());
+        return items.remove(randomIndex);
+    }
 
 }
+
