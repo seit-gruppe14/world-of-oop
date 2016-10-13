@@ -52,8 +52,8 @@ public class Monster extends Player implements ITimeEventAble {
         return true;
     }
     
-        /**
-     *
+    /**
+     * Randomizes an amount of damage the "monsters" inflicts on the player. 
      * @return Returns a damage value between 4 and 10. 
      */
     public int inflictDamage() {
@@ -61,8 +61,8 @@ public class Monster extends Player implements ITimeEventAble {
     }
 
     /**
-     *
-     * @return 
+     * Limits the amount of moves the "monsters" can make in the span of 12 hours in the game. 
+     * @return Returns the amount of in-game time between events.
      */
 
     @Override
@@ -70,19 +70,29 @@ public class Monster extends Player implements ITimeEventAble {
         //We want an amount of time between monster actions (Subject to change).
         return 60;
     }
-
+    /**
+     * The method defines the "monsters" actions throughout the game. 
+     * @param timeAt It's the given time when the callback happens. For example after 22*60 minutes the game ends. 
+     * @param player The player object, is used to get items. 
+     */
     @Override
     public void timeCallback(int timeAt, Player player) {
+        //Check if the player is in the same room as a monster. 
         if (this.currentRoom.equals(player.getCurrentRoom())){
+            //The monster has 33% chance of doing damage to the player. 
             if ( Math.random() * 100 < 33.33) {
                 player.removeLife(inflictDamage());
                 return;
             }  
+            //The monster has a 50% chance of picking up an item.
         } else if ( Math.random() * 100 < 50.00) {
+            //Defines currentRoom as SalesRoom in order to remove an item from the room and add it to the monster's itemList. 
             Item monsterItem = ((SalesRoom) currentRoom).removeRandomItem();
             this.items.add(monsterItem);
             return;
         }
+        //If none of the above happens the monster moves to a random location linked to the former currentRoom.
         move();
     }
+    
 }
