@@ -32,7 +32,7 @@ public class Exit extends Room implements ICanPay {
         }
 
         // Get the money from the player for the items
-        player.setMoney(player.getMoney() - sum);
+        player.removeMoney(sum);
         // Update the time by 45 minutes
         game.updateTime(45);
 

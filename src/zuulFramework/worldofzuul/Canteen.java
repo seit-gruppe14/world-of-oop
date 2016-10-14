@@ -31,7 +31,7 @@ public class Canteen extends Room implements ICanPay {
         player.addLife(toBuyFor);
         // Use setter and getter method to calculate how much money a player has 
         // used
-        player.setMoney(player.getMoney()-toBuyFor);
+        player.removeMoney(toBuyFor);
         
         System.out.println("You bought food for " + toBuyFor);
         
