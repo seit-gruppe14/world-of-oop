@@ -15,16 +15,17 @@ public enum ItemType {
 
     private double weight;
     private String name;
-    
+
     /**
      * Construct hvert item med en vægt, vægten er en parameter som kommer med når man ønsker at constructer et item.
+     *
      * @param weight Vægten af et item som er af typen double.
      */
     ItemType(double weight, String name) {
         this.weight = weight;
         this.name = name;
     }
-    
+
     /**
      * Gets an enum representation of the String
      *
@@ -43,11 +44,12 @@ public enum ItemType {
     }
 
     /**
-     * Retunere vægten af et item, denne retur værdi kan svinge med +- 5 i værdi.
-     * @return vægten af et item af typen double.
+     * Get a weight of a certain item. This value is the weight +- 10% of the weight itself.
+     *
+     * @return
      */
     public double getWeight() {
-        this.weight=this.weight*(Math.random()*0.5);
+        this.weight = this.weight + this.weight * ((Math.random() -0.5) * 0.1);
         return this.weight;
     }
 
