@@ -9,21 +9,24 @@ package zuulFramework.worldofzuul;
  * Opret en enum klasse der indeholder de forskellige typer af items.
  */
 public enum ItemType {
-    BED(100, "bed"), LAMP(10, "lamp"), DESK(50, "desk"), DINNERTABLE(70, "dinnertable"), DINNERCHAIR(15, "dinnerchair"),
-    SHELVES(60, "shelves"), CUTLERY(0.5, "cutlery"), TOILET_PAPER(1, "toiletpaper"), COMPUTER(3, "computer"),
-    BEAR(5, "bear"), SOFA(100, "sofa"), NONE(0, "none");
+    BED(100, "bed", 3000), LAMP(10, "lamp", 120), DESK(50, "desk", 500), DINNERTABLE(70, "dinnertable",400), DINNERCHAIR(15, "dinnerchair",100),
+    SHELVES(60, "shelves",300), CUTLERY(0.5, "cutlery", 10), TOILET(40, "toilet", 1200 ), COMPUTER(3, "computer", 2500),
+    TEDDY_BEAR(5, "teddybear", 75), SOFA(100, "sofa", 1500), NONE(0, "none",0);
 
     private double weight;
     private String name;
+    private int price;
 
     /**
      * Construct hvert item med en vægt, vægten er en parameter som kommer med når man ønsker at constructer et item.
      *
      * @param weight Vægten af et item som er af typen double.
      */
-    ItemType(double weight, String name) {
+    ItemType(double weight, String name, int price) {
         this.weight = weight;
         this.name = name;
+        this.price = price;
+        
     }
 
     /**
@@ -51,6 +54,16 @@ public enum ItemType {
     public double getWeight() {
         this.weight = this.weight + this.weight * ((Math.random() -0.5) * 0.1);
         return this.weight;
+    }
+    
+    /**
+     * Get a price of a certain item. This value is the price +- 10% of the price itself.
+     *
+     * @return
+     */
+    public double getPrice() {
+        this.price = (int) (this.price + this.price * ((Math.random() -0.5) * 0.1));
+        return this.price;
     }
 
     /**

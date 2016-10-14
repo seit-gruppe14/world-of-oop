@@ -73,9 +73,9 @@ public class Game implements ITimeEventAble {
         dinningRoom = new SalesRoom("at a place where you probably will eat", ItemType.DINNERCHAIR, ItemType.DINNERTABLE);
         livingRoom = new SalesRoom("at a place where you can relax", ItemType.SHELVES, ItemType.SOFA);
         bedroom = new SalesRoom("sleepy?", ItemType.BED);
-        childrensRoom = new SalesRoom("at a place that children love", ItemType.BEAR, ItemType.SOFA);
+        childrensRoom = new SalesRoom("at a place that children love", ItemType.TEDDY_BEAR, ItemType.SOFA);
         electronics = new SalesRoom("at a place where nerds spend their time", ItemType.COMPUTER);
-        toilet = new SalesRoom("going to pee? take a bath?", ItemType.TOILET_PAPER);
+        toilet = new SalesRoom("going to pee? take a bath?", ItemType.TOILET);
         office = new SalesRoom("loving the song by rihanna - Work", ItemType.DESK);
 
         //Create exits for each room with directions.
@@ -183,9 +183,15 @@ public class Game implements ITimeEventAble {
      * to hook into things that should happen based on time.
      */
     private void doTimeEvent() {
+        //Run through all the timecallbacks 
         for (TimeCallback callback : this.callbacks) {
+            // Get callbacks and save it in the variable event, 
+            // type ITimeEventAble
             ITimeEventAble event = callback.getCallback();
-
+            
+            // If the time since last time callback is bigger or equals the 
+            // time between events then use the method timeCallback to call time
+            // and player and then set the timeSinceLastCallback to 0
             if(callback.getTimeSinceLastCallback() >= event.getTimeBetweenEvents()) {
                 event.timeCallback(this.time, this.player);
                 callback.setTimeSinceLastCallback(0);
@@ -338,10 +344,15 @@ public class Game implements ITimeEventAble {
      * @param timeDif The amound of time that has changed
      */
     public void updateTime(int timeDif) {
+        // Go through every minute and add 1 minute each time, timeDif
         for (int i = 0; i < timeDif; i++) {
             this.time++;
+            // Call a method doTimeEvent
             doTimeEvent();
+            // Run through all the timecallbacks
             for (TimeCallback callback : callbacks) {
+                // set time since last callback, by using get time since last
+                // callback and add timeDif
                 callback.setTimeSinceLastCallback(callback.getTimeSinceLastCallback() + timeDif);
             }
         }
@@ -475,14 +486,19 @@ public class Game implements ITimeEventAble {
             }
         }
     }
+    /**
+     * Calculates the score and prints it into a .txt file
+     */
     public void score() {
         FileWriter fileWriter = null;
         try {
             int score = player.getMoney()/2;
+            //Creating a multiplier that rewards the player for completing the game faster.
             for (int i = 12; i > 0; i--) {
                 score=(int) (score*((0.083*i)+1));
-            }   fileWriter = new FileWriter("score.txt",Boolean.TRUE);
-            String stringToWrite = score+" ";
+            }   
+            fileWriter = new FileWriter("score.txt",Boolean.TRUE);
+            String stringToWrite = score+"";
             fileWriter.write(stringToWrite + System.lineSeparator());
             fileWriter.flush();
             fileWriter.close();
@@ -496,6 +512,9 @@ public class Game implements ITimeEventAble {
         }
     }
     
+    /**
+     * Reads from a .txt file and prints the first five lines
+     */
     public void readScore() {
         try {
             File file = new File("score.txt");
