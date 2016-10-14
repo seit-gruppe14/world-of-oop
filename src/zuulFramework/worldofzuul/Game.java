@@ -107,6 +107,18 @@ public class Game implements ITimeEventAble {
         //Sets the current location to the outside room
         player.setCurrentRoom(entrance);
     }
+    
+    /**
+     * addMonsterToRoom is used to add a given number of monters to a given room.
+     * @param room of the type Room
+     * @param numberOfMonsters of the type int
+     */
+    private void addMonsterToRoom(Room room, int numberOfMonsters) {
+        for (int i = 0; i < numberOfMonsters; i++) {
+            Monster monster = new Monster(room);
+            addTimeEvent(monster);
+        }
+    }
 
     /**
      * Gets the current time nicely formatted as a string

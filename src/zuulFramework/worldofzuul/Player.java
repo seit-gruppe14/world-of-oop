@@ -30,7 +30,7 @@ public class Player {
     /**
      * The items contains the player's items
      */
-    protected List<Item> items = new ArrayList<Item>();
+    protected ArrayList<Item> items = new ArrayList<Item>();
     /**
      * The currentRoom indicates the player's current room
      */
