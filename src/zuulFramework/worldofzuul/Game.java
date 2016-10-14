@@ -106,6 +106,18 @@ public class Game implements ITimeEventAble {
 
         //Sets the current location to the outside room
         player.setCurrentRoom(entrance);
+        
+        addMonsterToRoom(entrance, 10);
+        addMonsterToRoom(canteen, 2);
+        addMonsterToRoom(ballroom, 4);
+        addMonsterToRoom(kitchen, 5);
+        addMonsterToRoom(dinningRoom, 3);
+        addMonsterToRoom(livingRoom, 4);
+        addMonsterToRoom(bedroom, 2);
+        addMonsterToRoom(childrensRoom, 8);
+        addMonsterToRoom(electronics, 6);
+        addMonsterToRoom(toilet, 4);
+        addMonsterToRoom(office, 5);
     }
     
     /**
