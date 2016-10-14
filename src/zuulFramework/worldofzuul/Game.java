@@ -487,7 +487,15 @@ public class Game implements ITimeEventAble {
             }
         }
         if (player.isPlayerDead()){
+<<<<<<< Updated upstream
             gameOver("TODO Add description for health death");
+=======
+<<<<<<< HEAD
+            gameOver();   
+=======
+            gameOver("TODO Add description for health death");
+>>>>>>> origin/master
+>>>>>>> Stashed changes
         }
     }
 

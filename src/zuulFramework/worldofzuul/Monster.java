@@ -8,6 +8,10 @@ import java.util.Set;
  */
 public class Monster extends Player implements ITimeEventAble {
     
+    public Monster(Room currentRoom){
+        this.currentRoom = currentRoom; 
+    }
+    
     /**
      * The move method moves the monsters randomly around.
      */
