@@ -152,7 +152,6 @@ public class Game implements ITimeEventAble {
 
         // Ask the user for commands, and do whatever the user told us
         do {
-            doTimeEvent();
             if(gameOverMessage != null) {
                 System.out.println(gameOverMessage);
                 break;
