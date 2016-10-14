@@ -5,8 +5,10 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -447,6 +449,8 @@ public class Game implements ITimeEventAble {
         if(currentRoom instanceof ICanPay) {
             ICanPay payRoom = (ICanPay)currentRoom;
             payRoom.buy(player, command, this);
+            
+            
         }
         // else print an error
         else {
@@ -489,10 +493,21 @@ public class Game implements ITimeEventAble {
     /**
      * Calculates the score and prints it into a .txt file
      */
-    public void score() {
+    public void score(ItemType[] listOfItems) {
         FileWriter fileWriter = null;
         try {
-            int score = player.getMoney()/2;
+            int score = 0;
+            Set<ItemType> s = new HashSet<ItemType>();
+            List<Item> items = player.getBoughtItems();
+            for (int i = 0; i < player.getBoughtItems().size(); i++) {
+                s.add(items.get(i).getType());
+            }
+                for (int j = 0; j < s.size(); j++) {
+                    if (s.contains(listOfItems[j])) {
+                        score += 10;
+                    }
+                }
+            
             //Creating a multiplier that rewards the player for completing the game faster.
             for (int i = 12; i > 0; i--) {
                 score=(int) (score*((0.083*i)+1));
@@ -571,6 +586,21 @@ public class Game implements ITimeEventAble {
      */
     private void gameOver(String description) {
         this.gameOverMessage = description;
+    }
+    
+    public ItemType[] itemList(){
+        ItemType[] listOfItems = new ItemType[10];
+        listOfItems[0] = ItemType.BED;
+        listOfItems[1] = ItemType.DINNERTABLE;
+        listOfItems[2] = ItemType.DINNERCHAIR;
+        listOfItems[3] = ItemType.SHELVES;
+        listOfItems[4] = ItemType.DESK;
+        listOfItems[5] = ItemType.CUTLERY;
+        listOfItems[6] = ItemType.LAMP;
+        listOfItems[7] = ItemType.DINNERCHAIR;
+        listOfItems[8] = ItemType.LAMP;
+        listOfItems[9] = ItemType.SOFA;   
+        return listOfItems;
     }
 
     /**
