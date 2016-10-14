@@ -475,14 +475,19 @@ public class Game implements ITimeEventAble {
             }
         }
     }
+    /**
+     * Calculates the score and prints it into a .txt file
+     */
     public void score() {
         FileWriter fileWriter = null;
         try {
             int score = player.getMoney()/2;
+            //Creating a multiplier that rewards the player for completing the game faster.
             for (int i = 12; i > 0; i--) {
                 score=(int) (score*((0.083*i)+1));
-            }   fileWriter = new FileWriter("score.txt",Boolean.TRUE);
-            String stringToWrite = score+" ";
+            }   
+            fileWriter = new FileWriter("score.txt",Boolean.TRUE);
+            String stringToWrite = score+"";
             fileWriter.write(stringToWrite + System.lineSeparator());
             fileWriter.flush();
             fileWriter.close();
@@ -496,6 +501,9 @@ public class Game implements ITimeEventAble {
         }
     }
     
+    /**
+     * Reads from a .txt file and prints the first five lines
+     */
     public void readScore() {
         try {
             File file = new File("score.txt");
