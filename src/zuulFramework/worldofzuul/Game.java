@@ -106,6 +106,18 @@ public class Game implements ITimeEventAble {
 
         //Sets the current location to the outside room
         player.setCurrentRoom(entrance);
+        
+        addMonsterToRoom(entrance, 10);
+        addMonsterToRoom(canteen, 2);
+        addMonsterToRoom(ballroom, 4);
+        addMonsterToRoom(kitchen, 5);
+        addMonsterToRoom(dinningRoom, 3);
+        addMonsterToRoom(livingRoom, 4);
+        addMonsterToRoom(bedroom, 2);
+        addMonsterToRoom(childrensRoom, 8);
+        addMonsterToRoom(electronics, 6);
+        addMonsterToRoom(toilet, 4);
+        addMonsterToRoom(office, 5);
     }
     
     /**
@@ -524,7 +536,13 @@ public class Game implements ITimeEventAble {
             }
         }
         if (player.isPlayerDead()){
-            gameOver("TODO Add description for health death");
+            //TODO add more death messages
+            int randomInteger = (int) (Math.random() * 2);
+            if (randomInteger == 0) {
+                gameOver("You have been trampled!");
+            } else if (randomInteger == 1) {
+                gameOver("You have been reduced to nothing!");
+            }
         }
     }
 
