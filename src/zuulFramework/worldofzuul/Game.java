@@ -160,34 +160,14 @@ public class Game implements ITimeEventAble {
      * to hook into things that should happen based on time.
      */
     private void doTimeEvent() {
-        boolean didCallback;
-        do {
-            didCallback = false;
-            for (TimeCallback callback : this.callbacks) {
-                int timeSinceLastCall = callback.getTimeSinceLastCallback();
-                ITimeEventAble event = callback.getCallback();
-                // Check if it has been at least the requiret amount of time since last callback
-                if (timeSinceLastCall >= event.getTimeBetweenEvents()) {
-                    // Indicate that we have done at least one callback
-                    didCallback = true;
+        for (TimeCallback callback : this.callbacks) {
+            ITimeEventAble event = callback.getCallback();
 
-                    // Calculate the new "time since last callback".
-                    // This is actually not the complete case, as we allow events to have a very high rate
-                    // Say we had 50 minutes between doTimeEvent calls, however an event expects to happen every
-                    // 5 minute, then we should make sure the event is emitted 10 times. For this reason we
-                    // only increment by the timeBetweenEvents specified.
-                    int newTime = timeSinceLastCall - event.getTimeBetweenEvents();
-                    callback.setTimeSinceLastCallback(newTime);
-
-                    // Calculate the time at which the event "happened"
-                    int timeAt = time - newTime;
-
-                    // Do the actual callback.
-                    event.timeCallback(timeAt, this.player);
-                }
+            if(callback.getTimeSinceLastCallback() >= event.getTimeBetweenEvents()) {
+                event.timeCallback(this.time, this.player);
+                callback.setTimeSinceLastCallback(0);
             }
-            // Keep doing this until we didn't do a callback
-        } while (didCallback);
+        }
     }
 
     /**
@@ -335,10 +315,12 @@ public class Game implements ITimeEventAble {
      * @param timeDif The amound of time that has changed
      */
     public void updateTime(int timeDif) {
-        
-        this.time += timeDif;
-        for (TimeCallback callback : callbacks) {
-            callback.setTimeSinceLastCallback(callback.getTimeSinceLastCallback() + timeDif);
+        for (int i = 0; i < timeDif; i++) {
+            this.time++;
+            doTimeEvent();
+            for (TimeCallback callback : callbacks) {
+                callback.setTimeSinceLastCallback(callback.getTimeSinceLastCallback() + timeDif);
+            }
         }
     }
 
