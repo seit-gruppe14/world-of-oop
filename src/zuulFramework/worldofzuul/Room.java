@@ -65,7 +65,7 @@ public class Room {
     private String getExitString() {
         // The base of our string
         StringBuilder sb = new StringBuilder();
-        sb.append("Exits:");
+        sb.append("Nearby rooms to the:");
 
         // Get all directions from the room and save to a list
         Set<String> keys = exits.keySet();

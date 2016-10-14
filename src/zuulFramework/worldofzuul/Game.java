@@ -149,8 +149,7 @@ public class Game implements ITimeEventAble {
             }
             while (!finished);
         } catch (GameOverException e) {
-            System.out.println("You did not manage to get to the exit before IKEA closed. \n" +
-                    "The security guards threw you out, and destroyed all the things you bought.");
+            System.out.println(e.getMessage());
         }
 
         System.out.println("Thank you for playing.  Good bye.");
@@ -483,16 +482,20 @@ public class Game implements ITimeEventAble {
             } else {
                 // The time is up, but the player cannot yet leave.
                 // sooo.. Game over!!
-                gameOver();
+                gameOver("You did not manage to get to the exit before IKEA closed. \n" +
+                        "The security guards threw you out, and destroyed all the things you bought.");
             }
+        }
+        if (player.isPlayerDead()){
+            gameOver("TODO Add description for health death");
         }
     }
 
-    private void gameOver() {
+    private void gameOver(String description) {
         // Yes, I'm using exception for flow control.
         // Yes, I know it's bad.
         // No, I don't care.
-        throw new GameOverException();
+        throw new GameOverException(description);
     }
 
     /**
