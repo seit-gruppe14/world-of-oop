@@ -68,5 +68,5 @@ public class NameGenerator {
        name = words[pickRandomNumber] + words[pickSecondRandomNumber];
        return name;
     }
-
+    
 }
