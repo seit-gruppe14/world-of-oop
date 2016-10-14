@@ -183,9 +183,15 @@ public class Game implements ITimeEventAble {
      * to hook into things that should happen based on time.
      */
     private void doTimeEvent() {
+        //Run through all the timecallbacks 
         for (TimeCallback callback : this.callbacks) {
+            // Get callbacks and save it in the variable event, 
+            // type ITimeEventAble
             ITimeEventAble event = callback.getCallback();
-
+            
+            // If the time since last time callback is bigger or equals the 
+            // time between events then use the method timeCallback to call time
+            // and player and then set the timeSinceLastCallback to 0
             if(callback.getTimeSinceLastCallback() >= event.getTimeBetweenEvents()) {
                 event.timeCallback(this.time, this.player);
                 callback.setTimeSinceLastCallback(0);
@@ -338,10 +344,15 @@ public class Game implements ITimeEventAble {
      * @param timeDif The amound of time that has changed
      */
     public void updateTime(int timeDif) {
+        // Go through every minute and add 1 minute each time, timeDif
         for (int i = 0; i < timeDif; i++) {
             this.time++;
+            // Call a method doTimeEvent
             doTimeEvent();
+            // Run through all the timecallbacks
             for (TimeCallback callback : callbacks) {
+                // set time since last callback, by using get time since last
+                // callback and add timeDif
                 callback.setTimeSinceLastCallback(callback.getTimeSinceLastCallback() + timeDif);
             }
         }
