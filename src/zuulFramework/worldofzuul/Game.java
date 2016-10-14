@@ -1,7 +1,12 @@
 package zuulFramework.worldofzuul;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 /**
@@ -107,6 +112,18 @@ public class Game implements ITimeEventAble {
         //Sets the current location to the outside room
         player.setCurrentRoom(entrance);
     }
+    
+    /**
+     * addMonsterToRoom is used to add a given number of monters to a given room.
+     * @param room of the type Room
+     * @param numberOfMonsters of the type int
+     */
+    private void addMonsterToRoom(Room room, int numberOfMonsters) {
+        for (int i = 0; i < numberOfMonsters; i++) {
+            Monster monster = new Monster(room);
+            addTimeEvent(monster);
+        }
+    }
 
     /**
      * Gets the current time nicely formatted as a string
@@ -151,7 +168,7 @@ public class Game implements ITimeEventAble {
         } catch (GameOverException e) {
             System.out.println(e.getMessage());
         }
-
+        readScore();
         System.out.println("Thank you for playing.  Good bye.");
     }
 
@@ -243,7 +260,7 @@ public class Game implements ITimeEventAble {
                 drop(command);
                 break;
             case PAY:
-                pay(command);
+                wantToQuit=pay(command);
                 break;
             case ASK:
                 askForHelp(command);
@@ -405,7 +422,7 @@ public class Game implements ITimeEventAble {
      * A player can pay in a room.
      * @param command the command
      */
-    public void pay(Command command) {
+    public boolean pay(Command command) {
         
         // Check if the currentroom is a room where you can pay
         Room currentRoom = player.getCurrentRoom();
@@ -418,6 +435,13 @@ public class Game implements ITimeEventAble {
         else {
             System.out.println("There is nowhere you can pay in this room");
         }
+        if(currentRoom instanceof Exit){
+            command = parser.getCommand();
+            if (command.getCommandWord()==CommandWord.QUIT) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -444,8 +468,43 @@ public class Game implements ITimeEventAble {
                 System.out.println(itemType.toString());
             }
         }
+    }
+    public void score() {
+        FileWriter fileWriter = null;
+        try {
+            int score = player.getMoney()/2;
+            for (int i = 12; i > 0; i--) {
+                score=(int) (score*((0.083*i)+1));
+            }   fileWriter = new FileWriter("score.txt",Boolean.TRUE);
+            String stringToWrite = score+" ";
+            fileWriter.write(stringToWrite + System.lineSeparator());
+            fileWriter.flush();
+            fileWriter.close();
+        } catch (IOException ex) {
+        } finally {
+            try {
+                fileWriter.close();
+            } catch (IOException ex) {
 
-
+            }
+        }
+    }
+    
+    public void readScore() {
+        try {
+            File file = new File("score.txt");
+            Scanner scanner = new Scanner(file);
+            int count=0;
+            while (scanner.hasNextLine()) {
+                if (count<5) {
+                    String s = scanner.nextLine();
+                    System.out.println(s);
+                    count++;
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            
+        }
     }
 
     @Override
@@ -460,7 +519,8 @@ public class Game implements ITimeEventAble {
         if (timeAt >= (22 * 60)) {
             // If the time is up, and the player is in an exit room, then they should end the game
             if (this.player.getCurrentRoom() instanceof Exit) {
-                // TODO Exit the game once done
+                    // TODO Exit the game once done
+                    score();
             } else {
                 this.player.clearBoughtItems();
                 // The time is up, but the player cannot yet leave.
@@ -470,7 +530,15 @@ public class Game implements ITimeEventAble {
             }
         }
         if (player.isPlayerDead()){
+<<<<<<< Updated upstream
             gameOver("TODO Add description for health death");
+=======
+<<<<<<< HEAD
+            gameOver();   
+=======
+            gameOver("TODO Add description for health death");
+>>>>>>> origin/master
+>>>>>>> Stashed changes
         }
     }
 

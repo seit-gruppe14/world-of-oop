@@ -36,7 +36,6 @@ public class Player {
      * A list of items the player has bought
      */
     private List<Item> boughtItems = new ArrayList<Item>();
-
     /**
      * The currentRoom indicates the player's current room
      */
