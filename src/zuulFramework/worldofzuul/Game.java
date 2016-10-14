@@ -462,6 +462,7 @@ public class Game implements ITimeEventAble {
             if (this.player.getCurrentRoom() instanceof Exit) {
                 // TODO Exit the game once done
             } else {
+                this.player.clearBoughtItems();
                 // The time is up, but the player cannot yet leave.
                 // sooo.. Game over!!
                 gameOver("You did not manage to get to the exit before IKEA closed. \n" +

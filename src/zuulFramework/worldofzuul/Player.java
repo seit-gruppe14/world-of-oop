@@ -31,6 +31,12 @@ public class Player {
      * The items contains the player's items
      */
     protected List<Item> items = new ArrayList<Item>();
+
+    /**
+     * A list of items the player has bought
+     */
+    private List<Item> boughtItems = new ArrayList<Item>();
+
     /**
      * The currentRoom indicates the player's current room
      */
@@ -210,6 +216,31 @@ public class Player {
      */
     public void removeMoney(int money) {
         this.money -= money;
+    }
+
+    /**
+     * Moves all the items from the inventory to the list of
+     * items that has been bought
+     */
+    public void moveItemsToBoughtItems() {
+        this.boughtItems = this.items;
+        this.items = new ArrayList<Item>();
+    }
+
+    /**
+     * Gets a list of all the items the player has bough
+     * @return
+     */
+    public List<Item> getBoughtItems() {
+        return this.boughtItems;
+    }
+
+    /**
+     * Clears all the bought items, for cases of when the player
+     * loses all the items they bought
+     */
+    public void clearBoughtItems() {
+        this.boughtItems.clear();
     }
 
     public boolean isPlayerDead() {
