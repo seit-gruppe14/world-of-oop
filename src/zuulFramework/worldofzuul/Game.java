@@ -32,6 +32,8 @@ public class Game implements ITimeEventAble {
      */
     private Player player;
 
+    private String gameOverMessage = null;
+
     /**
      * Creates a new game, with default values
      */
@@ -155,19 +157,19 @@ public class Game implements ITimeEventAble {
         // The user hasn't finished the game when they start
         boolean finished;
 
-        try {
-            // Ask the user for commands, and do whatever the user told us
-            do {
-                doTimeEvent();
-                // Write the current time
-                System.out.printf("The time is now %s\n", getNiceFormattedTime());
-                Command command = parser.getCommand();
-                finished = processCommand(command);
+        // Ask the user for commands, and do whatever the user told us
+        do {
+            doTimeEvent();
+            if(gameOverMessage != null) {
+                System.out.println(gameOverMessage);
+                break;
             }
-            while (!finished);
-        } catch (GameOverException e) {
-            System.out.println(e.getMessage());
+            // Write the current time
+            System.out.printf("The time is now %s\n", getNiceFormattedTime());
+            Command command = parser.getCommand();
+            finished = processCommand(command);
         }
+        while (!finished);
         readScore();
         System.out.println("Thank you for playing.  Good bye.");
     }
@@ -534,11 +536,12 @@ public class Game implements ITimeEventAble {
         }
     }
 
+    /**
+     * Marks the game for gameover
+     * @param description
+     */
     private void gameOver(String description) {
-        // Yes, I'm using exception for flow control.
-        // Yes, I know it's bad.
-        // No, I don't care.
-        throw new GameOverException(description);
+        this.gameOverMessage = description;
     }
 
     /**
