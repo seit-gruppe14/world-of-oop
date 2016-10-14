@@ -37,7 +37,7 @@ public class Game implements ITimeEventAble {
     /**
      * Creates a new game, with default values
      */
-    private Game() {
+    public Game() {
         // Create a list to store all the time based callbacks
         this.callbacks = new ArrayList<>();
 
@@ -54,13 +54,6 @@ public class Game implements ITimeEventAble {
         // Add own time callback
         addTimeEvent(this);
 
-    }
-
-    public static Game getInstance() {
-        if (instance == null) {
-            instance = new Game();
-        }
-        return instance;
     }
 
     /**
