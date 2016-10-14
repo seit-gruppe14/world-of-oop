@@ -537,7 +537,13 @@ public class Game implements ITimeEventAble {
             }
         }
         if (player.isPlayerDead()){
-            gameOver("TODO Add description for health death");
+            //TODO add more death messages
+            int randomInteger = (int) (Math.random() * 2);
+            if (randomInteger == 0) {
+                gameOver("You have been trampled!");
+            } else if (randomInteger == 1) {
+                gameOver("You have been reduced to nothing!");
+            }
         }
     }
 
