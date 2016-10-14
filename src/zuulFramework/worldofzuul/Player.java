@@ -15,10 +15,10 @@ public class Player {
 
     //TODO DISCUSS COMMENTS
     /**
-     * The CARRY_WEIGHT indicates the player's maximum carry weight
+     * The MAX_CARRY_WEIGHT indicates the player's maximum carry weight
      */
     //TODO ADD A REAL CARRY WEIGHT LIMIT
-    private static final double CARRY_WEIGHT = 100.0;
+    private static final double MAX_CARRY_WEIGHT = 100.0;
     /**
      * The life indicates the remaining life of the Player
      */
@@ -39,11 +39,15 @@ public class Player {
     /**
      * Returns the player's carry weight.
      *
-     * @return CARRY_WEIGHT which is a double representation of the player max
-     * carry weight.
+     * @return The current total weight for all the items in the players
+     * inventory
      */
     public double getCarryWeight() {
-        return CARRY_WEIGHT;
+        double sum = 0;
+        for (Item item : items) {
+            sum += item.getWeight();
+        }
+        return sum;
     }
 
     /**
@@ -60,6 +64,11 @@ public class Player {
             //System.out.print("The " + itemName + " you were looking for doesn't exist");
             return false;
         }
+
+        if(item.getWeight() + this.getCarryWeight() > MAX_CARRY_WEIGHT) {
+            return false;
+        }
+
         items.add(item);
         return true;
     }

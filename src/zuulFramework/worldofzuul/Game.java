@@ -352,16 +352,16 @@ public class Game implements ITimeEventAble {
         if(command.hasSecondWord()) {
             
             // Ask the player objekt to pick up an item in the room
-            boolean succes = player.pickUp(command.getSecondWord());
+            boolean success = player.pickUp(command.getSecondWord());
             
             // If the player can pick up the item, then print the item the
             // player has picked up
-            if(succes) {
+            if(success) {
                 System.out.println("you picked up " + command.getSecondWord() + ".");
             }
             // Else print an error
             else {
-                System.out.println("There is not item named " + command.getSecondWord() + ".");
+                System.out.printf("Could not pick up %s.\n", command.getSecondWord());
             }
         }
         // else print a list of the items in the room out to the player. 
