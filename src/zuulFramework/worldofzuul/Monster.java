@@ -85,18 +85,23 @@ public class Monster extends Player implements ITimeEventAble {
     public void timeCallback(int timeAt, Player player) {
         //Check if the player is in the same room as a monster. 
         if (this.currentRoom.equals(player.getCurrentRoom())){
-            //The monster has 33% chance of doing damage to the player. 
+            //The monster has 33% chance of doing damage to the player.
             if ( Math.random() * 100 < 33.33) {
                 player.removeLife(inflictDamage());
                 return;
             }  
             //The monster has a 50% chance of picking up an item.
         } else if ( Math.random() * 100 < 50.00) {
-            //Defines currentRoom as SalesRoom in order to remove an item
-            //from the room and add it to the monster's itemList. 
-            Item monsterItem = ((SalesRoom) currentRoom).removeRandomItem();
-            this.items.add(monsterItem);
-            return;
+            // Checks if currentRoom has the type SalesRoom, because its not
+            // possible to pickup items from the entrance and salesroom, and
+            // the game would throw an error if it tried.
+            if (currentRoom instanceof SalesRoom) {
+                //Defines currentRoom as SalesRoom in order to remove an item
+                //from the room and add it to the monster's itemList.
+                Item monsterItem = ((SalesRoom) currentRoom).removeRandomItem();
+                this.items.add(monsterItem);
+                return;
+            }
         }
         //If none of the above happens the monster moves to a random location
         //linked to the former currentRoom.
