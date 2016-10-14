@@ -73,9 +73,9 @@ public class Game implements ITimeEventAble {
         dinningRoom = new SalesRoom("at a place where you probably will eat", ItemType.DINNERCHAIR, ItemType.DINNERTABLE);
         livingRoom = new SalesRoom("at a place where you can relax", ItemType.SHELVES, ItemType.SOFA);
         bedroom = new SalesRoom("sleepy?", ItemType.BED);
-        childrensRoom = new SalesRoom("at a place that children love", ItemType.BEAR, ItemType.SOFA);
+        childrensRoom = new SalesRoom("at a place that children love", ItemType.TEDDY_BEAR, ItemType.SOFA);
         electronics = new SalesRoom("at a place where nerds spend their time", ItemType.COMPUTER);
-        toilet = new SalesRoom("going to pee? take a bath?", ItemType.TOILET_PAPER);
+        toilet = new SalesRoom("going to pee? take a bath?", ItemType.TOILET);
         office = new SalesRoom("loving the song by rihanna - Work", ItemType.DESK);
 
         //Create exits for each room with directions.
