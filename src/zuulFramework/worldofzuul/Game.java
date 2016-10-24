@@ -11,46 +11,42 @@ import java.util.stream.Collectors;
  * The "main" in the game
  */
 public class Game implements ITimeEventAble {
+
     private static Game instance;
     /**
      * Handles reading commands from the user
      */
     private Parser parser;
-    /**
-     * The current ingame time in minutes since the start of the day at 10 o'clock
-     * Starts as 10:00
-     */
-    private int time = 60 * 10; // 60 minutes times 10 hours
-    /**
-     * All the callbacks that should be done according with different times.
-     */
-    private List<TimeCallback> callbacks;
+
     /**
      * The player instance
      */
     private Player player;
 
     private String gameOverMessage = null;
+    private Time time;
 
     /**
      * Creates a new game, with default values
      */
     public Game() {
         // Create a list to store all the time based callbacks
-        this.callbacks = new ArrayList<>();
+        time.getList();
 
         // Initialize a new player
         player = new Player();
 
+        // Initialize a new time
+        time = new Time(this);
+
         // Create all the rooms in the game
         createRooms();
-
 
         // Initialize the parser for reading in commands
         parser = new Parser();
 
         // Add own time callback
-        addTimeEvent(this);
+        time.addTimeEvent(this);
 
     }
 
@@ -101,10 +97,9 @@ public class Game implements ITimeEventAble {
         childrensRoom.setExit(Direction.NORTH, livingRoom);
         childrensRoom.setExit(Direction.WEST, bedroom);
 
-
         //Sets the current location to the outside room
         player.setCurrentRoom(entrance);
-        
+
         addMonsterToRoom(entrance, 10);
         addMonsterToRoom(canteen, 2);
         addMonsterToRoom(ballroom, 4);
@@ -117,37 +112,19 @@ public class Game implements ITimeEventAble {
         addMonsterToRoom(toilet, 4);
         addMonsterToRoom(office, 5);
     }
-    
+
     /**
-     * addMonsterToRoom is used to add a given number of monters to a given room.
+     * addMonsterToRoom is used to add a given number of monters to a given
+     * room.
+     *
      * @param room of the type Room
      * @param numberOfMonsters of the type int
      */
     private void addMonsterToRoom(Room room, int numberOfMonsters) {
         for (int i = 0; i < numberOfMonsters; i++) {
             Monster monster = new Monster(room);
-            addTimeEvent(monster);
+            time.addTimeEvent(monster);
         }
-    }
-
-    /**
-     * Gets the current time nicely formatted as a string
-     *
-     * @return A string like "13:37"
-     */
-    private String getNiceFormattedTime() {
-        // Calculate the hours
-        String hours = time / 60 + "";
-        String minutes = time % 60 + "";
-
-        if (hours.length() != 2) {
-            hours = "0" + hours;
-        }
-        if (minutes.length() != 2) {
-            minutes = "0" + minutes;
-        }
-
-        return String.format("%2s:%2s", hours, minutes);
     }
 
     /**
@@ -162,12 +139,12 @@ public class Game implements ITimeEventAble {
 
         // Ask the user for commands, and do whatever the user told us
         do {
-            if(gameOverMessage != null) {
+            if (gameOverMessage != null) {
                 System.out.println(gameOverMessage);
                 break;
             }
             // Write the current time
-            System.out.printf("The time is now %s\n", getNiceFormattedTime());
+            System.out.printf("The time is now %s\n", time.getNiceFormattedTime());
             Command command = parser.getCommand();
             finished = processCommand(command);
 
@@ -180,8 +157,7 @@ public class Game implements ITimeEventAble {
                     gameOver("You have been reduced to nothing!");
                 }
             }
-        }
-        while (!finished);
+        } while (!finished);
         try {
             int score = calcScore(itemList());
             System.out.println("Your score was " + score);
@@ -192,47 +168,6 @@ public class Game implements ITimeEventAble {
             System.out.println("IOException caught");
         }
         System.out.println("Thank you for playing.  Good bye.");
-    }
-
-    /**
-     * This method is called each time the play event happens, and should be used
-     * to hook into things that should happen based on time.
-     */
-    private void doTimeEvent() {
-        //Run through all the timecallbacks 
-        for (TimeCallback callback : this.callbacks) {
-            // Get callbacks and save it in the variable event, 
-            // type ITimeEventAble
-            ITimeEventAble event = callback.getCallback();
-            
-            // If the time since last time callback is bigger or equals the 
-            // time between events then use the method timeCallback to call time
-            // and player and then set the timeSinceLastCallback to 0
-            if(callback.getTimeSinceLastCallback() >= event.getTimeBetweenEvents()) {
-                event.timeCallback(this.time, this.player);
-                callback.setTimeSinceLastCallback(0);
-            }
-        }
-    }
-
-    /**
-     * Add a callback to time based events.
-     *
-     * @param callback The callback that should be called when ever a time event has happened.
-     */
-    public void addTimeEvent(ITimeEventAble callback) {
-        this.callbacks.add(new TimeCallback(callback));
-    }
-
-    /**
-     * Removes a time callback from the list.
-     * Call this method before you remove something that is in the callback list, otherwise it
-     * cannot be garbage collected.
-     *
-     * @param callback The callback to remove
-     */
-    public void removeTimeEvent(ITimeEventAble callback) {
-        this.callbacks = this.callbacks.stream().filter(timeCallback -> timeCallback.getCallback() != callback).collect(Collectors.toList());
     }
 
     /**
@@ -288,7 +223,7 @@ public class Game implements ITimeEventAble {
                 drop(command);
                 break;
             case PAY:
-                wantToQuit=pay(command);
+                wantToQuit = pay(command);
                 break;
             case ASK:
                 askForHelp(command);
@@ -298,8 +233,7 @@ public class Game implements ITimeEventAble {
     }
 
     /**
-     * Prints a welcome to the user
-     * And a list of the commands that can be used
+     * Prints a welcome to the user And a list of the commands that can be used
      */
     private void printHelp() {
         System.out.println("You are lost. You are alone. You wander");
@@ -310,8 +244,8 @@ public class Game implements ITimeEventAble {
     }
 
     /**
-     * Checks if there is a second word after the CommandWord "GO"
-     * And change to that room of the player if it exists
+     * Checks if there is a second word after the CommandWord "GO" And change to
+     * that room of the player if it exists
      *
      * @param command the command to check
      */
@@ -326,13 +260,12 @@ public class Game implements ITimeEventAble {
         //Checks if there is not a next room and print and error to user
         if (nextRoom == null) {
             System.out.println("There is no door!");
-        }
-        //If there is a next room the current room will be the next room and prints out the method
+        } //If there is a next room the current room will be the next room and prints out the method
         else {
             System.out.println(nextRoom.getLongDescription());
 
             // Change the game time. It always take 15 minutes to change room.
-            updateTime(15);
+            time.updateTime(15);
         }
     }
 
@@ -348,99 +281,76 @@ public class Game implements ITimeEventAble {
         if (command.hasSecondWord()) {
             System.out.println("Quit what?");
             return false;
-        }
-        //If there is only the word QUIT it will return a true
+        } //If there is only the word QUIT it will return a true
         else {
             return true;
         }
     }
 
     /**
-     * This method updates time for each time a player spends time in a room
-     * @param timeDif The amound of time that has changed
-     */
-    public void updateTime(int timeDif) {
-        // Go through every minute and add 1 minute each time, timeDif
-        for (int i = 0; i < timeDif; i++) {
-            this.time++;
-            // Call a method doTimeEvent
-            doTimeEvent();
-            // Run through all the timecallbacks
-            for (TimeCallback callback : callbacks) {
-                // set time since last callback, by using get time since last
-                // callback and add timeDif
-                callback.setTimeSinceLastCallback(callback.getTimeSinceLastCallback() + timeDif);
-            }
-        }
-    }
-
-    /**
      * The player is able to pick up items in the room
-     * @param command the command 
+     *
+     * @param command the command
      */
     public void pickUp(Command command) {
-        
+
         // Check if the player has choosen an item to pick up
-        if(command.hasSecondWord()) {
-            
+        if (command.hasSecondWord()) {
+
             // Ask the player objekt to pick up an item in the room
             boolean success = player.pickUp(command.getSecondWord());
-            
+
             // If the player can pick up the item, then print the item the
             // player has picked up
-            if(success) {
+            if (success) {
                 System.out.println("you picked up " + command.getSecondWord() + ".");
-            }
-            // Else print an error
+            } // Else print an error
             else {
                 System.out.printf("Could not pick up %s.\n", command.getSecondWord());
             }
-        }
-        // else print a list of the items in the room out to the player. 
+        } // else print a list of the items in the room out to the player. 
         else {
             Room currentRoom = player.getCurrentRoom();
-            if(currentRoom instanceof SalesRoom) {
+            if (currentRoom instanceof SalesRoom) {
                 System.out.println("The following items can be picked up in this room: ");
-                SalesRoom sr = (SalesRoom)currentRoom;
+                SalesRoom sr = (SalesRoom) currentRoom;
                 List<Item> items = sr.getItems();
                 for (int i = 0; i < items.size(); i++) {
                     Item item = items.get(i);
                     System.out.println(item.getName());
                 }
-            // else print error
+                // else print error
             } else {
                 System.out.println("There is nothing in this room that can be picked up.");
             }
         }
-        
+
     }
 
     /**
      * A player can drop their items from their inventory
+     *
      * @param command the command
      */
-    
     public void drop(Command command) {
-        
+
         // Check if the player can drop an item off in this room.
-        if(player.getCurrentRoom() instanceof SalesRoom) {
-            
+        if (player.getCurrentRoom() instanceof SalesRoom) {
+
             // If the player has typed an item that is avaiable then he can drop 
             // the item.
-            if(command.hasSecondWord()) {
+            if (command.hasSecondWord()) {
                 boolean succes = player.drop(command.getSecondWord());
-                if(succes) {
+                if (succes) {
                     System.out.println("You dropped the item " + command.getSecondWord() + " in the room");
-                }
-                // else print an error
+                } // else print an error
                 else {
                     System.out.println("You have no such item dropped");
                 }
-            }
-            // Else print a list of the items that the player can drop.
+            } // Else print a list of the items that the player can drop.
             else {
                 System.out.println("Here is a list of items that you can drop");
-                
+
                 List<Item> items = player.getItems();
                 for (int i = 0; i < items.size(); i++) {
                     Item item = items.get(i);
@@ -448,33 +358,32 @@ public class Game implements ITimeEventAble {
                 }
             }
         }
-       
+
     }
 
     /**
      * A player can pay in a room.
+     *
      * @param command the command
      */
     public boolean pay(Command command) {
-        
+
         // Check if the currentroom is a room where you can pay
         Room currentRoom = player.getCurrentRoom();
         // If you can pay, then you pay
-        if(currentRoom instanceof ICanPay) {
-            ICanPay payRoom = (ICanPay)currentRoom;
+        if (currentRoom instanceof ICanPay) {
+            ICanPay payRoom = (ICanPay) currentRoom;
             payRoom.buy(player, command, this);
-            
-            
-        }
-        // else print an error
+
+        } // else print an error
         else {
             System.out.println("There is nowhere you can pay in this room");
         }
-        if(currentRoom instanceof Exit){
+        if (currentRoom instanceof Exit) {
             System.out.println("If you wish to quit the game type 'quit'");
             String wishToQuit;
             Scanner quit = new Scanner(System.in);
-            wishToQuit=quit.nextLine();
+            wishToQuit = quit.nextLine();
             if (wishToQuit.equalsIgnoreCase("quit")) {
                 return true;
             }
@@ -484,12 +393,13 @@ public class Game implements ITimeEventAble {
 
     /**
      * A player can ask for help when he enters a room if he wants to
+     *
      * @param command the command
      */
     public void askForHelp(Command command) {
-        
+
         // Check if the player ask for help with a specific item
-        if(command.hasSecondWord()) {
+        if (command.hasSecondWord()) {
             String secondWord = command.getSecondWord();
             ItemType itemType = ItemType.get(secondWord);
             if (itemType == ItemType.NONE) {
@@ -497,9 +407,8 @@ public class Game implements ITimeEventAble {
             } else {
                 player.getCurrentRoom().askForHelp(itemType);
             }
-            updateTime(5);
-        }
-        // Else print a list with the items that you can get help with out
+            time.updateTime(5);
+        } // Else print a list with the items that you can get help with out
         else {
             System.out.println("You can ask for help for finding these items:");
             for (ItemType itemType : ItemType.values()) {
@@ -507,34 +416,34 @@ public class Game implements ITimeEventAble {
             }
         }
     }
+
     /**
      * Calculates the score and prints it into a .txt file
      */
     public int calcScore(ItemType[] listOfItems) {
 
-        
-            int score = 0;
-            Set<ItemType> s = new HashSet<ItemType>();
-            List<Item> items = player.getBoughtItems();
-            for (int i = 0; i < player.getBoughtItems().size(); i++) {
-                s.add(items.get(i).getType());
+        int score = 0;
+        Set<ItemType> s = new HashSet<ItemType>();
+        List<Item> items = player.getBoughtItems();
+        for (int i = 0; i < player.getBoughtItems().size(); i++) {
+            s.add(items.get(i).getType());
+        }
+        for (int j = 0; j < s.size(); j++) {
+            if (s.contains(listOfItems[j])) {
+                score += 10;
             }
-                for (int j = 0; j < s.size(); j++) {
-                    if (s.contains(listOfItems[j])) {
-                        score += 10;
-                    }
-                }
-            //Creating a multiplier that rewards the player for completing the game faster.
-            for (int i = 12; i > 0; i--) {
-                score=(int) (score*((0.083*i)+1));
-            }   
-            return score;
+        }
+        //Creating a multiplier that rewards the player for completing the game faster.
+        for (int i = 12; i > 0; i--) {
+            score = (int) (score * ((0.083 * i) + 1));
+        }
+        return score;
     }
-    
-    public void printScoreToFile(int score) throws IOException{
+
+    public void printScoreToFile(int score) throws IOException {
         FileWriter fileWriter = null;
-        fileWriter = new FileWriter("score.txt",Boolean.TRUE);
-        String stringToWrite = score+"";
+        fileWriter = new FileWriter("score.txt", Boolean.TRUE);
+        String stringToWrite = score + "";
         fileWriter.write(stringToWrite + System.lineSeparator());
         fileWriter.flush();
         fileWriter.close();
@@ -548,18 +457,18 @@ public class Game implements ITimeEventAble {
         try {
             File file = new File("score.txt");
             Scanner scanner = new Scanner(file);
-            while(scanner.hasNextLine()){
+            while (scanner.hasNextLine()) {
                 score.add(Integer.parseInt(scanner.nextLine()));
             }
             for (int iteration = 0; iteration < score.size(); iteration++) {
-                int endOfArray=score.size()-iteration;
-                boolean swapped=false;
-                for (int index = 0; index < endOfArray-1; index++) {
-                    if (score.get(index)>score.get(index+1)) {
+                int endOfArray = score.size() - iteration;
+                boolean swapped = false;
+                for (int index = 0; index < endOfArray - 1; index++) {
+                    if (score.get(index) > score.get(index + 1)) {
                         Integer temp = score.get(index);
-                        score.set(index, index+1);
-                        score.set(index+1, temp);   
-                        swapped=true;
+                        score.set(index, index + 1);
+                        score.set(index + 1, temp);
+                        swapped = true;
                     }
                 }
                 if (!swapped) {
@@ -570,7 +479,7 @@ public class Game implements ITimeEventAble {
                 System.out.println(score.get(count));
             }
         } catch (FileNotFoundException ex) {
-            
+
         }
     }
 
@@ -586,14 +495,14 @@ public class Game implements ITimeEventAble {
         if (timeAt >= (22 * 60)) {
             // If the time is up, and the player is in an exit room, then they should end the game
             if (this.player.getCurrentRoom() instanceof Exit) {
-                    // TODO Exit the game once done
-                    showScore();
+                // TODO Exit the game once done
+                showScore();
             } else {
                 this.player.clearBoughtItems();
                 // The time is up, but the player cannot yet leave.
                 // sooo.. Game over!!
-                gameOver("You did not manage to get to the exit before IKEA closed. \n" +
-                        "The security guards threw you out, and destroyed all the things you bought.");
+                gameOver("You did not manage to get to the exit before IKEA closed. \n"
+                        + "The security guards threw you out, and destroyed all the things you bought.");
             }
         }
 
@@ -601,13 +510,14 @@ public class Game implements ITimeEventAble {
 
     /**
      * Marks the game for gameover
+     *
      * @param description
      */
     private void gameOver(String description) {
         this.gameOverMessage = description;
     }
-    
-    public ItemType[] itemList(){
+
+    public ItemType[] itemList() {
         ItemType[] listOfItems = new ItemType[10];
         listOfItems[0] = ItemType.BED;
         listOfItems[1] = ItemType.DINNERTABLE;
@@ -618,59 +528,16 @@ public class Game implements ITimeEventAble {
         listOfItems[6] = ItemType.LAMP;
         listOfItems[7] = ItemType.COMPUTER;
         listOfItems[8] = ItemType.LAMP;
-        listOfItems[9] = ItemType.SOFA;   
+        listOfItems[9] = ItemType.SOFA;
         return listOfItems;
     }
 
-    /**
-     * Stored specific callbacks that needs to happen at specific time.
-     */
-    private class TimeCallback {
-        /**
-         * The time since the callback was last called
-         */
-        private int timeSinceLastCallback = 0;
-
-        /**
-         * The callback itself to call
-         */
-        private ITimeEventAble callback;
-
-        /**
-         * Creates a callback store.
-         *
-         * @param callback
-         */
-        public TimeCallback(ITimeEventAble callback) {
-            this.callback = callback;
-        }
-
-        /**
-         * Gets the time since the callback was last called
-         *
-         * @return
-         */
-        public int getTimeSinceLastCallback() {
-            return timeSinceLastCallback;
-        }
-
-        /**
-         * Sets the time since the callback was last called
-         *
-         * @param timeSinceLastCallback
-         */
-        public void setTimeSinceLastCallback(int timeSinceLastCallback) {
-            this.timeSinceLastCallback = timeSinceLastCallback;
-        }
-
-        /**
-         * Gets the callback that should be made
-         *
-         * @return
-         */
-        public ITimeEventAble getCallback() {
-            return callback;
-        }
-
+    public Player getPlayer() {
+        return player;
     }
+    
+    public void updateTime(int timeDif){
+        time.updateTime(timeDif);
+    }
+    
 }
