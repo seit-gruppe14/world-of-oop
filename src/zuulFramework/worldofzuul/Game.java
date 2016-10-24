@@ -4,11 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -174,6 +170,16 @@ public class Game implements ITimeEventAble {
             System.out.printf("The time is now %s\n", getNiceFormattedTime());
             Command command = parser.getCommand();
             finished = processCommand(command);
+
+            if (player.isPlayerDead()) {
+                //TODO add more death messages
+                int randomInteger = (int) (Math.random() * 2);
+                if (randomInteger == 0) {
+                    gameOver("You have been trampled!");
+                } else if (randomInteger == 1) {
+                    gameOver("You have been reduced to nothing!");
+                }
+            }
         }
         while (!finished);
         try {
@@ -590,15 +596,7 @@ public class Game implements ITimeEventAble {
                         "The security guards threw you out, and destroyed all the things you bought.");
             }
         }
-        if (player.isPlayerDead()){
-            //TODO add more death messages
-            int randomInteger = (int) (Math.random() * 2);
-            if (randomInteger == 0) {
-                gameOver("You have been trampled!");
-            } else if (randomInteger == 1) {
-                gameOver("You have been reduced to nothing!");
-            }
-        }
+
     }
 
     /**

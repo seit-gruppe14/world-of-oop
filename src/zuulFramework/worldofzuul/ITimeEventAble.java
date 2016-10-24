@@ -13,7 +13,8 @@ public interface ITimeEventAble {
     /**
      * This method will be called whenever the time has been since last event happened.
      *
-     * @param timeAt
+     * @param timeAt The time of the callback
+     * @param player The player playing the game
      */
     void timeCallback(int timeAt, Player player);
 }
