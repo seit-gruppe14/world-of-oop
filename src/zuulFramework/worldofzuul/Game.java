@@ -176,7 +176,15 @@ public class Game implements ITimeEventAble {
             finished = processCommand(command);
         }
         while (!finished);
-        readScore();
+        try {
+            int score = calcScore(itemList());
+            System.out.println("Your score was " + score);
+            printScoreToFile(score);
+            System.out.println("Top 5 scores were");
+            showScore();
+        } catch (IOException ex) {
+            System.out.println("IOException caught");
+        }
         System.out.println("Thank you for playing.  Good bye.");
     }
 
@@ -457,8 +465,11 @@ public class Game implements ITimeEventAble {
             System.out.println("There is nowhere you can pay in this room");
         }
         if(currentRoom instanceof Exit){
-            command = parser.getCommand();
-            if (command.getCommandWord()==CommandWord.QUIT) {
+            System.out.println("If you wish to quit the game type 'quit'");
+            String wishToQuit;
+            Scanner quit = new Scanner(System.in);
+            wishToQuit=quit.nextLine();
+            if (wishToQuit.equalsIgnoreCase("quit")) {
                 return true;
             }
         }
@@ -493,9 +504,9 @@ public class Game implements ITimeEventAble {
     /**
      * Calculates the score and prints it into a .txt file
      */
-    public void score(ItemType[] listOfItems) {
-        FileWriter fileWriter = null;
-        try {
+    public int calcScore(ItemType[] listOfItems) {
+
+        
             int score = 0;
             Set<ItemType> s = new HashSet<ItemType>();
             List<Item> items = player.getBoughtItems();
@@ -507,40 +518,50 @@ public class Game implements ITimeEventAble {
                         score += 10;
                     }
                 }
-            
             //Creating a multiplier that rewards the player for completing the game faster.
             for (int i = 12; i > 0; i--) {
                 score=(int) (score*((0.083*i)+1));
             }   
-            fileWriter = new FileWriter("score.txt",Boolean.TRUE);
-            String stringToWrite = score+"";
-            fileWriter.write(stringToWrite + System.lineSeparator());
-            fileWriter.flush();
-            fileWriter.close();
-        } catch (IOException ex) {
-        } finally {
-            try {
-                fileWriter.close();
-            } catch (IOException ex) {
-
-            }
-        }
+            return score;
     }
     
+    public void printScoreToFile(int score) throws IOException{
+        FileWriter fileWriter = null;
+        fileWriter = new FileWriter("score.txt",Boolean.TRUE);
+        String stringToWrite = score+"";
+        fileWriter.write(stringToWrite + System.lineSeparator());
+        fileWriter.flush();
+        fileWriter.close();
+    }
+
     /**
      * Reads from a .txt file and prints the first five lines
      */
-    public void readScore() {
+    public void showScore() {
+        ArrayList<Integer> score = new ArrayList<>();
         try {
             File file = new File("score.txt");
             Scanner scanner = new Scanner(file);
-            int count=0;
-            while (scanner.hasNextLine()) {
-                if (count<5) {
-                    String s = scanner.nextLine();
-                    System.out.println(s);
-                    count++;
+            while(scanner.hasNextLine()){
+                score.add(Integer.parseInt(scanner.nextLine()));
+            }
+            for (int iteration = 0; iteration < score.size(); iteration++) {
+                int endOfArray=score.size()-iteration;
+                boolean swapped=false;
+                for (int index = 0; index < endOfArray-1; index++) {
+                    if (score.get(index)>score.get(index+1)) {
+                        Integer temp = score.get(index);
+                        score.set(index, index+1);
+                        score.set(index+1, temp);   
+                        swapped=true;
+                    }
                 }
+                if (!swapped) {
+                    break;
+                }
+            }
+            for (int count = 0; count < 5; count++) {
+                System.out.println(score.get(count));
             }
         } catch (FileNotFoundException ex) {
             
@@ -560,7 +581,7 @@ public class Game implements ITimeEventAble {
             // If the time is up, and the player is in an exit room, then they should end the game
             if (this.player.getCurrentRoom() instanceof Exit) {
                     // TODO Exit the game once done
-                    score();
+                    showScore();
             } else {
                 this.player.clearBoughtItems();
                 // The time is up, but the player cannot yet leave.
@@ -597,7 +618,7 @@ public class Game implements ITimeEventAble {
         listOfItems[4] = ItemType.DESK;
         listOfItems[5] = ItemType.CUTLERY;
         listOfItems[6] = ItemType.LAMP;
-        listOfItems[7] = ItemType.DINNERCHAIR;
+        listOfItems[7] = ItemType.COMPUTER;
         listOfItems[8] = ItemType.LAMP;
         listOfItems[9] = ItemType.SOFA;   
         return listOfItems;
