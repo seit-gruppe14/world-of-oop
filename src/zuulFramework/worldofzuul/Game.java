@@ -333,6 +333,11 @@ public class Game implements ITimeEventAble {
 
             // Change the game time. It always take 15 minutes to change room.
             updateTime(15);
+
+            // Handle special event rooms
+            if (nextRoom instanceof IHaveSpecialEvent) {
+                ((IHaveSpecialEvent) nextRoom).doSpecialEvent(this);
+            }
         }
     }
 
