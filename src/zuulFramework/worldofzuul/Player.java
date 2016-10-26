@@ -204,7 +204,7 @@ public class Player {
      *
      * @param money which is an int type
      */
-    public void addMoney(int money) {
+    public void addMoney(double money) {
         this.money += money;
     }
 
@@ -213,7 +213,7 @@ public class Player {
      *
      * @param money which is an int type
      */
-    public void removeMoney(int money) {
+    public void removeMoney(double money) {
         this.money -= money;
     }
 
