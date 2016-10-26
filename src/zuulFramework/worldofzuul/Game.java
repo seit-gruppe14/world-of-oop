@@ -511,9 +511,9 @@ public class Game implements ITimeEventAble {
                 int endOfArray = score.size() - iteration;
                 boolean swapped = false;
                 for (int index = 0; index < endOfArray - 1; index++) {
-                    if (score.get(index) > score.get(index + 1)) {
+                    if (score.get(index) < score.get(index + 1)) {
                         Integer temp = score.get(index);
-                        score.set(index, index + 1);
+                        score.set(index, score.get(index + 1));
                         score.set(index + 1, temp);
                         swapped = true;
                     }
