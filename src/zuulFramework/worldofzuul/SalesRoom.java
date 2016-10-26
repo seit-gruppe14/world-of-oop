@@ -60,7 +60,7 @@ public class SalesRoom extends Room {
     public Item removeItem(String itemName) {
         //loops the arraylist to find the item the player specified.
         for (int itemNumber = 0; itemNumber < items.size(); itemNumber++) {
-            if (items.get(itemNumber).getName().equals(itemName)) {
+            if (items.get(itemNumber).getName().equalsIgnoreCase(itemName)) {
                 return items.remove(itemNumber);
             }
         }
@@ -70,11 +70,5 @@ public class SalesRoom extends Room {
     public List<Item> getItems() {
         return items;
     }
-    
-    public Item removeRandomItem() {
-        int randomIndex = (int) (Math.random() * items.size());
-        return items.remove(randomIndex);
-    }
-
 }
 

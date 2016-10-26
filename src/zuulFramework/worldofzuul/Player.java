@@ -20,6 +20,14 @@ public class Player {
     //TODO ADD A REAL CARRY WEIGHT LIMIT
     private static final double MAX_CARRY_WEIGHT = 100.0;
     /**
+     * The items contains the player's items
+     */
+    protected List<Item> items = new ArrayList<Item>();
+    /**
+     * The currentRoom indicates the player's current room
+     */
+    protected Room currentRoom;
+    /**
      * The life indicates the remaining life of the Player
      */
     private int life = 100;
@@ -28,18 +36,9 @@ public class Player {
      */
     private int money;
     /**
-     * The items contains the player's items
-     */
-    protected List<Item> items = new ArrayList<Item>();
-
-    /**
      * A list of items the player has bought
      */
     private List<Item> boughtItems = new ArrayList<Item>();
-    /**
-     * The currentRoom indicates the player's current room
-     */
-    protected Room currentRoom;
 
     /**
      * Returns the player's carry weight.
@@ -87,7 +86,7 @@ public class Player {
      */
     public boolean drop(String itemName) {
         for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).getName().equals(itemName)) {
+            if (items.get(i).getName().equalsIgnoreCase(itemName)) {
                 Item item = items.remove(i);
                 ((SalesRoom) currentRoom).addItem(item);
                 return true;
@@ -197,6 +196,7 @@ public class Player {
      */
     public void removeLife(int life) {
         this.life -= life;
+        System.out.printf("You lost %d life\n", life);
     }
 
     /**
@@ -243,9 +243,6 @@ public class Player {
     }
 
     public boolean isPlayerDead() {
-        if (life <= 0) {
-            return true;
-        }
-        return false;
+        return life <= 0;
     }
 }

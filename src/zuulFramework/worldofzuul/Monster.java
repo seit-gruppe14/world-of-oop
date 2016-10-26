@@ -1,5 +1,6 @@
 package zuulFramework.worldofzuul;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -7,8 +8,8 @@ import java.util.Set;
  * Created by Rasmus Hansen .
  */
 public class Monster extends Player implements ITimeEventAble {
-    private final double pickUpChance = 0.20; 
-    private final double inflictDamageChance = 0.1000;
+    private static final double PICK_UP_CHANCE = 0.02;
+    private static final double INFLICT_DAMAGE_CHANCE = 0.01;
     
     public Monster(Room currentRoom){
         this.currentRoom = currentRoom; 
@@ -20,6 +21,7 @@ public class Monster extends Player implements ITimeEventAble {
     public void move() {
         Set<Map.Entry<String, Room>> rooms;
         rooms = currentRoom.getExits().entrySet();
+        // TODO Fix danish
         // Beacuse Math.random() returnere lig eller større end 0 men mindre
         // end 1 så kan vi bruge dette til at vælge et tilfældigt rum.
         int randomNumber = (int) (Math.random() * rooms.size());
@@ -89,19 +91,25 @@ public class Monster extends Player implements ITimeEventAble {
         //Check if the player is in the same room as a monster. 
         if (this.currentRoom.equals(player.getCurrentRoom())){
             //The monster has 10% chance of doing damage to the player.
-            if ( Math.random() < inflictDamageChance) {
+            if (Math.random() < INFLICT_DAMAGE_CHANCE) {
                 player.removeLife(inflictDamage());
                 return;
             }  
             //The monster has 20% chance of picking up an item.
-        } else if ((Math.random()) < pickUpChance)  {
+        } else if ((Math.random()) < PICK_UP_CHANCE) {
             // Checks if currentRoom has the type SalesRoom, because its not
             // possible to pickup items from the entrance and salesroom, and
             // the game would throw an error if it tried.
             if (currentRoom instanceof SalesRoom) {
                 //Defines currentRoom as SalesRoom in order to remove an item
                 //from the room and add it to the monster's itemList.
-                Item monsterItem = ((SalesRoom) currentRoom).removeRandomItem();
+                List<Item> itemsFromRoom = ((SalesRoom) currentRoom).getItems();
+                if (itemsFromRoom.isEmpty()) {
+                    // Return if we can't remove any items from the room
+                    return;
+                }
+                int randomIndex = (int) (Math.random() * items.size());
+                Item monsterItem = itemsFromRoom.remove(randomIndex);
                 this.items.add(monsterItem);
                 return;
             }

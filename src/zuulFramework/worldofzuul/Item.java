@@ -16,12 +16,13 @@ public class Item {
 
     /**
      * Constructs an item with the type ItemType.
+     *
      * @param type is a specified ItemType.
      */
-    Item(ItemType type)
-    {
-        this.type=type;
-        this.weight=type.getWeight();
+    Item(ItemType type) {
+        this.type = type;
+        this.weight = type.getWeight();
+        this.name = NameGenerator.pickRandomName();
     }
 
     public ItemType getType() {

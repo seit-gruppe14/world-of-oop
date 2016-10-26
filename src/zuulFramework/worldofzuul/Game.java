@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * The "main" in the game
@@ -137,6 +136,8 @@ public class Game implements ITimeEventAble {
         // The user hasn't finished the game when they start
         boolean finished;
 
+        System.out.printf("You have %d life.\n", player.getLife());
+
         // Ask the user for commands, and do whatever the user told us
         do {
             if (gameOverMessage != null) {
@@ -150,12 +151,7 @@ public class Game implements ITimeEventAble {
 
             if (player.isPlayerDead()) {
                 //TODO add more death messages
-                int randomInteger = (int) (Math.random() * 2);
-                if (randomInteger == 0) {
-                    gameOver("You have been trampled!");
-                } else if (randomInteger == 1) {
-                    gameOver("You have been reduced to nothing!");
-                }
+                gameOver(SillyMessages.getDeathMessage());
             }
         } while (!finished);
         try {
@@ -177,11 +173,11 @@ public class Game implements ITimeEventAble {
         System.out.println();
         System.out.println("Welcöme möney spender.");
         System.out.println("Tensiön is high at IKEA Ödense as yöu are waiting tö shöp-amök.");
-        System.out.println("It's BLACK FRIDAY and yöu're ön the löököut för the best öffers pössible to furnish your new appartment.");
+        System.out.println("It's BLACK FRIDAY and yöu're ön the löököut för the best öffers pössible tö furnish yöur new appartment.");
         System.out.println("But be careful as the öther shöppers might beat yöu tö it or tramble yöu tö death!");
         System.out.println("Are yöu ready?");
         System.out.println("");
-        System.out.println("If you need assistance type '" + CommandWord.HELP + "' tö ask öne öf the blönde IKEA emplöyees.");
+        System.out.printf("If you need assistance type '%s' tö ask öne öf the blönde IKEA emplöyees.%n", CommandWord.HELP);
         System.out.println();
         System.out.println(player.getCurrentRoom().getLongDescription());
     }
@@ -236,8 +232,9 @@ public class Game implements ITimeEventAble {
      * Prints a welcome to the user And a list of the commands that can be used
      */
     private void printHelp() {
-        System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the university.");
+        // TODO Write proper help text
+        System.out.println("");
+        System.out.println("");
         System.out.println();
         System.out.println("Your command words are:");
         parser.showCommands();
@@ -353,14 +350,20 @@ public class Game implements ITimeEventAble {
                 }
             } // Else print a list of the items that the player can drop.
             else {
-                System.out.println("Here is a list of items that you can drop");
-
                 List<Item> items = player.getItems();
-                for (int i = 0; i < items.size(); i++) {
-                    Item item = items.get(i);
-                    System.out.println(item.getName());
+                if (items.isEmpty()) {
+                    System.out.println("You don't have anything in your inventory you can drop");
+                } else {
+                    System.out.println("Here is a list of items that you can drop");
+
+                    for (int i = 0; i < items.size(); i++) {
+                        Item item = items.get(i);
+                        System.out.println(item.getName());
+                    }
                 }
             }
+        } else {
+            System.out.println("You cannot drop anything in this room.");
         }
 
     }
@@ -479,7 +482,7 @@ public class Game implements ITimeEventAble {
                     break;
                 }
             }
-            for (int count = 0; count < 5; count++) {
+            for (int count = 0; count < 5 && count < score.size(); count++) {
                 System.out.println(score.get(count));
             }
         } catch (FileNotFoundException ex) {
