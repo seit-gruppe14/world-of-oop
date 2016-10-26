@@ -60,21 +60,21 @@ public class Player {
      * telling the player that the item isn't avaiable.
      *
      * @param itemName which is a item name String
-     * @return true if item exists in player's current room, false otherwise
+     * @return null if the item was picked up without issues otherwise a 
+     * string with an error message
      */
-    public boolean pickUp(String itemName) {
+    public String pickUp(String itemName) {
         Item item = ((SalesRoom) currentRoom).removeItem(itemName);
         if (item == null) {
-            //System.out.print("The " + itemName + " you were looking for doesn't exist");
-            return false;
+            return "Could not find item";
         }
 
         if(item.getWeight() + this.getCarryWeight() > MAX_CARRY_WEIGHT) {
-            return false;
+            return "Item is too heavy";
         }
 
         items.add(item);
-        return true;
+        return null;
     }
 
     /**

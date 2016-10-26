@@ -300,15 +300,15 @@ public class Game implements ITimeEventAble {
         if (command.hasSecondWord()) {
 
             // Ask the player objekt to pick up an item in the room
-            boolean success = player.pickUp(command.getSecondWord());
+            String success = player.pickUp(command.getSecondWord());
 
             // If the player can pick up the item, then print the item the
             // player has picked up
-            if (success) {
+            if (success == null) {
                 System.out.println("you picked up " + command.getSecondWord() + ".");
             } // Else print an error
             else {
-                System.out.printf("Could not pick up %s.\n", command.getSecondWord());
+                System.out.printf("Could not pick up %s.\n%s\n", command.getSecondWord(), success);
             }
         } // else print a list of the items in the room out to the player. 
         else {
@@ -338,7 +338,22 @@ public class Game implements ITimeEventAble {
         if (longestItemNameStringLength < itemNameString.length()) {
             longestItemNameStringLength = itemNameString.length();
         }
-
+        
+        // Find the longest price string length
+        int longestPriceStringLength = 0;
+        for (Item item : items) {
+            String priceString = String.format("$%d", item.getPrice());
+            int length = priceString.length();
+            if(length > longestPriceStringLength){
+                longestPriceStringLength = length;
+            }            
+        }
+        String priceString = "Price";
+        if (priceString.length() > longestPriceStringLength){
+            longestPriceStringLength = priceString.length();
+        }
+        
+        
         // Find the longest weight string length
         int longestWeightStringLength = 0;
         for (Item item : items) {
@@ -353,19 +368,11 @@ public class Game implements ITimeEventAble {
             longestWeightStringLength = weightString.length();
         }
 
-        System.out.printf("|%" + longestItemNameStringLength + "s|Price|%" + longestWeightStringLength + "s|\n", itemNameString, weightString);
+        System.out.printf("| %" + longestItemNameStringLength + "s | Price | %" + longestWeightStringLength + "s |\n", itemNameString, weightString);
         for (Item item : items) {
-            System.out.printf("|%" + longestItemNameStringLength + "s|", item.getName());
-            System.out.printf("%5d|", item.getPrice());
-            System.out.printf("%" + longestWeightStringLength + "s|\n", String.format("%3.2f kg", item.getWeight()));
-//            System.out.println("|---------+-----+--------|");
-            /*
-
-            itemName price weight
-            blok     50    3 kg
-            and      40    2 kg
-
-             */
+            System.out.printf("| %" + longestItemNameStringLength + "s | ", item.getName());
+            System.out.printf("%" + longestPriceStringLength + "s | ", String.format("$%d", item.getPrice()));
+            System.out.printf("%" + longestWeightStringLength + "s |\n", String.format("%3.2f kg", item.getWeight()));
         }
     }
 
