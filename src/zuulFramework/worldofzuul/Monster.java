@@ -108,7 +108,7 @@ public class Monster extends Player implements ITimeEventAble {
                     // Return if we can't remove any items from the room
                     return;
                 }
-                int randomIndex = (int) (Math.random() * items.size());
+                int randomIndex = (int) (Math.random() * itemsFromRoom.size());
                 Item monsterItem = itemsFromRoom.remove(randomIndex);
                 this.items.add(monsterItem);
                 return;
