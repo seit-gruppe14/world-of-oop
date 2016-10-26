@@ -6,7 +6,9 @@ package zuulFramework.worldofzuul;
 public class SillyMessages {
     private static String[] deathMessages = {
             "You have been trampled!",
-            "You have been reduced to nothing!"
+            "You have been reduced to nothing!",
+            "You have been crushed by the shoppers!",
+            "You were swarmed by the shoppers and overheated to death!", 
     };
 
     /**
