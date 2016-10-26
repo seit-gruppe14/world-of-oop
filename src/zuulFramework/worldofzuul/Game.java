@@ -91,6 +91,7 @@ public class Game implements ITimeEventAble {
         dinningRoom.setExit(Direction.SOUTH, bedroom);
         dinningRoom.setExit(Direction.WEST, kitchen);
         dinningRoom.setExit(Direction.EAST, livingRoom);
+        dinningRoom.setExit(Direction.NORTH, exit);
         livingRoom.setExit(Direction.WEST, dinningRoom);
         livingRoom.setExit(Direction.SOUTH, childrensRoom);
         childrensRoom.setExit(Direction.NORTH, livingRoom);
