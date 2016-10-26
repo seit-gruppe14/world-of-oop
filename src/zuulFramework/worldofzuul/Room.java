@@ -99,7 +99,8 @@ public class Room {
      */
     public void askForHelp(ItemType itemType) {
 
-        // Check if the user is already in the room they are looking at
+        // Check if the item user is looking for
+        // is in the room they are at
         if (this.itemTypes.contains(itemType)) {
             // Tell the user they are already in the room
             System.out.println("The items you are looking for are in this room.");
