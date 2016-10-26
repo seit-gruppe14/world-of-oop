@@ -11,7 +11,7 @@ import java.util.*;
  */
 public class Game implements ITimeEventAble {
 
-    private static Game instance;
+    private static final int GAME_END_TIME = 22 * 60;
     /**
      * Handles reading commands from the user
      */
@@ -499,7 +499,7 @@ public class Game implements ITimeEventAble {
     @Override
     public void timeCallback(int timeAt, Player player) {
         // If the current time is more than 22 o'clock
-        if (timeAt >= (22 * 60)) {
+        if (timeAt >= GAME_END_TIME) {
             // If the time is up, and the player is in an exit room, then they should end the game
             if (this.player.getCurrentRoom() instanceof Exit) {
                 // TODO Exit the game once done
