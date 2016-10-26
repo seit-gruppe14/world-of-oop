@@ -25,7 +25,7 @@ public class Exit extends Room implements ICanPay {
 
         // Get all the item the player has picked up
         List<Item> itemsToBuy = player.getItems();
-        double sum = 0;
+        int sum = 0;
         // Use a for loop to go through all of the items and get total items price
         for (Item item : itemsToBuy) {
             sum += item.getPrice();

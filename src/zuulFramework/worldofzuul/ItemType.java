@@ -61,7 +61,7 @@ public enum ItemType {
      *
      * @return
      */
-    public double getPrice() {
+    public int getPrice() {
         this.price = (int) (this.price + this.price * ((Math.random() -0.5) * 0.1));
         return this.price;
     }

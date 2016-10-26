@@ -12,7 +12,7 @@ public class Item {
     private ItemType type;
     private double weight;
     private String name;
-    private double price;
+    private int price;
 
     /**
      * Constructs an item with the type ItemType.
@@ -50,11 +50,11 @@ public class Item {
         this.name = name;
     }
 
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 }
