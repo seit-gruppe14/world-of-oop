@@ -457,7 +457,9 @@ public class Game implements ITimeEventAble {
         else {
             System.out.println("You can ask for help for finding these items:");
             for (ItemType itemType : ItemType.values()) {
-                System.out.println(itemType.toString());
+                if (itemType != ItemType.NONE) { 
+                    System.out.println(itemType.toString());
+                }
             }
         }
     }
