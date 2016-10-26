@@ -42,7 +42,7 @@ public class Room {
     /**
      * Gets the description of the room
      *
-     * @return
+     * @return String
      */
     public String getShortDescription() {
         return description;
@@ -52,7 +52,7 @@ public class Room {
      * Gets a longer description of the room
      * which is description + a list of exists
      *
-     * @return
+     * @return String
      */
     public String getLongDescription() {
         //Gives the player the description in a sentence + direction and neighbor.
@@ -60,7 +60,8 @@ public class Room {
     }
 
     /**
-     * @return
+     * This is used in each room to print an overview of exits
+     * @return String
      */
     private String getExitString() {
         // The base of our string

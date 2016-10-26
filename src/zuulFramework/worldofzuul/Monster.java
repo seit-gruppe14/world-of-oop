@@ -37,8 +37,6 @@ public class Monster extends Player implements ITimeEventAble {
         }
     }
 
-    
-    
     /**
      * A pickUp method for picking up an item in a room and add the item if the
      * item exist
