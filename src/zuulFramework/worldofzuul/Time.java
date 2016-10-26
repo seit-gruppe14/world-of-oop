@@ -5,6 +5,7 @@
  */
 package zuulFramework.worldofzuul;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,6 +18,7 @@ public class Time {
 
     public Time(Game game) {
         this.game = game;
+        this.callbacks = new ArrayList<TimeCallback>();
     }
     
     /**

@@ -30,14 +30,14 @@ public class Game implements ITimeEventAble {
      * Creates a new game, with default values
      */
     public Game() {
+        // Initialize a new time
+        time = new Time(this);
+        
         // Create a list to store all the time based callbacks
         time.getList();
 
         // Initialize a new player
         player = new Player();
-
-        // Initialize a new time
-        time = new Time(this);
 
         // Create all the rooms in the game
         createRooms();
