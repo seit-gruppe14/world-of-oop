@@ -317,16 +317,56 @@ public class Game implements ITimeEventAble {
                 System.out.println("The following items can be picked up in this room: ");
                 SalesRoom sr = (SalesRoom) currentRoom;
                 List<Item> items = sr.getItems();
-                for (int i = 0; i < items.size(); i++) {
-                    Item item = items.get(i);
-                    System.out.println(item.getName());
-                }
+                printItemList(items);
                 // else print error
             } else {
                 System.out.println("There is nothing in this room that can be picked up.");
             }
         }
+    }
 
+    private void printItemList(List<Item> items) {
+        // Find the length of the longest name of the items
+        int longestItemNameStringLength = 0;
+        for (Item item : items) {
+            int length = item.getName().length();
+            if (length > longestItemNameStringLength) {
+                longestItemNameStringLength = length;
+            }
+        }
+        String itemNameString = "Item name";
+        if (longestItemNameStringLength < itemNameString.length()) {
+            longestItemNameStringLength = itemNameString.length();
+        }
+
+        // Find the longest weight string length
+        int longestWeightStringLength = 0;
+        for (Item item : items) {
+            String weightString = String.format("%3.2f kg", item.getWeight());
+            int length = weightString.length();
+            if (length > longestWeightStringLength) {
+                longestWeightStringLength = length;
+            }
+        }
+        String weightString = "Weight";
+        if (weightString.length() > longestWeightStringLength) {
+            longestWeightStringLength = weightString.length();
+        }
+
+        System.out.printf("|%" + longestItemNameStringLength + "s|Price|%" + longestWeightStringLength + "s|\n", itemNameString, weightString);
+        for (Item item : items) {
+            System.out.printf("|%" + longestItemNameStringLength + "s|", item.getName());
+            System.out.printf("%5d|", item.getPrice());
+            System.out.printf("%" + longestWeightStringLength + "s|\n", String.format("%3.2f kg", item.getWeight()));
+//            System.out.println("|---------+-----+--------|");
+            /*
+
+            itemName price weight
+            blok     50    3 kg
+            and      40    2 kg
+
+             */
+        }
     }
 
     /**
@@ -357,10 +397,7 @@ public class Game implements ITimeEventAble {
                 } else {
                     System.out.println("Here is a list of items that you can drop");
 
-                    for (int i = 0; i < items.size(); i++) {
-                        Item item = items.get(i);
-                        System.out.println(item.getName());
-                    }
+                    printItemList(items);
                 }
             }
         } else {
