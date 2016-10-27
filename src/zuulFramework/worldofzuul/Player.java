@@ -196,7 +196,7 @@ public class Player {
      */
     public void removeLife(int life) {
         this.life -= life;
-        System.out.printf("You lost %d life\n", life);
+        System.out.printf("You lost %d life\n" + SillyMessages.getDamageMessage(), life);
     }
 
     /**
