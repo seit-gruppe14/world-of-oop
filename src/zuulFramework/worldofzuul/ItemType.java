@@ -9,9 +9,9 @@ package zuulFramework.worldofzuul;
  * Opret en enum klasse der indeholder de forskellige typer af items.
  */
 public enum ItemType {
-    BED(100, "bed", 3000), LAMP(10, "lamp", 120), DESK(50, "desk", 500), DINNERTABLE(70, "dinnertable",400), DINNERCHAIR(15, "dinnerchair",100),
+    BED(95, "bed", 3000), LAMP(10, "lamp", 120), DESK(50, "desk", 500), DINNERTABLE(70, "dinnertable",400), DINNERCHAIR(15, "dinnerchair",100),
     SHELVES(60, "shelves",300), CUTLERY(0.5, "cutlery", 10), TOILET(40, "toilet", 1200 ), COMPUTER(3, "computer", 2500),
-    TEDDY_BEAR(5, "teddybear", 75), SOFA(100, "sofa", 1500), NONE(0, "none",0);
+    TEDDY_BEAR(5, "teddybear", 75), SOFA(95, "sofa", 1500), NONE(0, "none",0);
 
     private double weight;
     private String name;
@@ -46,14 +46,16 @@ public enum ItemType {
         return ItemType.NONE;
     }
 
-    /**
+    /*
      * Get a weight of a certain item. This value is the weight +- 10% of the weight itself.
      *
      * @return
      */
     public double getWeight() {
-        this.weight = this.weight + this.weight * ((Math.random() -0.5) * 0.1);
-        return this.weight;
+        System.out.println(this.weight);
+        double newWeight;
+        newWeight = this.weight + this.weight * ((Math.random() - 0.5) * 0.1);
+        return newWeight;
     }
     
     /**
