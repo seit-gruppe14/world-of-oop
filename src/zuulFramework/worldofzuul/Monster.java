@@ -21,9 +21,8 @@ public class Monster extends Player implements ITimeEventAble {
     public void move() {
         Set<Map.Entry<String, Room>> rooms;
         rooms = currentRoom.getExits().entrySet();
-        // TODO Fix danish
-        // Beacuse Math.random() returnere lig eller større end 0 men mindre
-        // end 1 så kan vi bruge dette til at vælge et tilfældigt rum.
+        // We are using the amount of rooms in the array rooms to random
+        // generate a number which we can use to select a random room.
         int randomNumber = (int) (Math.random() * rooms.size());
         int iterator = 0;
         // Get rooms randomly
