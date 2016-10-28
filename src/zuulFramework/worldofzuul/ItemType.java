@@ -47,25 +47,21 @@ public enum ItemType {
     }
 
     /*
-     * Get a weight of a certain item. This value is the weight +- 10% of the weight itself.
+     * Get a weight of a certain item. This value is the weight +- 5% of the weight itself.
      *
      * @return
      */
     public double getWeight() {
-        System.out.println(this.weight);
-        double newWeight;
-        newWeight = this.weight + this.weight * ((Math.random() - 0.5) * 0.1);
-        return newWeight;
+        return this.weight + this.weight * ((Math.random() - 0.5) * 0.1);
     }
     
     /**
-     * Get a price of a certain item. This value is the price +- 10% of the price itself.
+     * Get a price of a certain item. This value is the price +- 5% of the price itself.
      *
      * @return
      */
     public int getPrice() {
-        this.price = (int) (this.price + this.price * ((Math.random() -0.5) * 0.1));
-        return this.price;
+        return (int) (this.price + this.price * ((Math.random() -0.5) * 0.1));
     }
 
     /**
