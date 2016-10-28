@@ -24,6 +24,18 @@ public class Game implements ITimeEventAble {
 
     private String gameOverMessage = null;
     private Time time;
+    private ItemType[] itemList = {
+            ItemType.BED,
+            ItemType.DINNERTABLE,
+            ItemType.DINNERCHAIR,
+            ItemType.SHELVES,
+            ItemType.DESK,
+            ItemType.CUTLERY,
+            ItemType.LAMP,
+            ItemType.COMPUTER,
+            ItemType.LAMP,
+            ItemType.SOFA
+    };
 
     /**
      * Creates a new game, with default values
@@ -31,7 +43,7 @@ public class Game implements ITimeEventAble {
     public Game() {
         // Initialize a new time
         time = new Time(this);
-        
+
         // Create a list to store all the time based callbacks
         time.getList();
 
@@ -151,12 +163,11 @@ public class Game implements ITimeEventAble {
             finished = processCommand(command);
 
             if (player.isPlayerDead()) {
-                //TODO add more death messages
                 gameOver(SillyMessages.getDeathMessage());
             }
         } while (!finished);
         try {
-            int score = calcScore(itemList());
+            int score = calcScore(itemList);
             System.out.println("Your score was " + score);
             printScoreToFile(score);
             System.out.println("Top 5 scores were");
@@ -233,9 +244,33 @@ public class Game implements ITimeEventAble {
      * Prints a welcome to the user And a list of the commands that can be used
      */
     private void printHelp() {
-        // TODO Write proper help text
-        System.out.println("");
-        System.out.println("");
+
+
+        // Make new list of items to buy
+        List<ItemType> itemsToBuy = new ArrayList<ItemType>();
+        for (ItemType itemType : itemList) {
+            itemsToBuy.add(itemType);
+        }
+
+        // Copy both bought items and items in inventory
+        // to new list
+        List<Item> boughtItems = new ArrayList<>();
+        boughtItems.addAll(player.getBoughtItems());
+        boughtItems.addAll(player.getItems());
+
+        for (Item boughtItem : boughtItems) {
+            itemsToBuy.remove(boughtItem.getType());
+        }
+
+        if (itemsToBuy.size() > 0) {
+            System.out.println("You still need to buy the following:");
+
+            for (ItemType itemType : itemsToBuy) {
+                System.out.println(itemType.toString());
+            }
+        } else {
+            System.out.println("You have bought everything you need. ");
+        }
         System.out.println();
         System.out.println("Your command words are:");
         parser.showCommands();
@@ -310,7 +345,7 @@ public class Game implements ITimeEventAble {
             else {
                 System.out.printf("Could not pick up %s.\n%s\n", command.getSecondWord(), success);
             }
-        } // else print a list of the items in the room out to the player. 
+        } // else print a list of the items in the room out to the player.
         else {
             Room currentRoom = player.getCurrentRoom();
             if (currentRoom instanceof SalesRoom) {
@@ -338,7 +373,7 @@ public class Game implements ITimeEventAble {
         if (longestItemNameStringLength < itemNameString.length()) {
             longestItemNameStringLength = itemNameString.length();
         }
-        
+
         // Find the longest price string length
         int longestPriceStringLength = 0;
         for (Item item : items) {
@@ -346,14 +381,14 @@ public class Game implements ITimeEventAble {
             int length = priceString.length();
             if(length > longestPriceStringLength){
                 longestPriceStringLength = length;
-            }            
+            }
         }
         String priceString = "Price";
         if (priceString.length() > longestPriceStringLength){
             longestPriceStringLength = priceString.length();
         }
-        
-        
+
+
         // Find the longest weight string length
         int longestWeightStringLength = 0;
         for (Item item : items) {
@@ -386,7 +421,7 @@ public class Game implements ITimeEventAble {
         // Check if the player can drop an item off in this room.
         if (player.getCurrentRoom() instanceof SalesRoom) {
 
-            // If the player has typed an item that is avaiable then he can drop 
+            // If the player has typed an item that is avaiable then he can drop
             // the item.
             if (command.hasSecondWord()) {
                 boolean succes = player.drop(command.getSecondWord());
@@ -464,7 +499,7 @@ public class Game implements ITimeEventAble {
         else {
             System.out.println("You can ask for help for finding these items:");
             for (ItemType itemType : ItemType.values()) {
-                if (itemType != ItemType.NONE) { 
+                if (itemType != ItemType.NONE) {
                     System.out.println(itemType.toString());
                 }
             }
@@ -569,21 +604,6 @@ public class Game implements ITimeEventAble {
      */
     private void gameOver(String description) {
         this.gameOverMessage = description;
-    }
-
-    public ItemType[] itemList() {
-        ItemType[] listOfItems = new ItemType[10];
-        listOfItems[0] = ItemType.BED;
-        listOfItems[1] = ItemType.DINNERTABLE;
-        listOfItems[2] = ItemType.DINNERCHAIR;
-        listOfItems[3] = ItemType.SHELVES;
-        listOfItems[4] = ItemType.DESK;
-        listOfItems[5] = ItemType.CUTLERY;
-        listOfItems[6] = ItemType.LAMP;
-        listOfItems[7] = ItemType.COMPUTER;
-        listOfItems[8] = ItemType.LAMP;
-        listOfItems[9] = ItemType.SOFA;
-        return listOfItems;
     }
 
     public Player getPlayer() {
