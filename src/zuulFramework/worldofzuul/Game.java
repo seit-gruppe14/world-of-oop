@@ -24,7 +24,6 @@ public class Game implements ITimeEventAble {
 
     private String gameOverMessage = null;
     private Time time;
-<<<<<<< Updated upstream
     private ItemType[] itemList = {
             ItemType.BED,
             ItemType.DINNERTABLE,
@@ -37,10 +36,6 @@ public class Game implements ITimeEventAble {
             ItemType.LAMP,
             ItemType.SOFA
     };
-=======
-    
-    private HighScore highScore;
->>>>>>> Stashed changes
 
     /**
      * Creates a new game, with default values
@@ -48,13 +43,7 @@ public class Game implements ITimeEventAble {
     public Game() {
         // Initialize a new time
         time = new Time(this);
-<<<<<<< Updated upstream
 
-=======
-        
-        highScore = new HighScore(this);
-        
->>>>>>> Stashed changes
         // Create a list to store all the time based callbacks
         time.getList();
 
@@ -178,15 +167,11 @@ public class Game implements ITimeEventAble {
             }
         } while (!finished);
         try {
-<<<<<<< Updated upstream
             int score = calcScore(itemList);
-=======
-            int score = highScore.calcScore(itemList());
->>>>>>> Stashed changes
             System.out.println("Your score was " + score);
-            highScore.printScoreToFile(score);
+            printScoreToFile(score);
             System.out.println("Top 5 scores were");
-            highScore.showScore();
+            showScore();
         } catch (IOException ex) {
             System.out.println("IOException caught");
         }
@@ -527,6 +512,72 @@ public class Game implements ITimeEventAble {
         }
     }
 
+    /**
+     * Calculates the score and prints it into a .txt file
+     */
+    public int calcScore(ItemType[] listOfItems) {
+
+        int score = 0;
+        Set<ItemType> s = new HashSet<ItemType>();
+        List<Item> items = player.getBoughtItems();
+        for (int i = 0; i < player.getBoughtItems().size(); i++) {
+            s.add(items.get(i).getType());
+        }
+        for (int j = 0; j < s.size(); j++) {
+            if (s.contains(listOfItems[j])) {
+                score += 10;
+            }
+        }
+        //Creating a multiplier that rewards the player for completing the game faster.
+        for (int i = 12; i > 0; i--) {
+            score = (int) (score * ((0.083 * i) + 1));
+        }
+        return score;
+    }
+
+    public void printScoreToFile(int score) throws IOException {
+        FileWriter fileWriter = null;
+        fileWriter = new FileWriter("score.txt", Boolean.TRUE);
+        String stringToWrite = score + "";
+        fileWriter.write(stringToWrite + System.lineSeparator());
+        fileWriter.flush();
+        fileWriter.close();
+    }
+
+    /**
+     * Reads from a .txt file and prints the first five lines
+     */
+    public void showScore() {
+        ArrayList<Integer> score = new ArrayList<>();
+        try {
+            File file = new File("score.txt");
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                score.add(Integer.parseInt(scanner.nextLine()));
+            }
+            for (int iteration = 0; iteration < score.size(); iteration++) {
+                int endOfArray = score.size() - iteration;
+                boolean swapped = false;
+                for (int index = 0; index < endOfArray - 1; index++) {
+                    if (score.get(index) < score.get(index + 1)) {
+                        Integer temp = score.get(index);
+                        score.set(index, score.get(index + 1));
+                        score.set(index + 1, temp);
+                        swapped = true;
+                    }
+                }
+                if (!swapped) {
+                    break;
+                }
+            }
+            for (int count = 0; count < 5 && count < score.size(); count++) {
+                System.out.println(score.get(count));
+            }
+        } catch (FileNotFoundException ex) {
+
+        }
+    }
+
     @Override
     public int getTimeBetweenEvents() {
         // We want 60 minutes between each and all callbacks
@@ -540,7 +591,7 @@ public class Game implements ITimeEventAble {
             // If the time is up, and the player is in an exit room, then they should end the game
             if (this.player.getCurrentRoom() instanceof Exit) {
                 // TODO Exit the game once done
-                highScore.showScore();
+                showScore();
             } else {
                 this.player.clearBoughtItems();
                 // The time is up, but the player cannot yet leave.
