@@ -44,10 +44,10 @@ public class Monster extends Player implements ITimeEventAble {
      * @param itemName items that exist in the room
      * @return true if the item exist otherwise false
      */
- 
+
     @Override
     public String pickUp(String itemName) {
-        // Make current room to salesroom to be able to pick up an item in the 
+        // Make current room to salesroom to be able to pick up an item in the
         // room by using removeItem method.
         Item item = ((SalesRoom) currentRoom).removeItem(itemName);
         // if the item doesn't exist return false.
