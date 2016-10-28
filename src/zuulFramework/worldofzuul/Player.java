@@ -12,15 +12,12 @@ import java.util.List;
  * @author Christian
  */
 public class Player {
-
-    //TODO DISCUSS COMMENTS
     /**
      * The MAX_CARRY_WEIGHT indicates the player's maximum carry weight
      */
-    //TODO ADD A REAL CARRY WEIGHT LIMIT
     private static final double MAX_CARRY_WEIGHT = 100.0;
     /**
-     * The items contains the player's items
+     * The array list items contains the player's items
      */
     protected List<Item> items = new ArrayList<Item>();
     /**
@@ -36,7 +33,7 @@ public class Player {
      */
     private int money;
     /**
-     * A list of items the player has bought
+     * An array list of items the player has bought
      */
     private List<Item> boughtItems = new ArrayList<Item>();
 
