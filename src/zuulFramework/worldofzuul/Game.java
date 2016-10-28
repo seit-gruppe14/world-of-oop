@@ -257,17 +257,23 @@ public class Game implements ITimeEventAble {
         List<Item> boughtItems = new ArrayList<>();
         boughtItems.addAll(player.getBoughtItems());
         boughtItems.addAll(player.getItems());
-
+        
+        // If the item is bought by the player 
+        // remove the item from itemsToBuy
         for (Item boughtItem : boughtItems) {
             itemsToBuy.remove(boughtItem.getType());
         }
-
+        
+        // if you haven't bought every item, then print the rest of 
+        // itemsToBuy
         if (itemsToBuy.size() > 0) {
             System.out.println("You still need to buy the following:");
-
+            
+            // Print the list of items you still need to buy
             for (ItemType itemType : itemsToBuy) {
                 System.out.println(itemType.toString());
             }
+        
         } else {
             System.out.println("You have bought everything you need. ");
         }
