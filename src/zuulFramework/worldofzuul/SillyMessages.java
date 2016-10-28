@@ -23,7 +23,9 @@ public class SillyMessages {
     
     private static String[] damageMessages = {
             "Another shopper pushed you out of the way! \n ",
-            "Two shoppers fought over a lamp and you were hit as one of them lost their grip and fell in to you. \n",
+            "Two shoppers fought over a lamp and you were hit as one of them lost their grip and fell in to you! \n",
+            "You were hit by a shopping cart! \n",
+            "You were caught between two shoppers who were fighting!"
     };
     
     public static String getDamageMessage() {
