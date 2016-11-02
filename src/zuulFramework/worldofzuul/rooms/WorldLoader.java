@@ -15,8 +15,15 @@ import java.util.Scanner;
  * Created by Rasmus Hansen .
  */
 public class WorldLoader {
+    /**
+     *  readWorld reads a file and creates a roomContainer for each room object in the file and returns the list of rooms.
+     * @param path which is a file path.
+     * @return a list of RoomContainers 
+     * @throws Exception on illegal file content.  
+     */
     private static List<RoomContainer> readWorld(String path) throws Exception {
         List<RoomContainer> rooms = new ArrayList<>();
+        //Uses try to make sure it reads the file. 
         try (FileReader reader = new FileReader(path)) {
             ParserState ps = ParserState.AwaitingObjectType;
             RoomContainer rc = new RoomContainer();
@@ -29,9 +36,11 @@ public class WorldLoader {
                 line = line.trim();
                 if (line.equals("")) continue;
                 System.out.println(line);
+                //Checks the parser state to enable state changes.
                 switch (ps) {
                     case AwaitingObjectType:
-
+                        //if the read line is start of a new room object then 
+                        //then set the parser state, else throws error. 
                         if (line.equals("[room]")) {
                             ps = ParserState.ParsingRoom;
                         } else {
@@ -39,6 +48,11 @@ public class WorldLoader {
                         }
 
                         break;
+                    //if parser state is passing room then split the read line 
+                    //and extract the attribute and value for use in the switch statement
+                    //where the attributes are used to set a value for a roomContainer object. 
+                    //When the object is fully defined then it's added to the list of roomContainer. 
+                    //Then the parser state goes back to AwaitingObjectType and a new roomContainer object is created.
                     case ParsingRoom:
 
                         String[] parts = line.split("=");
@@ -96,7 +110,13 @@ public class WorldLoader {
 
         return rooms;
     }
-
+/**
+ * 
+ * @param roomContainers which are the roomContainers created in the readWorld method.
+ * @param time which is used for the time handlers when monsters are added to the rooms.
+ * @return a list of rooms in the world. 
+ * @throws Exception if the RoomContainer doesn't have an id attached. 
+ */
     private static List<Room> rebuildWorld(List<RoomContainer> roomContainers, Time time) throws Exception {
         List<Room> rooms = new ArrayList<>();
         for (RoomContainer roomContainer : roomContainers) {
