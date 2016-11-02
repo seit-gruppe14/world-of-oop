@@ -12,8 +12,8 @@ public class Canteen extends Room implements ICanPay {
     /**
      * @param description
      */
-    public Canteen(String description) {
-        super(description);
+    public Canteen(String description, int id) {
+        super(description, id);
     }
 
     /**

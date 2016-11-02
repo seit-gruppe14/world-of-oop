@@ -32,8 +32,8 @@ public class SalesRoom extends Room {
      * @param description gives the room a description.
      * @param itemTypes specifies the ItemType in the room.
      */
-    public SalesRoom(String description, ItemType... itemTypes) {
-        super(description);
+    public SalesRoom(String description, int id, ItemType... itemTypes) {
+        super(description, id);
         this.itemTypes = new ArrayList<ItemType>(itemTypes.length);
         Collections.addAll(this.itemTypes, itemTypes);
         //construct a set number of items every time a new room is created, the items vary from room to room.

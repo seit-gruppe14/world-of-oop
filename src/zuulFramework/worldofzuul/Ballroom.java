@@ -11,8 +11,8 @@ public class Ballroom extends Room implements IHaveSpecialEvent {
     /**
      * @param description
      */
-    public Ballroom(String description) {
-        super(description);
+    public Ballroom(String description, int id) {
+        super(description, id);
     }
 
     /**

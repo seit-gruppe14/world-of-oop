@@ -12,8 +12,8 @@ import java.util.List;
  */
 public class Exit extends Room implements ICanPay {
 
-    public Exit(String description) {
-        super(description);
+    public Exit(String description, int id) {
+        super(description, id);
     }
 
     /**

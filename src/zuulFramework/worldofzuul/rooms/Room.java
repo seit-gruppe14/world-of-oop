@@ -11,8 +11,8 @@ public class Room {
      * Describes the current room.
      */   
     protected String description;
-
     protected ArrayList<ItemType> itemTypes = new ArrayList<ItemType>();
+    private int id;
     /**
      * A map of rooms used save exits.
      */
@@ -24,11 +24,22 @@ public class Room {
      *
      * @param description the description of the room
      */
-    public Room(String description) {
+    public Room(String description, int id) {
         // Set the description to be whatever the used said the description was.
         this.description = description;
         // Create the hashmaps to save exists.
         exits = new HashMap<String, Room>();
+
+        this.id = id;
+    }
+
+    /**
+     * Gets the id of the room
+     *
+     * @return
+     */
+    public int getId() {
+        return id;
     }
 
     /**

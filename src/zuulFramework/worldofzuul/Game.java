@@ -5,7 +5,6 @@ import zuulFramework.worldofzuul.commands.CommandWord;
 import zuulFramework.worldofzuul.commands.Parser;
 import zuulFramework.worldofzuul.entities.Item;
 import zuulFramework.worldofzuul.entities.ItemType;
-import zuulFramework.worldofzuul.entities.Monster;
 import zuulFramework.worldofzuul.entities.Player;
 import zuulFramework.worldofzuul.helpers.SillyMessages;
 import zuulFramework.worldofzuul.rooms.*;
@@ -80,7 +79,7 @@ public class Game implements ITimeEventAble {
      * Create the rooms in the game and any exits between them
      */
     private void createRooms() {
-        //Initializing the different rooms
+        /*//Initializing the different rooms
         Room entrance, exit, ballroom, kitchen, dinningRoom, livingRoom, canteen,
                 bedroom, childrensRoom, electronics, toilet, office;
 
@@ -137,21 +136,18 @@ public class Game implements ITimeEventAble {
         addMonsterToRoom(childrensRoom, 8);
         addMonsterToRoom(electronics, 6);
         addMonsterToRoom(toilet, 4);
-        addMonsterToRoom(office, 5);
-    }
+        addMonsterToRoom(office, 5);*/
 
-    /**
-     * addMonsterToRoom is used to add a given number of monters to a given
-     * room.
-     *
-     * @param room of the type Room
-     * @param numberOfMonsters of the type int
-     */
-    private void addMonsterToRoom(Room room, int numberOfMonsters) {
-        for (int i = 0; i < numberOfMonsters; i++) {
-            Monster monster = new Monster(room);
-            time.addTimeEvent(monster);
+        List<Room> rooms = null;
+        try {
+            rooms = WorldLoader.LoadWorld("map.wop", time);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        System.out.println(rooms);
+
+        // The first room in the list, will always be the room the player starts in
+        player.setCurrentRoom(rooms.get(0));
     }
 
     /**
