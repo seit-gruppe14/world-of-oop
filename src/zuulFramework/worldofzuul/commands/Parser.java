@@ -1,7 +1,6 @@
-package zuulFramework.worldofzuul;
+package zuulFramework.worldofzuul.commands;
 
 import java.util.Scanner;
-import java.util.StringTokenizer;
 
 /**
  * 

@@ -1,4 +1,7 @@
-package zuulFramework.worldofzuul;
+package zuulFramework.worldofzuul.rooms;
+
+import zuulFramework.worldofzuul.Direction;
+import zuulFramework.worldofzuul.entities.ItemType;
 
 import java.util.*;
 

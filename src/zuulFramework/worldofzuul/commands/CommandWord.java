@@ -1,4 +1,4 @@
-package zuulFramework.worldofzuul;
+package zuulFramework.worldofzuul.commands;
 
 /**
 * Create an enum that contains possible keywords.

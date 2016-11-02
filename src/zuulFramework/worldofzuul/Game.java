@@ -1,10 +1,19 @@
 package zuulFramework.worldofzuul;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
+import zuulFramework.worldofzuul.commands.Command;
+import zuulFramework.worldofzuul.commands.CommandWord;
+import zuulFramework.worldofzuul.commands.Parser;
+import zuulFramework.worldofzuul.entities.Item;
+import zuulFramework.worldofzuul.entities.ItemType;
+import zuulFramework.worldofzuul.entities.Monster;
+import zuulFramework.worldofzuul.entities.Player;
+import zuulFramework.worldofzuul.helpers.SillyMessages;
+import zuulFramework.worldofzuul.rooms.*;
+
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * The "main" in the game
@@ -17,14 +26,12 @@ public class Game implements ITimeEventAble {
      */
     private Parser parser;
 
+    private Time time;
     /**
      * The player instance
      */
     private Player player;
-
     private String gameOverMessage = null;
-    private Time time;
-<<<<<<< Updated upstream
     private ItemType[] itemList = {
             ItemType.BED,
             ItemType.DINNERTABLE,
@@ -37,10 +44,7 @@ public class Game implements ITimeEventAble {
             ItemType.LAMP,
             ItemType.SOFA
     };
-=======
-    
     private HighScore highScore;
->>>>>>> Stashed changes
 
     /**
      * Creates a new game, with default values
@@ -48,13 +52,6 @@ public class Game implements ITimeEventAble {
     public Game() {
         // Initialize a new time
         time = new Time(this);
-<<<<<<< Updated upstream
-
-=======
-        
-        highScore = new HighScore(this);
-        
->>>>>>> Stashed changes
         // Create a list to store all the time based callbacks
         time.getList();
 
@@ -178,11 +175,7 @@ public class Game implements ITimeEventAble {
             }
         } while (!finished);
         try {
-<<<<<<< Updated upstream
-            int score = calcScore(itemList);
-=======
-            int score = highScore.calcScore(itemList());
->>>>>>> Stashed changes
+            int score = highScore.calcScore(itemList);
             System.out.println("Your score was " + score);
             highScore.printScoreToFile(score);
             System.out.println("Top 5 scores were");

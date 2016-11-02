@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package zuulFramework.worldofzuul;
+package zuulFramework.worldofzuul.entities;
 
 /**
  * Opret en enum klasse der indeholder de forskellige typer af items.

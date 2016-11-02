@@ -1,6 +1,5 @@
-package zuulFramework.worldofzuul;
+package zuulFramework.worldofzuul.commands;
 import java.util.HashMap;
-import java.util.Set;
 
 /**
  * Handles creating and fetching command words

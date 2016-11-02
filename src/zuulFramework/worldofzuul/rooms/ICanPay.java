@@ -1,4 +1,8 @@
-package zuulFramework.worldofzuul;
+package zuulFramework.worldofzuul.rooms;
+
+import zuulFramework.worldofzuul.Game;
+import zuulFramework.worldofzuul.commands.Command;
+import zuulFramework.worldofzuul.entities.Player;
 
 /**
  * Implementing this interface means that it is possible to somehow pay in the implementer.

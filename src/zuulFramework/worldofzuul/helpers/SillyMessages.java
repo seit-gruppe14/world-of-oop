@@ -1,4 +1,4 @@
-package zuulFramework.worldofzuul;
+package zuulFramework.worldofzuul.helpers;
 
 /**
  * Contains a bunch of silly messages used around the game
@@ -10,7 +10,11 @@ public class SillyMessages {
             "You have been crushed by the shoppers!",
             "You were swarmed by the shoppers and overheated to death!", 
     };
-
+    private static String[] damageMessages = {
+            "Another shopper pushed you out of the way! \n ",
+            "Two shoppers fought over a lamp and you were hit as one of them lost their grip and fell in to you. \n",
+    };
+    
     /**
      * Gets a silly death message
      *
@@ -20,11 +24,6 @@ public class SillyMessages {
         int at = (int) (Math.random() * deathMessages.length);
         return deathMessages[at];
     }
-    
-    private static String[] damageMessages = {
-            "Another shopper pushed you out of the way! \n ",
-            "Two shoppers fought over a lamp and you were hit as one of them lost their grip and fell in to you. \n",
-    };
     
     public static String getDamageMessage() {
         int at = (int) (Math.random() * damageMessages.length);

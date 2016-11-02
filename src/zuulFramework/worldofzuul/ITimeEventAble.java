@@ -1,5 +1,7 @@
 package zuulFramework.worldofzuul;
 
+import zuulFramework.worldofzuul.entities.Player;
+
 /**
  * Implement this interface if you want to receive time events from the game
  * Such as get a call every 60 in game minute.

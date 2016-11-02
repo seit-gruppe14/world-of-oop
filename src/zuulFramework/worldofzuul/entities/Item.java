@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package zuulFramework.worldofzuul;
+package zuulFramework.worldofzuul.entities;
+
+import zuulFramework.worldofzuul.helpers.NameGenerator;
 
 /**
  * @author frede
@@ -19,7 +21,7 @@ public class Item {
      *
      * @param type is a specified ItemType.
      */
-    Item(ItemType type) {
+    public Item(ItemType type) {
         this.type = type;
         this.weight = type.getWeight();
         this.name = NameGenerator.pickRandomName();

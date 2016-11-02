@@ -3,7 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package zuulFramework.worldofzuul;
+package zuulFramework.worldofzuul.entities;
+
+import zuulFramework.worldofzuul.helpers.SillyMessages;
+import zuulFramework.worldofzuul.rooms.Room;
+import zuulFramework.worldofzuul.rooms.SalesRoom;
 
 import java.util.ArrayList;
 import java.util.List;

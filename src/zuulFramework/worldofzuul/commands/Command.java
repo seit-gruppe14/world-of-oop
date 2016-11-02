@@ -1,4 +1,4 @@
-package zuulFramework.worldofzuul;
+package zuulFramework.worldofzuul.commands;
 
 /**
  * This class is part of the "World of Zuul" application.

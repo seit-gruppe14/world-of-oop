@@ -1,9 +1,12 @@
 package zuulFramework.worldofzuul;
 
+import zuulFramework.worldofzuul.rooms.IHaveSpecialEvent;
+import zuulFramework.worldofzuul.rooms.Room;
+
 /**
  * Created by Rasmus Hansen .
  */
-public class Ballroom extends Room implements IHaveSpecialEvent{
+public class Ballroom extends Room implements IHaveSpecialEvent {
 
     /**
      * @param description

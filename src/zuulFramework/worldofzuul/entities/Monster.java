@@ -1,4 +1,8 @@
-package zuulFramework.worldofzuul;
+package zuulFramework.worldofzuul.entities;
+
+import zuulFramework.worldofzuul.ITimeEventAble;
+import zuulFramework.worldofzuul.rooms.Room;
+import zuulFramework.worldofzuul.rooms.SalesRoom;
 
 import java.util.List;
 import java.util.Map;
