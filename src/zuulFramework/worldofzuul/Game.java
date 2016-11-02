@@ -160,12 +160,13 @@ public class Game implements ITimeEventAble {
     public void play() {
         // Tell the user about the game
         printWelcome();
-
+        
+        highScore.showScore();
         // The user hasn't finished the game when they start
         boolean finished;
 
         System.out.printf("You have %d life.\n", player.getLife());
-
+        
         // Ask the user for commands, and do whatever the user told us
         do {
             if (gameOverMessage != null) {
