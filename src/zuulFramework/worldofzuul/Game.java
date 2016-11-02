@@ -79,65 +79,7 @@ public class Game implements ITimeEventAble {
      * Create the rooms in the game and any exits between them
      */
     private void createRooms() {
-        /*//Initializing the different rooms
-        Room entrance, exit, ballroom, kitchen, dinningRoom, livingRoom, canteen,
-                bedroom, childrensRoom, electronics, toilet, office;
-
-        //Create all the room in the game (as an object)
-        entrance = new Room("at the entrance to Ikea");
-        exit = new Exit("at the exit of Ikea, you can pay for your stuff");
-        canteen = new Canteen("hungry? Well, pay up front and get some food!");
-        ballroom = new Ballroom("at the ballroom, here you can play with your kids or yourself");
-        kitchen = new SalesRoom("at the room for adults who loves to cook", ItemType.CUTLERY);
-        dinningRoom = new SalesRoom("at a place where you probably will eat", ItemType.DINNERCHAIR, ItemType.DINNERTABLE);
-        livingRoom = new SalesRoom("at a place where you can relax", ItemType.SHELVES, ItemType.SOFA);
-        bedroom = new SalesRoom("sleepy?", ItemType.BED);
-        childrensRoom = new SalesRoom("at a place that children love", ItemType.TEDDY_BEAR, ItemType.SOFA);
-        electronics = new SalesRoom("at a place where nerds spend their time", ItemType.COMPUTER);
-        toilet = new SalesRoom("going to pee? take a bath?", ItemType.TOILET);
-        office = new SalesRoom("loving the song by rihanna - Work", ItemType.DESK);
-
-        //Create exits for each room with directions.
-        entrance.setExit(Direction.SOUTH, kitchen);
-        exit.setExit(Direction.SOUTH, dinningRoom);
-        ballroom.setExit(Direction.EAST, kitchen);
-        kitchen.setExit(Direction.NORTH, entrance);
-        kitchen.setExit(Direction.WEST, ballroom);
-        kitchen.setExit(Direction.SOUTH, canteen);
-        kitchen.setExit(Direction.EAST, dinningRoom);
-        canteen.setExit(Direction.NORTH, kitchen);
-        toilet.setExit(Direction.WEST, electronics);
-        toilet.setExit(Direction.EAST, office);
-        office.setExit(Direction.WEST, toilet);
-        office.setExit(Direction.NORTH, bedroom);
-        electronics.setExit(Direction.EAST, toilet);
-        bedroom.setExit(Direction.SOUTH, office);
-        bedroom.setExit(Direction.NORTH, dinningRoom);
-        bedroom.setExit(Direction.EAST, childrensRoom);
-        dinningRoom.setExit(Direction.SOUTH, bedroom);
-        dinningRoom.setExit(Direction.WEST, kitchen);
-        dinningRoom.setExit(Direction.EAST, livingRoom);
-        dinningRoom.setExit(Direction.NORTH, exit);
-        livingRoom.setExit(Direction.WEST, dinningRoom);
-        livingRoom.setExit(Direction.SOUTH, childrensRoom);
-        childrensRoom.setExit(Direction.NORTH, livingRoom);
-        childrensRoom.setExit(Direction.WEST, bedroom);
-
-        //Sets the current location to the outside room
-        player.setCurrentRoom(entrance);
-
-        addMonsterToRoom(entrance, 10);
-        addMonsterToRoom(canteen, 2);
-        addMonsterToRoom(ballroom, 4);
-        addMonsterToRoom(kitchen, 5);
-        addMonsterToRoom(dinningRoom, 3);
-        addMonsterToRoom(livingRoom, 4);
-        addMonsterToRoom(bedroom, 2);
-        addMonsterToRoom(childrensRoom, 8);
-        addMonsterToRoom(electronics, 6);
-        addMonsterToRoom(toilet, 4);
-        addMonsterToRoom(office, 5);*/
-
+        //Initializing the different rooms
         List<Room> rooms = null;
         try {
             rooms = WorldLoader.LoadWorld("map.wop", time);
