@@ -36,7 +36,7 @@ public class Game implements ITimeEventAble {
 
 
     private String gameOverMessage = null;
-    private Time time;
+
     private ItemType[] itemList = {
             ItemType.BED,
             ItemType.DINNERTABLE,
@@ -49,7 +49,6 @@ public class Game implements ITimeEventAble {
             ItemType.LAMP,
             ItemType.SOFA
     };
-    private HighScore highScore;
 
     /**
      * Creates a new game, with default values
