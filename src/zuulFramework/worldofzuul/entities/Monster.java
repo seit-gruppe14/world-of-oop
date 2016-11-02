@@ -41,28 +41,6 @@ public class Monster extends Player implements ITimeEventAble {
     }
 
     /**
-     * A pickUp method for picking up an item in a room and add the item if the
-     * item exist
-     *
-     * @param itemName items that exist in the room
-     * @return true if the item exist otherwise false
-     */
-
-    @Override
-    public String pickUp(String itemName) {
-        // Make current room to salesroom to be able to pick up an item in the
-        // room by using removeItem method.
-        Item item = ((SalesRoom) currentRoom).removeItem(itemName);
-        // if the item doesn't exist return false.
-        if (item == null) {
-            return "";
-        }
-        // if the item exist add the item and return true.
-        items.add(item);
-        return null;
-    }
-    
-    /**
      * Randomizes an amount of damage the "monsters" inflicts on the player. 
      * @return Returns a damage value between 4 and 10. 
      */

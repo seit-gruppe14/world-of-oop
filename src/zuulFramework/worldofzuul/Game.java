@@ -31,7 +31,12 @@ public class Game implements ITimeEventAble {
      * The player instance
      */
     private Player player;
+
+    private HighScore highScore;
+
+
     private String gameOverMessage = null;
+    private Time time;
     private ItemType[] itemList = {
             ItemType.BED,
             ItemType.DINNERTABLE,
@@ -52,6 +57,9 @@ public class Game implements ITimeEventAble {
     public Game() {
         // Initialize a new time
         time = new Time(this);
+
+        highScore = new HighScore(this);
+
         // Create a list to store all the time based callbacks
         time.getList();
 
