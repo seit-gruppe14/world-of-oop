@@ -87,7 +87,7 @@ public class Game implements ITimeEventAble {
         //Create all the room in the game (as an object)
         entrance = new Room("at the entrance to Ikea");
         exit = new Exit("at the exit of Ikea, you can pay for your stuff");
-        canteen = new Canteen("hungry? Well, then buy some food!");
+        canteen = new Canteen("hungry? Well, pay up front and get some food!");
         ballroom = new Ballroom("at the ballroom, here you can play with your kids or yourself");
         kitchen = new SalesRoom("at the room for adults who loves to cook", ItemType.CUTLERY);
         dinningRoom = new SalesRoom("at a place where you probably will eat", ItemType.DINNERCHAIR, ItemType.DINNERTABLE);
@@ -174,7 +174,7 @@ public class Game implements ITimeEventAble {
                 break;
             }
             // Write the current time
-            System.out.printf("The time is now %s\n", time.getNiceFormattedTime());
+            System.out.printf("The time is now %s\n\n", time.getNiceFormattedTime());
             Command command = parser.getCommand();
             finished = processCommand(command);
 
@@ -296,6 +296,7 @@ public class Game implements ITimeEventAble {
         System.out.println();
         System.out.println("Your command words are:");
         parser.showCommands();
+        System.out.println("Type a command word to get further information.");
     }
 
     /**
@@ -308,6 +309,7 @@ public class Game implements ITimeEventAble {
         // Check if the command has a room to go to
         if (!command.hasSecondWord()) {
             System.out.println("Go where?");
+            System.out.println(player.getCurrentRoom().getLongDescription());
             return;
         }
         // Get to the room we want to go to
