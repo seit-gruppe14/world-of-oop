@@ -110,13 +110,13 @@ public class WorldLoader {
 
         return rooms;
     }
-/**
- * 
- * @param roomContainers which are the roomContainers created in the readWorld method.
- * @param time which is used for the time handlers when monsters are added to the rooms.
- * @return a list of rooms in the world. 
- * @throws Exception if the RoomContainer doesn't have an id attached. 
- */
+    /**
+     * 
+     * @param roomContainers which are the roomContainers created in the readWorld method.
+     * @param time which is used for the time handlers when monsters are added to the rooms.
+     * @return a list of rooms in the world. 
+     * @throws Exception if the RoomContainer doesn't have an id attached. 
+     */
     private static List<Room> rebuildWorld(List<RoomContainer> roomContainers, Time time) throws Exception {
         List<Room> rooms = new ArrayList<>();
         for (RoomContainer roomContainer : roomContainers) {
