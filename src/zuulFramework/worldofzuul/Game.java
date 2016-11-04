@@ -53,9 +53,12 @@ public class Game implements ITimeEventAble {
      * Creates a new game, with default values
      */
     public Game() {
-        // Initialize a new time
+        // Initialize a new time, 
+        // with an instance of the Game object as a parameter
         time = new Time(this);
 
+        // Initialize a highscore
+        // with an instance of the Game object as a parameter
         highScore = new HighScore(this);
 
         // Create a list to store all the time based callbacks
@@ -71,6 +74,7 @@ public class Game implements ITimeEventAble {
         parser = new Parser();
 
         // Add own time callback
+        // witch takes an instance of the Game object as a parameter
         time.addTimeEvent(this);
 
     }

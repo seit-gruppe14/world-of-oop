@@ -15,11 +15,6 @@ import java.util.stream.Collectors;
  */
 public class Time {
     private Game game;
-
-    public Time(Game game) {
-        this.game = game;
-        this.callbacks = new ArrayList<TimeCallback>();
-    }
     
     /**
      * The current ingame time in minutes since the start of the day at 10
@@ -31,6 +26,11 @@ public class Time {
      */
     private List<TimeCallback> callbacks;
 
+    public Time(Game game) {
+        this.game = game;
+        this.callbacks = new ArrayList<TimeCallback>();
+    }
+    
     public List<TimeCallback> getList() {
         return callbacks;
     }
