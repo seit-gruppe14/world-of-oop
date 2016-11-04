@@ -273,6 +273,7 @@ public class WorldLoader {
                             type != null &&
                             description != null &&
                             numberOfMonsters != -1 &&
+                            numberOfEmployees != -1 &&
                             links != null &&
                             itemTypes != null;
 
