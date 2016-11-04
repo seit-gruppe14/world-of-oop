@@ -17,7 +17,7 @@ import java.util.Scanner;
 public class WorldLoader {
     /**
      *  readWorld reads a file and creates a roomContainer for each room object in the file and returns the list of rooms.
-     * @param path which is a file path.
+     * @param path which itemStrings a file path.
      * @return a list of RoomContainers 
      * @throws Exception on illegal file content.  
      */
@@ -25,7 +25,7 @@ public class WorldLoader {
         List<RoomContainer> rooms = new ArrayList<>();
         //Uses try to make sure it reads the file. 
         try (FileReader reader = new FileReader(path)) {
-            ParserState ps = ParserState.AwaitingObjectType;
+            ParserState ps = ParserState.AWAITING_OBJECT_TYPE;
             RoomContainer rc = new RoomContainer();
 
             Scanner scanner = new Scanner(reader);
@@ -38,22 +38,22 @@ public class WorldLoader {
                 System.out.println(line);
                 //Checks the parser state to enable state changes.
                 switch (ps) {
-                    case AwaitingObjectType:
-                        //if the read line is start of a new room object then 
+                    case AWAITING_OBJECT_TYPE:
+                        //if the read line itemStrings start of a new room object then 
                         //then set the parser state, else throws error. 
                         if (line.equals("[room]")) {
-                            ps = ParserState.ParsingRoom;
+                            ps = ParserState.PARSING_ROOM;
                         } else {
                             System.out.printf("Unexpected token, %s", line);
                         }
 
                         break;
-                    //if parser state is passing room then split the read line 
+                    //if parser state itemStrings passing room then split the read line 
                     //and extract the attribute and value for use in the switch statement
                     //where the attributes are used to set a value for a roomContainer object. 
-                    //When the object is fully defined then it's added to the list of roomContainer. 
-                    //Then the parser state goes back to AwaitingObjectType and a new roomContainer object is created.
-                    case ParsingRoom:
+                    //When the object itemStrings fully defined then it's added to the list of roomContainer. 
+                    //Then the parser state goes back to AWAITING_OBJECT_TYPE and a new roomContainer object itemStrings created.
+                    case PARSING_ROOM:
 
                         String[] parts = line.split("=");
                         String attribute, value;
@@ -94,7 +94,7 @@ public class WorldLoader {
                         }
 
                         if (rc.hasAllData()) {
-                            ps = ParserState.AwaitingObjectType;
+                            ps = ParserState.AWAITING_OBJECT_TYPE;
                             rooms.add(rc);
                             rc = new RoomContainer();
                         }
@@ -113,17 +113,18 @@ public class WorldLoader {
     /**
      * 
      * @param roomContainers which are the roomContainers created in the readWorld method.
-     * @param time which is used for the time handlers when monsters are added to the rooms.
+     * @param time which itemStrings used for the time handlers when monsters are added to the rooms.
      * @return a list of rooms in the world. 
      * @throws Exception if the RoomContainer doesn't have an id attached. 
      */
     private static List<Room> rebuildWorld(List<RoomContainer> roomContainers, Time time) throws Exception {
         List<Room> rooms = new ArrayList<>();
+        //Adds a room to the rooms List for each roomContainer in the roomContainers list.
         for (RoomContainer roomContainer : roomContainers) {
             Room room = roomContainer.getRoom();
             rooms.add(room);
         }
-
+        //Ensure more descriptive error instead of null pointer. 
         for (int i = 0; i < rooms.size(); i++) {
             Room room = rooms.get(i);
             RoomContainer rc = null;
@@ -136,12 +137,12 @@ public class WorldLoader {
             if (rc == null) {
                 throw new Exception("Error when searching for room id");
             }
-
+            //Sets an exit for the room based on the roomContainer linkStrings. 
             for (Link link : rc.links) {
                 Room otherRoom = null;
 
                 for (Room room1 : rooms) {
-                    if (link.targetId == room1.getId()) {
+                    if (link.getTargetId() == room1.getId()) {
                         otherRoom = room1;
                         break;
                     }
@@ -149,7 +150,7 @@ public class WorldLoader {
 
                 room.setExit(link.direction, otherRoom);
             }
-
+            //Assigns a room to the monsters. 
             for (int j = 0; j < rc.numberOfMonsters; j++) {
                 Monster m = new Monster(room);
                 time.addTimeEvent(m);
@@ -159,17 +160,27 @@ public class WorldLoader {
 
         return rooms;
     }
-
+    /**
+     * 
+     * @param path which itemStrings a file path. 
+     * @param time game time.
+     * @return
+     * @throws Exception throws exception because of rebuildWorld().
+     */
     public static List<Room> LoadWorld(String path, Time time) throws Exception {
         List<RoomContainer> roomContainers = readWorld(path);
         return rebuildWorld(roomContainers, time);
     }
-
+    /**
+     * The parser states used in rebuildWorld().
+     */
     private enum ParserState {
-        AwaitingObjectType,
-        ParsingRoom
+        AWAITING_OBJECT_TYPE,
+        PARSING_ROOM
     }
-
+    /**
+     * Temporary storage for the rooms used in the game. 
+     */
     private static class RoomContainer {
         int id = -1;
         String name = null;
@@ -198,29 +209,45 @@ public class WorldLoader {
         public void setNumberOfMonsters(String numberOfMonsters) {
             this.numberOfMonsters = Integer.parseInt(numberOfMonsters);
         }
-
+        /**
+         * Sets the links for the room.
+         * @param value a string with all the links.
+         */
         public void setLinks(String value) {
-            String[] links = value.split(",");
-            this.links = new Link[links.length];
-            for (int i = 0; i < links.length; i++) {
-                String[] parts = links[i].split(":");
+            //Since the value itemStrings a single string then we need to split it. 
+            String[] linkStrings = value.split(",");
+            //Since we know the amount of links then we can define the size of the links[].  
+            this.links = new Link[linkStrings.length];
+            //Since linkStrings contains an id and direction, then we need to 
+            //seperate them and create a link-object with the seperated values
+            //and adds the object to the links[].
+            for (int i = 0; i < linkStrings.length; i++) {
+                String[] parts = linkStrings[i].split(":");
                 String id = parts[0];
                 String direction = parts[1];
                 Link l = new Link(id, direction);
                 this.links[i] = l;
             }
-
         }
-
+        /**
+         * Sets the itemTypes for the room.
+         * @param itemTypes a string of all itemTypes. 
+         */
         public void setItemTypes(String itemTypes) {
-            String[] is = itemTypes.split(",");
-            this.itemTypes = new ItemType[is.length];
-            for (int i = 0; i < is.length; i++) {
-                String type = is[i];
+            //Since itemTypes itemStrings a single String then we need to split it.  
+            String[] itemStrings = itemTypes.split(",");
+            //Since we know the amount of itemTypes then we can define the size of the itemTypes[].  
+            this.itemTypes = new ItemType[itemStrings.length];
+            //Since itemStrings contains our itemTypes then we need to add each itemString to ItemTypes[].
+            for (int i = 0; i < itemStrings.length; i++) {
+                String type = itemStrings[i];
                 this.itemTypes[i] = ItemType.get(type);
             }
         }
-
+        /**
+         * Checks if any attribute hasn't been modified.
+         * @return true if any attribute still prestine, otherwise false.
+         */
         public boolean hasAllData() {
             return
                     id != -1 &&
@@ -233,66 +260,70 @@ public class WorldLoader {
 
         }
 
-        public Room getBase() {
-            return new Room(description, id);
-        }
-
-        public SalesRoom getSalesRoom() {
-            return new SalesRoom(description, id, itemTypes);
-        }
-
-        public Canteen getCanteen() {
-            return new Canteen(description, id);
-        }
-
-        public Ballroom getBallroom() {
-            return new Ballroom(description, id);
-        }
-
+        /**
+         * Get a room-object from the RoomContainer.
+         * @return room-object based on RoomContainer type.
+         * @throws Exception throws exception if room isn't found.
+         */
         public Room getRoom() throws Exception {
             Room r;
-            switch (type) {
+            switch (this.type) {
                 case "base":
-                    r = getBase();
+                    r = new Room(this.description, this.id);
                     break;
                 case "salesroom":
-                    r = getSalesRoom();
+                    r = new SalesRoom(this.description, this.id, this.itemTypes);
                     break;
-                case "canteen":
-                    r = getCanteen();
+                case "canteen": 
+                    r = new Canteen(this.description, this.id);
                     break;
-                case "ballroom":
-                    r = getBallroom();
+                case "ballroom": 
+                    r = new Ballroom(this.description, this.id);
                     break;
                 case "exit":
-                    r = getExit();
+                    r = new Exit(this.description, this.id);
                     break;
                 default:
-                    throw new Exception("Unknown room type " + type);
+                    throw new Exception("Unknown room type " + this.type);
             }
             return r;
-        }
-
-        public Exit getExit() {
-            return new Exit(description, id);
-        }
+        } 
     }
-
+    /**
+     * The link-object stores our link values.
+     */
     private static class Link {
         int targetId;
         String direction;
-
+        /**
+         * Contructs a link
+         * @param targetId the link target id which is the id of the exit room
+         * @param direction the link direction which is the direction of the nearby room
+         */
         public Link(String targetId, String direction) {
             setTargetId(targetId);
             setDirection(direction);
         }
-
+        /**
+         * Sets the targetID
+         * @param targetId the link target id which is the id of the exit room
+         */
         public void setTargetId(String targetId) {
             this.targetId = Integer.parseInt(targetId);
         }
-
+        /**
+         * Sets the direction
+         * @param direction the link direction which is the direction of the nearby room
+         */
         public void setDirection(String direction) {
             this.direction = direction;
+        }
+        /**
+         * Get the targetId
+         * @return the link target id which is the id of the exit room
+         */
+        public int getTargetId() {
+            return this.targetId;
         }
     }
 }
