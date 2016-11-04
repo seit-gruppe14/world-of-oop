@@ -4,6 +4,7 @@ import zuulFramework.worldofzuul.Ballroom;
 import zuulFramework.worldofzuul.Time;
 import zuulFramework.worldofzuul.entities.ItemType;
 import zuulFramework.worldofzuul.entities.Monster;
+import zuulFramework.worldofzuul.entities.Employee;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -15,6 +16,8 @@ import java.util.Scanner;
  * Created by Rasmus Hansen .
  */
 public class WorldLoader {
+    private static ArrayList<Employee> employeeList= new ArrayList<Employee>();
+
     /**
      *  readWorld reads a file and creates a roomContainer for each room object in the file and returns the list of rooms.
      * @param path which is a file path.
@@ -82,6 +85,9 @@ public class WorldLoader {
                                 break;
                             case "numberOfMonsters":
                                 rc.setNumberOfMonsters(value);
+                                break;
+                            case "numberOfEmployees":
+                                rc.setNumberOfEmployees(value);
                                 break;
                             case "links":
                                 rc.setLinks(value);
@@ -154,7 +160,14 @@ public class WorldLoader {
                 Monster m = new Monster(room);
                 time.addTimeEvent(m);
             }
+            for (int l = 0; l < rc.numberOfEmployees; l++) {
+                Employee e = new Employee(room);
+                employeeList.add(e);
+                time.addTimeEvent(e);
+            }
+            
         }
+        
 
 
         return rooms;
@@ -176,6 +189,7 @@ public class WorldLoader {
         String type = null;
         String description = null;
         int numberOfMonsters = -1;
+        int numberOfEmployees = -1;
         Link[] links = null;
         ItemType[] itemTypes = null;
 
@@ -197,6 +211,10 @@ public class WorldLoader {
 
         public void setNumberOfMonsters(String numberOfMonsters) {
             this.numberOfMonsters = Integer.parseInt(numberOfMonsters);
+        }
+        
+        public void setNumberOfEmployees(String numberOfEmployees){
+            this.numberOfEmployees = Integer.parseInt(numberOfEmployees);
         }
 
         public void setLinks(String value) {
@@ -294,5 +312,9 @@ public class WorldLoader {
         public void setDirection(String direction) {
             this.direction = direction;
         }
+    }
+    
+    public static ArrayList<Employee> getEmployeeList(){
+        return employeeList;
     }
 }

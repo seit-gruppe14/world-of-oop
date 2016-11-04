@@ -6,8 +6,12 @@ import zuulFramework.worldofzuul.commands.Parser;
 import zuulFramework.worldofzuul.entities.Item;
 import zuulFramework.worldofzuul.entities.ItemType;
 import zuulFramework.worldofzuul.entities.Player;
+import zuulFramework.worldofzuul.entities.Employee;
 import zuulFramework.worldofzuul.helpers.SillyMessages;
-import zuulFramework.worldofzuul.rooms.*;
+import zuulFramework.worldofzuul.rooms.Room;
+import zuulFramework.worldofzuul.rooms.SalesRoom;
+import zuulFramework.worldofzuul.rooms.Exit;
+import zuulFramework.worldofzuul.rooms.WorldLoader;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -116,7 +120,12 @@ public class Game implements ITimeEventAble {
                 break;
             }
             // Write the current time
-            System.out.printf("The time is now %s\n\n", time.getNiceFormattedTime());
+            System.out.printf("The time is now %s\n", time.getNiceFormattedTime());
+            for (Employee employee : WorldLoader.getEmployeeList()){
+                if (employee.getCurrentRoom() == player.getCurrentRoom()){
+                    System.out.println("You met an employee and can ask for the location of an item.\n");    
+                }
+            }
             Command command = parser.getCommand();
             finished = processCommand(command);
 
@@ -192,7 +201,12 @@ public class Game implements ITimeEventAble {
                 wantToQuit = pay(command);
                 break;
             case ASK:
-                askForHelp(command);
+                for (Employee employee : WorldLoader.getEmployeeList()){
+                    if (employee.getCurrentRoom() == player.getCurrentRoom()){
+                        askForHelp(command);
+                        break;
+                    }
+                }
                 break;
         }
         return wantToQuit;
