@@ -5,9 +5,6 @@
  */
 package zuulFramework.worldofzuul.entities;
 
-/**
- * Opret en enum klasse der indeholder de forskellige typer af items.
- */
 public enum ItemType {
     BED(95, "bed", 3000), LAMP(10, "lamp", 120), DESK(50, "desk", 500), DINNERTABLE(70, "dinnertable",400), DINNERCHAIR(15, "dinnerchair",100),
     SHELVES(60, "shelves",300), CUTLERY(0.5, "cutlery", 10), TOILET(40, "toilet", 1200 ), COMPUTER(3, "computer", 2500),
@@ -18,9 +15,10 @@ public enum ItemType {
     private int price;
 
     /**
-     * Construct hvert item med en vægt, vægten er en parameter som kommer med når man ønsker at constructer et item.
-     *
-     * @param weight Vægten af et item som er af typen double.
+     * Sets the values of the attributes.
+     * @param weight The weight of the ittem.
+     * @param name The name of the item.
+     * @param price The price of the item.
      */
     ItemType(double weight, String name, int price) {
         this.weight = weight;
