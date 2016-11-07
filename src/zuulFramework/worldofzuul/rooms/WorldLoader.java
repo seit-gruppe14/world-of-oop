@@ -69,7 +69,8 @@ public class WorldLoader {
                         } else {
                             throw new Exception("Unexpected result of split " + line);
                         }
-
+                        //System.out.println(attribute);
+                        //System.out.println(value);
                         switch (attribute) {
                             case "id":
                                 rc.setId(value);
@@ -95,6 +96,8 @@ public class WorldLoader {
                             case "itemTypes":
                                 rc.setItemTypes(value);
                                 break;
+                            case "isLocked":
+                                rc.setLock(value);
                             default:
                                 throw new Exception("Unknown attribute " + attribute);
                         }
@@ -128,6 +131,7 @@ public class WorldLoader {
         //Adds a room to the rooms List for each roomContainer in the roomContainers list.
         for (RoomContainer roomContainer : roomContainers) {
             Room room = roomContainer.getRoom();
+            room.setLock(roomContainer.isLocked);
             rooms.add(room);
         }
         //Ensure more descriptive error instead of null pointer. 
@@ -143,6 +147,7 @@ public class WorldLoader {
             if (rc == null) {
                 throw new Exception("Error when searching for room id");
             }
+            
             //Sets an exit for the room based on the roomContainer linkStrings. 
             for (Link link : rc.links) {
                 Room otherRoom = null;
@@ -203,6 +208,7 @@ public class WorldLoader {
         int numberOfEmployees = -1;
         Link[] links = null;
         ItemType[] itemTypes = null;
+        boolean isLocked;
 
         public void setName(String name) {
             this.name = name;
@@ -262,6 +268,11 @@ public class WorldLoader {
                 this.itemTypes[i] = ItemType.get(type);
             }
         }
+        
+        public void setLock(String bool) {
+            this.isLocked = Boolean.getBoolean(bool);
+        }
+        
         /**
          * Checks if any attribute hasn't been modified.
          * @return true if any attribute still prestine, otherwise false.
@@ -275,8 +286,8 @@ public class WorldLoader {
                             numberOfMonsters != -1 &&
                             numberOfEmployees != -1 &&
                             links != null &&
+                            (isLocked == false || isLocked == true) &&
                             itemTypes != null;
-
         }
 
         /**

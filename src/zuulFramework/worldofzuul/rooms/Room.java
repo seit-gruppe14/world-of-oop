@@ -34,7 +34,7 @@ public class Room {
         
         this.id = id;
         
-        isLocked = true;
+        this.isLocked = true;
     }
 
     /**
@@ -235,15 +235,19 @@ public class Room {
         return this.exits;
     }
     
+    public void setLock(boolean isLocked) {
+        this.isLocked = isLocked;
+    }
+    
     public boolean isLocked (){
         return this.isLocked;
     }
     
     public void unlockRoom(Item item){
-        if (item.getType()==ItemType.DINNERCHAIR) {
-            isLocked=false;
+        if (item.getType()==ItemType.CUTLERY) {
+            this.isLocked=false;
             System.out.println("You unlocked the room");
-        }else{
+        } else {
             System.out.println("You didnt unlock the room");
         }
     }

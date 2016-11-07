@@ -112,12 +112,22 @@ public class Player {
                 for (Item item : items) {
                     nextRoom.unlockRoom(item);
                 }
+                if (!nextRoom.isLocked()) {
+                    currentRoom = nextRoom;
+                    return nextRoom;
+                } else {
+                    System.out.println("The door is locked");
+                    return null;
+                }
+            } else {
+                currentRoom = nextRoom;
+                return nextRoom;
             }
-            if (nextRoom.isLocked()) {
-                currentRoom=nextRoom;
-            }
+            
+        } else {
+            System.out.println("There is no door");
+            return null;
         }
-        return nextRoom;
     }
 
     /**
