@@ -271,7 +271,11 @@ public class WorldLoader {
         }
         
         public void setLock(String bool) {
-            this.isLocked = Boolean.getBoolean(bool);
+            if (bool.equalsIgnoreCase("true")) {
+                this.isLocked=true;
+            }else{
+                this.isLocked=false;
+            }
         }
         
         /**
