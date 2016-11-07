@@ -209,7 +209,7 @@ public class WorldLoader {
         int numberOfEmployees = -1;
         Link[] links = null;
         ItemType[] itemTypes = null;
-        boolean isLocked;
+        ItemType isLocked;
 
         public void setName(String name) {
             this.name = name;
@@ -271,10 +271,8 @@ public class WorldLoader {
         }
         
         public void setLock(String bool) {
-            if (bool.equalsIgnoreCase("true")) {
-                this.isLocked=true;
-            }else{
-                this.isLocked=false;
+            if (bool.equalsIgnoreCase(ItemType.CUTLERY.toString())) {
+                
             }
         }
         
