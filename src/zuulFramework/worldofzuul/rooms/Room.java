@@ -94,6 +94,9 @@ public class Room {
             // Assign the exit into a string
             sb.append(" ").append(exit);
         }
+        for (Room room : exits.values()) {
+            sb.append(" ").append(room.isLocked);
+        }
 
         // Return the final string
         return sb.toString();

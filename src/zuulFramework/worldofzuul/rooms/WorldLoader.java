@@ -98,6 +98,7 @@ public class WorldLoader {
                                 break;
                             case "isLocked":
                                 rc.setLock(value);
+                                break;
                             default:
                                 throw new Exception("Unknown attribute " + attribute);
                         }
