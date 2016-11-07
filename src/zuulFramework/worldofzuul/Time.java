@@ -21,6 +21,9 @@ public class Time {
      * o'clock Starts as 10:00
      */
     private int time = 60 * 10; // 60 minutes times 10 hours
+
+    private int lastTime = -1;
+
     /**
      * All the callbacks that should be done according with different times.
      */
@@ -102,6 +105,7 @@ public class Time {
      * @param timeDif The amound of time that has changed
      */
     public void updateTime(int timeDif) {
+        this.lastTime = this.time;
         // Go through every minute and add 1 minute each time, timeDif
         for (int i = 0; i < timeDif; i++) {
             this.time++;

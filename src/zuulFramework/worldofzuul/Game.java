@@ -206,8 +206,6 @@ public class Game implements ITimeEventAble {
      * Prints a welcome to the user And a list of the commands that can be used
      */
     private void printHelp() {
-
-
         // Make new list of items to buy
         List<ItemType> itemsToBuy = new ArrayList<ItemType>();
         for (ItemType itemType : itemList) {

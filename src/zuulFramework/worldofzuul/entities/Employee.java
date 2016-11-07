@@ -9,7 +9,7 @@ import zuulFramework.worldofzuul.rooms.Room;
 public class Employee extends MovingEntity implements ITimeEventAble{
     
     public Employee(Room currentRoom){
-        this.currentRoom = currentRoom;
+        this.setCurrentRoom(currentRoom);
     }
 
     @Override

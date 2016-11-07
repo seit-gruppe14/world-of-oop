@@ -14,7 +14,7 @@ public class Monster extends InventoryEntity implements ITimeEventAble {
     private static final double INFLICT_DAMAGE_CHANCE = 0.01;
     
     public Monster(Room currentRoom){
-        this.currentRoom = currentRoom; 
+        this.setCurrentRoom(currentRoom);
     }
 
     /**

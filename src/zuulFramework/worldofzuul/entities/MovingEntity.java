@@ -20,7 +20,7 @@ public abstract class MovingEntity extends Entity {
         for (Map.Entry<String, Room> room : rooms) {
             // if the iterator is a random number, set the currentRoom
             if (iterator == randomNumber) {
-                currentRoom = room.getValue();
+                this.setCurrentRoom(room.getValue());
                 return;
             }
             iterator++;

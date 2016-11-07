@@ -38,7 +38,7 @@ public class Player extends InventoryEntity{
     public Room goRoom(String direction) {
         Room nextRoom = currentRoom.getExit(direction);
         if (nextRoom != null) {
-            currentRoom = nextRoom;
+            this.setCurrentRoom(nextRoom);
         }
         return nextRoom;
     }
