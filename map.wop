@@ -30,7 +30,7 @@ itemTypes=
 
 [room]
 id=4
-name=Canteen
+name=canteen
 type=canteen
 description=hungry? Well, pay up front and get some food!
 numberOfMonsters=2
@@ -50,7 +50,7 @@ itemTypes=dinnerchair,dinnertable
 
 [room]
 id=6
-name=Exit
+name=exit
 type=exit
 description=at the exit of IKEA. You can pay for your stuff here!
 numberOfMonsters=0
@@ -60,7 +60,7 @@ itemTypes=
 
 [room]
 id=7
-name=LivingRoom
+name=livingRoom
 type=salesroom
 description=at a palce where you can relax
 numberOfMonsters=4
@@ -115,5 +115,5 @@ type=salesroom
 description=At a place where nerds spend their time
 numberOfMonsters=6
 numberOfEmployees=0
-links=11:east
+links=1:entrance,2:kitchen,3:ballroom,4:canteen,5:dinningRoom,6:exit,7:livingRoom,8:bedroom,9:childrensRoom,10:office,11:toilet
 itemTypes=computer
