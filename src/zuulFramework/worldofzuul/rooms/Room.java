@@ -2,6 +2,7 @@ package zuulFramework.worldofzuul.rooms;
 
 import zuulFramework.worldofzuul.Direction;
 import zuulFramework.worldofzuul.entities.ItemType;
+import zuulFramework.worldofzuul.entities.Item;
 
 import java.util.*;
 
@@ -13,6 +14,7 @@ public class Room {
     protected String description;
     protected ArrayList<ItemType> itemTypes = new ArrayList<ItemType>();
     private int id;
+    private boolean isLocked;
     /**
      * A map of rooms used save exits.
      */
@@ -29,8 +31,10 @@ public class Room {
         this.description = description;
         // Create the hashmaps to save exists.
         exits = new HashMap<String, Room>();
-
+        
         this.id = id;
+        
+        isLocked = true;
     }
 
     /**
@@ -230,7 +234,17 @@ public class Room {
     public Map<String, Room> getExits() {
         return this.exits;
     }
-
-
+    
+    public boolean isLocked (){
+        return this.isLocked;
+    }
+    
+    public void unlockRoom(Item item){
+        if (item.getType()==ItemType.DINNERCHAIR) {
+            isLocked=false;
+            System.out.println("You unlocked the room");
+        }else{
+            System.out.println("You didnt unlock the room");
+        }
+    }
 }
-

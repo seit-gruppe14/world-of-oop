@@ -104,9 +104,18 @@ public class Player {
      * return null
      */
     public Room goRoom(String direction) {
+        
         Room nextRoom = currentRoom.getExit(direction);
         if (nextRoom != null) {
-            currentRoom = nextRoom;
+            
+            if (nextRoom.isLocked()) {
+                for (Item item : items) {
+                    nextRoom.unlockRoom(item);
+                }
+            }
+            if (nextRoom.isLocked()) {
+                currentRoom=nextRoom;
+            }
         }
         return nextRoom;
     }
