@@ -5,39 +5,16 @@ import zuulFramework.worldofzuul.rooms.Room;
 import zuulFramework.worldofzuul.rooms.SalesRoom;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by Rasmus Hansen .
  */
-public class Monster extends Player implements ITimeEventAble {
+public class Monster extends InventoryEntity implements ITimeEventAble {
     private static final double PICK_UP_CHANCE = 0.02;
     private static final double INFLICT_DAMAGE_CHANCE = 0.01;
     
     public Monster(Room currentRoom){
         this.currentRoom = currentRoom; 
-    }
-    
-    /**
-     * The move method moves the monsters randomly around.
-     */
-    public void move() {
-        Set<Map.Entry<String, Room>> rooms;
-        rooms = currentRoom.getExits().entrySet();
-        // We are using the amount of rooms in the array rooms to random
-        // generate a number which we can use to select a random room.
-        int randomNumber = (int) (Math.random() * rooms.size());
-        int iterator = 0;
-        // Get rooms randomly
-        for (Map.Entry<String, Room> room : rooms) {
-            // if the iterator is a random number, set the currentRoom
-            if (iterator == randomNumber) {
-                currentRoom = room.getValue();
-                return;
-            }
-            iterator++;
-        }
     }
 
     /**

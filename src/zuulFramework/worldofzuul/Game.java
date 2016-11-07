@@ -6,7 +6,6 @@ import zuulFramework.worldofzuul.commands.Parser;
 import zuulFramework.worldofzuul.entities.Item;
 import zuulFramework.worldofzuul.entities.ItemType;
 import zuulFramework.worldofzuul.entities.Player;
-import zuulFramework.worldofzuul.entities.Employee;
 import zuulFramework.worldofzuul.helpers.SillyMessages;
 import zuulFramework.worldofzuul.rooms.*;
 
@@ -118,11 +117,6 @@ public class Game implements ITimeEventAble {
             }
             // Write the current time
             System.out.printf("The time is now %s\n", time.getNiceFormattedTime());
-            for (Employee employee : WorldLoader.getEmployeeList()){
-                if (employee.getCurrentRoom() == player.getCurrentRoom()){
-                    System.out.println("You met an employee and can ask for the location of an item.\n");    
-                }
-            }
             Command command = parser.getCommand();
             finished = processCommand(command);
 
@@ -198,11 +192,10 @@ public class Game implements ITimeEventAble {
                 wantToQuit = pay(command);
                 break;
             case ASK:
-                for (Employee employee : WorldLoader.getEmployeeList()){
-                    if (employee.getCurrentRoom() == player.getCurrentRoom()){
-                        askForHelp(command);
-                        break;
-                    }
+                if (player.getCurrentRoom().hasEmployee()) {
+                    askForHelp(command);
+                } else {
+                    System.out.println("There is not employee in this room you can ask.");
                 }
                 break;
         }
@@ -279,6 +272,12 @@ public class Game implements ITimeEventAble {
             // Handle special event rooms
             if (nextRoom instanceof IHaveSpecialEvent) {
                 ((IHaveSpecialEvent) nextRoom).doSpecialEvent(this);
+            }
+
+            // When we enter the room, we should tell the player that they
+            // can ask the employees, provided there is an employee in the room.
+            if (nextRoom.hasEmployee()) {
+                System.out.println("You met an employee and can ask for the location of an item.\n");
             }
         }
     }
@@ -401,8 +400,8 @@ public class Game implements ITimeEventAble {
             // If the player has typed an item that is avaiable then he can drop
             // the item.
             if (command.hasSecondWord()) {
-                boolean succes = player.drop(command.getSecondWord());
-                if (succes) {
+                boolean dropped = player.drop(command.getSecondWord());
+                if (dropped) {
                     System.out.println("You dropped the item " + command.getSecondWord() + " in the room");
                 } // else print an error
                 else {

@@ -2,9 +2,9 @@ package zuulFramework.worldofzuul.rooms;
 
 import zuulFramework.worldofzuul.Ballroom;
 import zuulFramework.worldofzuul.Time;
+import zuulFramework.worldofzuul.entities.Employee;
 import zuulFramework.worldofzuul.entities.ItemType;
 import zuulFramework.worldofzuul.entities.Monster;
-import zuulFramework.worldofzuul.entities.Employee;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -16,7 +16,6 @@ import java.util.Scanner;
  * Created by Rasmus Hansen .
  */
 public class WorldLoader {
-    private static ArrayList<Employee> employeeList= new ArrayList<Employee>();
 
     /**
      *  readWorld reads a file and creates a roomContainer for each room object in the file and returns the list of rooms.
@@ -163,7 +162,6 @@ public class WorldLoader {
             }
             for (int l = 0; l < rc.numberOfEmployees; l++) {
                 Employee e = new Employee(room);
-                employeeList.add(e);
                 time.addTimeEvent(e);
             }
             
@@ -344,9 +342,5 @@ public class WorldLoader {
         public int getTargetId() {
             return this.targetId;
         }
-    }
-    
-    public static ArrayList<Employee> getEmployeeList(){
-        return employeeList;
     }
 }

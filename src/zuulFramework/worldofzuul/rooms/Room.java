@@ -1,6 +1,8 @@
 package zuulFramework.worldofzuul.rooms;
 
 import zuulFramework.worldofzuul.Direction;
+import zuulFramework.worldofzuul.entities.Employee;
+import zuulFramework.worldofzuul.entities.Entity;
 import zuulFramework.worldofzuul.entities.ItemType;
 
 import java.util.*;
@@ -12,6 +14,13 @@ public class Room {
      */   
     protected String description;
     protected ArrayList<ItemType> itemTypes = new ArrayList<ItemType>();
+
+    /**
+     * The entities currently in the room
+     */
+    // Use a set, as it can't contain duplicates, which we don't want
+    protected Set<Entity> entities = new HashSet<>();
+
     private int id;
     /**
      * A map of rooms used save exits.
@@ -231,6 +240,29 @@ public class Room {
         return this.exits;
     }
 
+    /**
+     * Adds an entity to the rooms list of entities
+     * @param e The entity to add to the room
+     */
+    public void addEntity(Entity e) {
+        this.entities.add(e);
+    }
 
+    /**
+     * Removes an entity from the rooms entity list
+     * @param e The entity to remove
+     */
+    public void removeEntity(Entity e) {
+        this.entities.remove(e);
+    }
+
+    public boolean hasEmployee() {
+        for (Entity entity : this.entities) {
+            if(entity instanceof Employee) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
