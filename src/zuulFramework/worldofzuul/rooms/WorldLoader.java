@@ -294,10 +294,12 @@ public class WorldLoader {
             }
         }
 
-        public void setKey(String item) {
+        public void setKey(String item) throws Exception {
             if (item.equalsIgnoreCase("")) {
                 isLocked=false;
-            }else{
+            } else if (ItemType.get(item) == ItemType.NONE) {
+                throw new Exception("Invalid room key in map.wop file; key " + item + " does not exsist.");
+            } else {
                 isLocked=true;
                 key = item;
             }

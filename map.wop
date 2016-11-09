@@ -39,7 +39,7 @@ description=hungry? Well, pay up front and get some food!
 numberOfMonsters=2
 numberOfEmployees=2
 links=2:north
-keyType=cutlery
+keyType=dinnerlair
 itemTypes=
 
 [room]
