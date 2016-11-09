@@ -14,7 +14,7 @@ public class Room {
     protected String description;
     protected ArrayList<ItemType> itemTypes = new ArrayList<ItemType>();
     private int id;
-    private boolean isLocked;
+    private ItemType isLocked;
     /**
      * A map of rooms used save exits.
      */
@@ -34,7 +34,7 @@ public class Room {
         
         this.id = id;
         
-        this.isLocked = true;
+        this.isLocked=ItemType.NONE;
     }
 
     /**
@@ -93,6 +93,9 @@ public class Room {
         for (String exit : keys) {
             // Assign the exit into a string
             sb.append(" ").append(exit);
+        }
+        for (Room room : exits.values()) {
+            sb.append(" ").append(room.isLocked);
         }
 
         // Return the final string
@@ -235,20 +238,21 @@ public class Room {
         return this.exits;
     }
     
-    public void setLock(boolean isLocked) {
+    public void setLock(ItemType isLocked) {
         this.isLocked = isLocked;
     }
     
-    public boolean isLocked (){
+    public ItemType isLocked (){
         return this.isLocked;
     }
     
-    public void unlockRoom(Item item){
-        if (item.getType()==ItemType.CUTLERY) {
-            this.isLocked=false;
+    public boolean unlockRoom(Item item){
+        if (item.getType()==isLocked) {
             System.out.println("You unlocked the room");
+            return false;
         } else {
             System.out.println("You didnt unlock the room");
+            return true;
         }
     }
 }

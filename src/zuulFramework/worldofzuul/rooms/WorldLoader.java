@@ -191,7 +191,7 @@ public class WorldLoader {
         int numberOfEmployees = -1;
         Link[] links = null;
         ItemType[] itemTypes = new ItemType[0];
-        boolean isLocked;
+        ItemType isLocked;
 
         public void setAttribute(String key, String value) throws Exception {
             switch (key) {
@@ -221,6 +221,7 @@ public class WorldLoader {
                     break;
                 case "isLocked":
                     setLock(value);
+                    break;
                 default:
                     throw new Exception("Unknown key " + key);
             }
@@ -290,7 +291,9 @@ public class WorldLoader {
         }
 
         public void setLock(String bool) {
-            this.isLocked = Boolean.getBoolean(bool);
+            if (bool.equalsIgnoreCase(ItemType.CUTLERY.toString())) {
+
+            }
         }
 
         /**

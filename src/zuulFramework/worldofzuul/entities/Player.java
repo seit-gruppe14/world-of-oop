@@ -120,6 +120,7 @@ public class Player {
                     return null;
                 }
             } else {
+                System.out.println("The door is open");
                 currentRoom = nextRoom;
                 return nextRoom;
             }
