@@ -6,7 +6,8 @@ description=at the entrance to IKEA
 numberOfMonsters=10
 numberOfEmployees=1
 specialItem=0
-links=2:south,12:electronics
+links=2:south
+keyType=
 itemTypes=
 
 [room]
@@ -18,6 +19,7 @@ numberOfMonsters=5
 numberOfEmployees=1
 specialItem=0
 links=1:north,3:west,4:south,5:east
+keyType=
 itemTypes=cutlery
 
 [room]
@@ -29,6 +31,7 @@ numberOfMonsters=4
 numberOfEmployees=1
 specialItem=0
 links=2:east
+keyType=
 itemTypes=
 
 [room]
@@ -40,6 +43,7 @@ numberOfMonsters=2
 numberOfEmployees=2
 specialItem=0
 links=2:north
+keyType=dinnerchair
 itemTypes=
 
 [room]
@@ -51,6 +55,7 @@ numberOfMonsters=3
 numberOfEmployees=0
 specialItem=0
 links=2:west,6:north,7:east,8:south
+keyType=
 itemTypes=dinnerchair,dinnertable
 
 [room]
@@ -62,6 +67,7 @@ numberOfMonsters=0
 numberOfEmployees=0
 specialItem=0
 links=5:south
+keyType=
 itemTypes=
 
 [room]
@@ -73,6 +79,7 @@ numberOfMonsters=4
 numberOfEmployees=0
 specialItem=0
 links=5:west,9:south
+keyType=
 itemTypes=shelves,sofa
 
 [room]
@@ -84,6 +91,7 @@ numberOfMonsters=2
 numberOfEmployees=0
 specialItem=0
 links=5:north,9:east,10:south
+keyType=
 itemTypes=bed
 
 [room]
@@ -95,6 +103,7 @@ numberOfMonsters=8
 numberOfEmployees=0
 specialItem=0
 links=7:north,8:west
+keyType=
 itemTypes=teddybear
 
 [room]
@@ -106,6 +115,7 @@ numberOfMonsters=5
 numberOfEmployees=0
 specialItem=0
 links=8:north,11:west
+keyType=
 itemTypes=desk
 
 [room]
@@ -117,6 +127,7 @@ numberOfMonsters=4
 numberOfEmployees=0
 specialItem=0
 links=10:east,12:west
+keyType=
 itemTypes=toilet
 
 [room]
@@ -128,4 +139,5 @@ numberOfMonsters=6
 numberOfEmployees=0
 specialItem=1
 links=1:entrance,2:kitchen,3:ballroom,4:canteen,5:dinningRoom,6:exit,7:livingRoom,8:bedroom,9:childrensRoom,10:office,11:toilet
+keyType=cutlery
 itemTypes=computer

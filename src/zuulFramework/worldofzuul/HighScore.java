@@ -23,6 +23,7 @@ public class HighScore {
     
     public HighScore (Game game){
         this.game = game;
+        
     }
     
     /**
@@ -117,4 +118,15 @@ public class HighScore {
         }
     }
     
+    public void printScore(ItemType[] itemList) {
+            try {
+            int score = calcScore(itemList);
+            System.out.println("Your score was " + score);
+            printScoreToFile(score);
+            System.out.println("Top 5 scores were");
+            showScore();
+        } catch (IOException ex) {
+            System.out.println("IOException caught");
+        }
+    }
 }

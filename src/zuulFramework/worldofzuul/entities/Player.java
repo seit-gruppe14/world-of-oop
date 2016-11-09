@@ -40,11 +40,31 @@ public class Player extends InventoryEntity{
      * return null
      */
     public Room goRoom(String direction) {
+        
         Room nextRoom = currentRoom.getExit(direction);
         if (nextRoom != null) {
-            this.setCurrentRoom(nextRoom);
+            
+            if (nextRoom.isLocked()) {
+                for (Item item : items) {
+                    nextRoom.unlockRoom(item);
+                }
+                if (!nextRoom.isLocked()) {
+                    this.setCurrentRoom(nextRoom);
+                    return nextRoom;
+                } else {
+                    System.out.println("The door is locked");
+                    return null;
+                }
+            } else {
+                System.out.println("The door is open");
+                this.setCurrentRoom(nextRoom);
+                return nextRoom;
+            }
+            
+        } else {
+            System.out.println("There is no door");
+            return null;
         }
-        return nextRoom;
     }
 
     /**

@@ -129,15 +129,8 @@ public class Game implements ITimeEventAble {
                 gameOver(SillyMessages.getDeathMessage());
             }
         } while (!finished);
-        try {
-            int score = highScore.calcScore(itemList);
-            System.out.println("Your score was " + score);
-            highScore.printScoreToFile(score);
-            System.out.println("Top 5 scores were");
-            highScore.showScore();
-        } catch (IOException ex) {
-            System.out.println("IOException caught");
-        }
+        highScore.printScore(itemList);
+        
         System.out.println("Thank you for playing.  Good bye.");
     }
 
@@ -265,7 +258,7 @@ public class Game implements ITimeEventAble {
         Room nextRoom = player.goRoom(command.getSecondWord());
         //Checks if there is not a next room and print and error to user
         if (nextRoom == null) {
-            System.out.println("There is no door!");
+            //System.out.println("There is no door!");
         } //If there is a next room the current room will be the next room and prints out the method
         else {
             System.out.println(nextRoom.getLongDescription());

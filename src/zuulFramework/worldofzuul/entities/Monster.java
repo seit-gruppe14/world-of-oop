@@ -15,6 +15,7 @@ public class Monster extends InventoryEntity implements ITimeEventAble {
     
     public Monster(Room currentRoom){
         this.setCurrentRoom(currentRoom);
+
     }
 
     /**
@@ -46,7 +47,7 @@ public class Monster extends InventoryEntity implements ITimeEventAble {
     public void timeCallback(int timeAt, Player player) { 
          
         //Check if the player is in the same room as a monster. 
-        if (this.currentRoom.equals(player.getCurrentRoom())){
+        if (getCurrentRoom().equals(player.getCurrentRoom())){
             //The monster has 10% chance of doing damage to the player.
             if (Math.random() < INFLICT_DAMAGE_CHANCE) {
                 player.removeLife(inflictDamage());
