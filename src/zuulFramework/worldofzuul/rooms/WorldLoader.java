@@ -64,6 +64,7 @@ public class WorldLoader {
                                 if (rc.hasAllData()) {
                                     rooms.add(rc);
                                     rc = new RoomContainer();
+                                    continue;
                                 } else {
                                     throw new Exception("Got new room. Last room not yet in a state where it can be build. ");
                                 }
@@ -90,6 +91,11 @@ public class WorldLoader {
                 }
             }
 
+            if(rc.hasAllData()) {
+                rooms.add(rc);
+            } else {
+                throw new Exception("Last room was not finished. ");
+            }
 
         } catch (IOException e) {
             System.out.println(e);
@@ -110,6 +116,7 @@ public class WorldLoader {
         for (RoomContainer roomContainer : roomContainers) {
             Room room = roomContainer.getRoom();
             room.setLock(roomContainer.isLocked);
+            room.setKey(roomContainer.key);
             rooms.add(room);
         }
         //Ensure more descriptive error instead of null pointer. 
@@ -191,7 +198,8 @@ public class WorldLoader {
         int numberOfEmployees = -1;
         Link[] links = null;
         ItemType[] itemTypes = new ItemType[0];
-        ItemType isLocked;
+        boolean isLocked;
+        String key;
 
         public void setAttribute(String key, String value) throws Exception {
             switch (key) {
@@ -219,8 +227,8 @@ public class WorldLoader {
                 case "itemTypes":
                     setItemTypes(value);
                     break;
-                case "isLocked":
-                    setLock(value);
+                case "keyType":
+                    setKey(value);
                     break;
                 default:
                     throw new Exception("Unknown key " + key);
@@ -290,9 +298,12 @@ public class WorldLoader {
             }
         }
 
-        public void setLock(String bool) {
-            if (bool.equalsIgnoreCase(ItemType.CUTLERY.toString())) {
-
+        public void setKey(String item) {
+            if (item.equalsIgnoreCase("")) {
+                isLocked=false;
+            }else{
+                isLocked=true;
+                key = item;
             }
         }
 

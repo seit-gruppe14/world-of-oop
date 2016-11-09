@@ -33,7 +33,8 @@ public class Monster extends Player implements ITimeEventAble {
         for (Map.Entry<String, Room> room : rooms) {
             // if the iterator is a random number, set the currentRoom
             if (iterator == randomNumber) {
-                currentRoom = room.getValue();
+                Room r = room.getValue();
+                currentRoom = r;
                 return;
             }
             iterator++;
@@ -69,7 +70,7 @@ public class Monster extends Player implements ITimeEventAble {
     public void timeCallback(int timeAt, Player player) { 
          
         //Check if the player is in the same room as a monster. 
-        if (this.currentRoom.equals(player.getCurrentRoom())){
+        if (getCurrentRoom().equals(player.getCurrentRoom())){
             //The monster has 10% chance of doing damage to the player.
             if (Math.random() < INFLICT_DAMAGE_CHANCE) {
                 player.removeLife(inflictDamage());
