@@ -124,15 +124,8 @@ public class Game implements ITimeEventAble {
                 gameOver(SillyMessages.getDeathMessage());
             }
         } while (!finished);
-        try {
-            int score = highScore.calcScore(itemList);
-            System.out.println("Your score was " + score);
-            highScore.printScoreToFile(score);
-            System.out.println("Top 5 scores were");
-            highScore.showScore();
-        } catch (IOException ex) {
-            System.out.println("IOException caught");
-        }
+        highScore.printScore(itemList);
+        
         System.out.println("Thank you for playing.  Good bye.");
     }
 
