@@ -4,6 +4,7 @@ import zuulFramework.worldofzuul.Direction;
 import zuulFramework.worldofzuul.entities.Employee;
 import zuulFramework.worldofzuul.entities.Entity;
 import zuulFramework.worldofzuul.entities.ItemType;
+import zuulFramework.worldofzuul.entities.Item;
 
 import java.util.*;
 
@@ -22,6 +23,8 @@ public class Room {
     protected Set<Entity> entities = new HashSet<>();
 
     private int id;
+    private boolean isLocked;
+    private String key;
     /**
      * A map of rooms used save exits.
      */
@@ -38,8 +41,10 @@ public class Room {
         this.description = description;
         // Create the hashmaps to save exists.
         exits = new HashMap<String, Room>();
-
+        
         this.id = id;
+        
+        
     }
 
     /**
@@ -98,6 +103,9 @@ public class Room {
         for (String exit : keys) {
             // Assign the exit into a string
             sb.append(" ").append(exit);
+        }
+        for (Room room : exits.values()) {
+            sb.append(" ").append(room.isLocked);
         }
 
         // Return the final string
@@ -264,5 +272,24 @@ public class Room {
         }
         return false;
     }
+    
+    public void setLock(boolean isLocked) {
+        this.isLocked = isLocked;
+    }
+    public void setKey(String key){
+        this.key=key;
+    }
+    
+    public boolean isLocked (){
+        return this.isLocked;
+    }
+    
+    public void unlockRoom(Item item){
+        if (item.getType().toString().equalsIgnoreCase(key)) {
+            System.out.println("You unlocked the room");
+            isLocked=false;
+        } else {
+            System.out.println("You didnt unlock the room");
+        }
+    }
 }
-

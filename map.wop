@@ -6,6 +6,7 @@ description=at the entrance to IKEA
 numberOfMonsters=10
 numberOfEmployees=1
 links=2:south
+keyType=
 itemTypes=
 
 [room]
@@ -16,6 +17,7 @@ description=at the room for adults who loves to cook
 numberOfMonsters=5
 numberOfEmployees=1
 links=1:north,3:west,4:south,5:east
+keyType=
 itemTypes=cutlery
 
 [room]
@@ -26,6 +28,7 @@ description=at the ballroom here you can play with your kids or yourself
 numberOfMonsters=4
 numberOfEmployees=1
 links=2:east
+keyType=
 itemTypes=
 
 [room]
@@ -36,6 +39,7 @@ description=hungry? Well, pay up front and get some food!
 numberOfMonsters=2
 numberOfEmployees=2
 links=2:north
+keyType=cutlery
 itemTypes=
 
 [room]
@@ -46,6 +50,7 @@ description=at a place where you probably will eat
 numberOfMonsters=3
 numberOfEmployees=0
 links=2:west,6:north,7:east,8:south
+keyType=
 itemTypes=dinnerchair,dinnertable
 
 [room]
@@ -56,6 +61,7 @@ description=at the exit of IKEA. You can pay for your stuff here!
 numberOfMonsters=0
 numberOfEmployees=0
 links=5:south
+keyType=
 itemTypes=
 
 [room]
@@ -66,6 +72,7 @@ description=at a place where you can relax
 numberOfMonsters=4
 numberOfEmployees=0
 links=5:west,9:south
+keyType=
 itemTypes=shelves,sofa
 
 [room]
@@ -76,6 +83,7 @@ description=Sleepy?
 numberOfMonsters=2
 numberOfEmployees=0
 links=5:north,9:east,10:south
+keyType=
 itemTypes=bed
 
 [room]
@@ -86,6 +94,7 @@ description=at a place that children love
 numberOfMonsters=8
 numberOfEmployees=0
 links=7:north,8:west
+keyType=
 itemTypes=teddybear
 
 [room]
@@ -96,6 +105,7 @@ description=loving the song by rihanna - Work
 numberOfMonsters=5
 numberOfEmployees=0
 links=8:north,11:west
+keyType=
 itemTypes=desk
 
 [room]
@@ -106,6 +116,7 @@ description=going to pee? take a bath
 numberOfMonsters=4
 numberOfEmployees=0
 links=10:east,12:west
+keyType=
 itemTypes=toilet
 
 [room]
@@ -116,4 +127,5 @@ description=At a place where nerds spend their time
 numberOfMonsters=6
 numberOfEmployees=0
 links=1:entrance,2:kitchen,3:ballroom,4:canteen,5:dinningRoom,6:exit,7:livingRoom,8:bedroom,9:childrensRoom,10:office,11:toilet
+keyType=cutlery
 itemTypes=computer

@@ -18,10 +18,11 @@ import java.util.Scanner;
 public class WorldLoader {
 
     /**
-     *  readWorld reads a file and creates a roomContainer for each room object in the file and returns the list of rooms.
+     * readWorld reads a file and creates a roomContainer for each room object in the file and returns the list of rooms.
+     *
      * @param path which itemStrings a file path.
-     * @return a list of RoomContainers 
-     * @throws Exception on illegal file content.  
+     * @return a list of RoomContainers
+     * @throws Exception on illegal file content.
      */
     private static List<RoomContainer> readWorld(String path) throws Exception {
         List<RoomContainer> rooms = new ArrayList<>();
@@ -56,6 +57,20 @@ public class WorldLoader {
                     //When the object itemStrings fully defined then it's added to the list of roomContainer. 
                     //Then the parser state goes back to AWAITING_OBJECT_TYPE and a new roomContainer object itemStrings created.
                     case PARSING_ROOM:
+                        // Check for getting new parts for creating new objects, such as [room]
+                        if (line.startsWith("[")) {
+                            if (line.endsWith("]")) {
+                                if (rc.hasAllData()) {
+                                    rooms.add(rc);
+                                    rc = new RoomContainer();
+                                    continue;
+                                } else {
+                                    throw new Exception("Got new room. Last room not yet in a state where it can be build. ");
+                                }
+                            } else {
+                                throw new Exception("Invalid string, expected ']' got '" + line.charAt(line.length() - 1) + "'");
+                            }
+                        }
 
                         String[] parts = line.split("=");
                         String attribute, value;
@@ -69,45 +84,17 @@ public class WorldLoader {
                             throw new Exception("Unexpected result of split " + line);
                         }
 
-                        switch (attribute) {
-                            case "id":
-                                rc.setId(value);
-                                break;
-                            case "name":
-                                rc.setName(value);
-                                break;
-                            case "type":
-                                rc.setType(value);
-                                break;
-                            case "description":
-                                rc.setDescription(value);
-                                break;
-                            case "numberOfMonsters":
-                                rc.setNumberOfMonsters(value);
-                                break;
-                            case "numberOfEmployees":
-                                rc.setNumberOfEmployees(value);
-                                break;
-                            case "links":
-                                rc.setLinks(value);
-                                break;
-                            case "itemTypes":
-                                rc.setItemTypes(value);
-                                break;
-                            default:
-                                throw new Exception("Unknown attribute " + attribute);
-                        }
-
-                        if (rc.hasAllData()) {
-                            ps = ParserState.AWAITING_OBJECT_TYPE;
-                            rooms.add(rc);
-                            rc = new RoomContainer();
-                        }
+                        rc.setAttribute(attribute, value);
 
                         break;
                 }
             }
 
+            if(rc.hasAllData()) {
+                rooms.add(rc);
+            } else {
+                throw new Exception("Last room was not finished. ");
+            }
 
         } catch (IOException e) {
             System.out.println(e);
@@ -115,18 +102,20 @@ public class WorldLoader {
 
         return rooms;
     }
+
     /**
-     * 
      * @param roomContainers which are the roomContainers created in the readWorld method.
-     * @param time which itemStrings used for the time handlers when monsters are added to the rooms.
-     * @return a list of rooms in the world. 
-     * @throws Exception if the RoomContainer doesn't have an id attached. 
+     * @param time           which itemStrings used for the time handlers when monsters are added to the rooms.
+     * @return a list of rooms in the world.
+     * @throws Exception if the RoomContainer doesn't have an id attached.
      */
     private static List<Room> rebuildWorld(List<RoomContainer> roomContainers, Time time) throws Exception {
         List<Room> rooms = new ArrayList<>();
         //Adds a room to the rooms List for each roomContainer in the roomContainers list.
         for (RoomContainer roomContainer : roomContainers) {
             Room room = roomContainer.getRoom();
+            room.setLock(roomContainer.isLocked);
+            room.setKey(roomContainer.key);
             rooms.add(room);
         }
         //Ensure more descriptive error instead of null pointer. 
@@ -142,6 +131,7 @@ public class WorldLoader {
             if (rc == null) {
                 throw new Exception("Error when searching for room id");
             }
+
             //Sets an exit for the room based on the roomContainer linkStrings. 
             for (Link link : rc.links) {
                 Room otherRoom = null;
@@ -164,16 +154,15 @@ public class WorldLoader {
                 Employee e = new Employee(room);
                 time.addTimeEvent(e);
             }
-            
+
         }
-        
 
 
         return rooms;
     }
+
     /**
-     * 
-     * @param path which itemStrings a file path. 
+     * @param path which itemStrings a file path.
      * @param time game time.
      * @return
      * @throws Exception throws exception because of rebuildWorld().
@@ -182,6 +171,9 @@ public class WorldLoader {
         List<RoomContainer> roomContainers = readWorld(path);
         return rebuildWorld(roomContainers, time);
     }
+
+
+
     /**
      * The parser states used in rebuildWorld().
      */
@@ -189,8 +181,9 @@ public class WorldLoader {
         AWAITING_OBJECT_TYPE,
         PARSING_ROOM
     }
+
     /**
-     * Temporary storage for the rooms used in the game. 
+     * Temporary storage for the rooms used in the game.
      */
     private static class RoomContainer {
         int id = -1;
@@ -200,7 +193,43 @@ public class WorldLoader {
         int numberOfMonsters = -1;
         int numberOfEmployees = -1;
         Link[] links = null;
-        ItemType[] itemTypes = null;
+        ItemType[] itemTypes = new ItemType[0];
+        boolean isLocked;
+        String key;
+
+        public void setAttribute(String key, String value) throws Exception {
+            switch (key) {
+                case "id":
+                    setId(value);
+                    break;
+                case "name":
+                    setName(value);
+                    break;
+                case "type":
+                    setType(value);
+                    break;
+                case "description":
+                    setDescription(value);
+                    break;
+                case "numberOfMonsters":
+                    setNumberOfMonsters(value);
+                    break;
+                case "numberOfEmployees":
+                    setNumberOfEmployees(value);
+                    break;
+                case "links":
+                    setLinks(value);
+                    break;
+                case "itemTypes":
+                    setItemTypes(value);
+                    break;
+                case "keyType":
+                    setKey(value);
+                    break;
+                default:
+                    throw new Exception("Unknown key " + key);
+            }
+        }
 
         public void setName(String name) {
             this.name = name;
@@ -221,20 +250,22 @@ public class WorldLoader {
         public void setNumberOfMonsters(String numberOfMonsters) {
             this.numberOfMonsters = Integer.parseInt(numberOfMonsters);
         }
-        public void setNumberOfEmployees(String numberOfEmployees){
+
+        public void setNumberOfEmployees(String numberOfEmployees) {
             this.numberOfEmployees = Integer.parseInt(numberOfEmployees);
         }
 
         /**
          * Sets the links for the room.
+         *
          * @param value a string with all the links.
          */
         public void setLinks(String value) {
-            //Since the value itemStrings a single string then we need to split it. 
+            //Since the value itemStrings a single string then we need to split it.
             String[] linkStrings = value.split(",");
-            //Since we know the amount of links then we can define the size of the links[].  
+            //Since we know the amount of links then we can define the size of the links[].
             this.links = new Link[linkStrings.length];
-            //Since linkStrings contains an id and direction, then we need to 
+            //Since linkStrings contains an id and direction, then we need to
             //seperate them and create a link-object with the seperated values
             //and adds the object to the links[].
             for (int i = 0; i < linkStrings.length; i++) {
@@ -245,14 +276,16 @@ public class WorldLoader {
                 this.links[i] = l;
             }
         }
+
         /**
          * Sets the itemTypes for the room.
-         * @param itemTypes a string of all itemTypes. 
+         *
+         * @param itemTypes a string of all itemTypes.
          */
         public void setItemTypes(String itemTypes) {
-            //Since itemTypes itemStrings a single String then we need to split it.  
+            //Since itemTypes itemStrings a single String then we need to split it.
             String[] itemStrings = itemTypes.split(",");
-            //Since we know the amount of itemTypes then we can define the size of the itemTypes[].  
+            //Since we know the amount of itemTypes then we can define the size of the itemTypes[].
             this.itemTypes = new ItemType[itemStrings.length];
             //Since itemStrings contains our itemTypes then we need to add each itemString to ItemTypes[].
             for (int i = 0; i < itemStrings.length; i++) {
@@ -260,8 +293,19 @@ public class WorldLoader {
                 this.itemTypes[i] = ItemType.get(type);
             }
         }
+
+        public void setKey(String item) {
+            if (item.equalsIgnoreCase("")) {
+                isLocked=false;
+            }else{
+                isLocked=true;
+                key = item;
+            }
+        }
+
         /**
          * Checks if any attribute hasn't been modified.
+         *
          * @return true if any attribute still prestine, otherwise false.
          */
         public boolean hasAllData() {
@@ -271,14 +315,12 @@ public class WorldLoader {
                             type != null &&
                             description != null &&
                             numberOfMonsters != -1 &&
-                            numberOfEmployees != -1 &&
-                            links != null &&
-                            itemTypes != null;
-
+                            links != null;
         }
 
         /**
          * Get a room-object from the RoomContainer.
+         *
          * @return room-object based on RoomContainer type.
          * @throws Exception throws exception if room isn't found.
          */
@@ -291,10 +333,10 @@ public class WorldLoader {
                 case "salesroom":
                     r = new SalesRoom(this.description, this.id, this.itemTypes);
                     break;
-                case "canteen": 
+                case "canteen":
                     r = new Canteen(this.description, this.id);
                     break;
-                case "ballroom": 
+                case "ballroom":
                     r = new Ballroom(this.description, this.id);
                     break;
                 case "exit":
@@ -304,43 +346,52 @@ public class WorldLoader {
                     throw new Exception("Unknown room type " + this.type);
             }
             return r;
-        } 
+        }
     }
+
     /**
      * The link-object stores our link values.
      */
     private static class Link {
         int targetId;
         String direction;
+
         /**
          * Contructs a link
-         * @param targetId the link target id which is the id of the exit room
+         *
+         * @param targetId  the link target id which is the id of the exit room
          * @param direction the link direction which is the direction of the nearby room
          */
         public Link(String targetId, String direction) {
             setTargetId(targetId);
             setDirection(direction);
         }
-        /**
-         * Sets the targetID
-         * @param targetId the link target id which is the id of the exit room
-         */
-        public void setTargetId(String targetId) {
-            this.targetId = Integer.parseInt(targetId);
-        }
+
         /**
          * Sets the direction
+         *
          * @param direction the link direction which is the direction of the nearby room
          */
         public void setDirection(String direction) {
             this.direction = direction;
         }
+
         /**
          * Get the targetId
+         *
          * @return the link target id which is the id of the exit room
          */
         public int getTargetId() {
             return this.targetId;
+        }
+
+        /**
+         * Sets the targetID
+         *
+         * @param targetId the link target id which is the id of the exit room
+         */
+        public void setTargetId(String targetId) {
+            this.targetId = Integer.parseInt(targetId);
         }
     }
 }

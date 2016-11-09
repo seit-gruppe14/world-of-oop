@@ -253,7 +253,7 @@ public class Game implements ITimeEventAble {
         Room nextRoom = player.goRoom(command.getSecondWord());
         //Checks if there is not a next room and print and error to user
         if (nextRoom == null) {
-            System.out.println("There is no door!");
+            //System.out.println("There is no door!");
         } //If there is a next room the current room will be the next room and prints out the method
         else {
             System.out.println(nextRoom.getLongDescription());
