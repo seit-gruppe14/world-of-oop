@@ -7,7 +7,12 @@ import zuulFramework.worldofzuul.entities.Item;
 import zuulFramework.worldofzuul.entities.ItemType;
 import zuulFramework.worldofzuul.entities.Player;
 import zuulFramework.worldofzuul.helpers.SillyMessages;
-import zuulFramework.worldofzuul.rooms.*;
+import zuulFramework.worldofzuul.rooms.Exit;
+import zuulFramework.worldofzuul.rooms.Room;
+import zuulFramework.worldofzuul.rooms.SalesRoom;
+import zuulFramework.worldofzuul.rooms.WorldLoader;
+import zuulFramework.worldofzuul.rooms.ICanPay;
+import zuulFramework.worldofzuul.rooms.IHaveSpecialEvent;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,7 +24,7 @@ import java.util.Scanner;
  */
 public class Game implements ITimeEventAble {
 
-    private static final int GAME_END_TIME = 22 * 60;
+    private int gameEndTime = 22 * 60;
     /**
      * Handles reading commands from the user
      */
@@ -309,7 +314,7 @@ public class Game implements ITimeEventAble {
         if (command.hasSecondWord()) {
 
             // Ask the player objekt to pick up an item in the room
-            String success = player.pickUp(command.getSecondWord());
+            String success = player.pickUp(command.getSecondWord(), this);
 
             // If the player can pick up the item, then print the item the
             // player has picked up
@@ -489,7 +494,7 @@ public class Game implements ITimeEventAble {
     @Override
     public void timeCallback(int timeAt, Player player) {
         // If the current time is more than 22 o'clock
-        if (timeAt >= GAME_END_TIME) {
+        if (timeAt >= gameEndTime) {
             // If the time is up, and the player is in an exit room, then they should end the game
             if (this.player.getCurrentRoom() instanceof Exit) {
                 // TODO Exit the game once done
@@ -522,4 +527,7 @@ public class Game implements ITimeEventAble {
         time.updateTime(timeDif);
     }
     
+    public void extendGameTime(int time){
+        gameEndTime += time;
+    }
 }

@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import zuulFramework.worldofzuul.entities.TimeItem;
 
 /**
  * Created by Rasmus Hansen .
@@ -87,6 +88,9 @@ public class WorldLoader {
                                 break;
                             case "numberOfEmployees":
                                 rc.setNumberOfEmployees(value);
+                                break;
+                            case "specialItem":
+                                rc.setSpecialItem(value);
                                 break;
                             case "links":
                                 rc.setLinks(value);
@@ -165,6 +169,12 @@ public class WorldLoader {
                 time.addTimeEvent(e);
             }
             
+            if(rc.specialItem == 1) {
+                TimeItem ti = new TimeItem();
+                ((SalesRoom) room).addItem(ti);
+            }
+            
+            
         }
         
 
@@ -199,6 +209,7 @@ public class WorldLoader {
         String description = null;
         int numberOfMonsters = -1;
         int numberOfEmployees = -1;
+        int specialItem = -1;
         Link[] links = null;
         ItemType[] itemTypes = null;
 
@@ -224,7 +235,10 @@ public class WorldLoader {
         public void setNumberOfEmployees(String numberOfEmployees){
             this.numberOfEmployees = Integer.parseInt(numberOfEmployees);
         }
-
+        
+        public void setSpecialItem (String specialItem){
+            this.specialItem = Integer.parseInt(specialItem);
+        }
         /**
          * Sets the links for the room.
          * @param value a string with all the links.
@@ -272,6 +286,7 @@ public class WorldLoader {
                             description != null &&
                             numberOfMonsters != -1 &&
                             numberOfEmployees != -1 &&
+                            specialItem != -1 &&
                             links != null &&
                             itemTypes != null;
 

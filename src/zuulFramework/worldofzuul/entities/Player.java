@@ -8,8 +8,12 @@ package zuulFramework.worldofzuul.entities;
 import zuulFramework.worldofzuul.helpers.SillyMessages;
 import zuulFramework.worldofzuul.rooms.Room;
 
+
 import java.util.ArrayList;
 import java.util.List;
+import zuulFramework.worldofzuul.Game;
+import zuulFramework.worldofzuul.rooms.IHaveSpecialEvent;
+import zuulFramework.worldofzuul.rooms.SalesRoom;
 
 /**
  * @author Christian
@@ -145,5 +149,20 @@ public class Player extends InventoryEntity{
 
     public boolean isPlayerDead() {
         return life <= 0;
+    }
+    
+    @Override
+    public String pickUp(String itemName, Game game){
+        SalesRoom sr = ((SalesRoom) currentRoom);
+        Item item = sr.getItem(itemName);
+        if(item instanceof IHaveSpecialEvent) {
+            ((IHaveSpecialEvent)item).doSpecialEvent(game);
+            sr.removeItem(itemName);
+            
+        } else {
+            super.pickUp(itemName, game);
+        }
+  
+        return null;
     }
 }

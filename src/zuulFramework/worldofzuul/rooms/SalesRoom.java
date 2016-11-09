@@ -73,5 +73,14 @@ public class SalesRoom extends Room {
     public List<Item> getItems() {
         return items;
     }
+    
+    public Item getItem(String itemName) {
+        for (int itemNumber = 0; itemNumber < items.size(); itemNumber++) {
+            if (items.get(itemNumber).getName().equalsIgnoreCase(itemName)) {
+                return items.get(itemNumber);
+            }
+        }
+        return null;
+    }
 }
 

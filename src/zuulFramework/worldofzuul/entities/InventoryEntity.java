@@ -4,12 +4,12 @@ import zuulFramework.worldofzuul.rooms.SalesRoom;
 
 import java.util.ArrayList;
 import java.util.List;
+import zuulFramework.worldofzuul.Game;
 
 /**
  * Describes an entity that has inventory
  */
 public abstract class InventoryEntity extends MovingEntity {
-
     /**
      * The array list items contains the player's items
      */
@@ -58,10 +58,11 @@ public abstract class InventoryEntity extends MovingEntity {
      * telling the player that the item isn't avaiable.
      *
      * @param itemName which is a item name String
+     * @param game
      * @return null if the item was picked up without issues otherwise a
      * string with an error message
      */
-    public String pickUp(String itemName) {
+    public String pickUp(String itemName, Game game) {
         Item item = ((SalesRoom) currentRoom).removeItem(itemName);
         if (item == null) {
             return "Could not find item";
@@ -70,6 +71,7 @@ public abstract class InventoryEntity extends MovingEntity {
         if(item.getWeight() + this.getCarryWeight() > MAX_CARRY_WEIGHT) {
             return "Item is too heavy";
         }
+
 
         items.add(item);
         return null;
