@@ -1,7 +1,6 @@
-package zuulFramework.worldofzuul;
+package zuulFramework.worldofzuul.rooms;
 
-import zuulFramework.worldofzuul.rooms.IHaveSpecialEvent;
-import zuulFramework.worldofzuul.rooms.Room;
+import zuulFramework.worldofzuul.Game;
 
 /**
  * Created by Rasmus Hansen .
