@@ -284,12 +284,14 @@ public class Room {
         return this.isLocked;
     }
     
-    public void unlockRoom(Item item){
+    public boolean unlockRoom(Item item){
         if (item.getType().toString().equalsIgnoreCase(key)) {
             System.out.println("You unlocked the room");
             isLocked=false;
+            return true;
         } else {
             System.out.println("You didnt unlock the room");
+            return false;
         }
     }
 }
