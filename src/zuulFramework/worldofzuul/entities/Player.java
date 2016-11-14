@@ -46,7 +46,9 @@ public class Player extends InventoryEntity{
             
             if (nextRoom.isLocked()) {
                 for (Item item : items) {
-                    nextRoom.unlockRoom(item);
+                    if(nextRoom.unlockRoom(item)) {
+                        break;
+                    };
                 }
                 if (!nextRoom.isLocked()) {
                     this.setCurrentRoom(nextRoom);
