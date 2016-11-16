@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<GridPane xmlns:fx="http://javafx.com/fxml/1" alignment="center" hgap="10" vgap="10"
-          xmlns="http://javafx.com/javafx/8.0.102" fx:controller="zuulFramework.worldofzuul.gui.Controller">
+
+<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zuulFramework.worldofzuul.gui.Controller">
     <columnConstraints>
-        <ColumnConstraints/>
+        <ColumnConstraints />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints/>
+        <RowConstraints />
     </rowConstraints>
     <children>
         <StackPane prefHeight="845.0" prefWidth="1393.0">
@@ -18,13 +20,12 @@
                     <items>
                         <StackPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                             <children>
-                                <SplitPane dividerPositions="0.7169069462647444" orientation="VERTICAL"
-                                           prefHeight="200.0" prefWidth="160.0">
+                                <SplitPane dividerPositions="0.7169069462647444" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
                                     <items>
-                                        <StackPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0"/>
+                                        <StackPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
                                         <StackPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                             <children>
-                                                <TextArea editable="false" prefHeight="200.0" prefWidth="200.0"/>
+                                                <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" />
                                             </children>
                                         </StackPane>
                                     </items>
@@ -37,50 +38,44 @@
                                     <children>
                                         <BorderPane>
                                             <left>
-                                                <Label maxWidth="1.7976931348623157E308" text="12:350"/>
+                                                <Label maxWidth="1.7976931348623157E308" text="12:350" />
                                             </left>
                                             <right>
-                                                <Label maxWidth="1.7976931348623157E308" text="945 SEK"/>
+                                                <Label maxWidth="1.7976931348623157E308" text="945 SEK" />
                                             </right>
                                         </BorderPane>
-                                        <Label text="Health"/>
-                                        <ProgressBar maxWidth="1.7976931348623157E308" progress="0.0"/>
-                                        <Label text="Weight"/>
-                                        <ProgressBar maxWidth="1.7976931348623157E308" prefWidth="200.0"
-                                                     progress="0.0"/>
-                                        <Label text="Inventory"/>
+                                        <Label text="Health" />
+                                        <ProgressBar maxWidth="1.7976931348623157E308" progress="0.0" />
+                                        <Label text="Weight" />
+                                        <ProgressBar maxWidth="1.7976931348623157E308" prefWidth="200.0" progress="0.0" />
+                                        <Label text="Inventory" />
                                         <TableView prefHeight="200.0" prefWidth="200.0">
                                             <columns>
-                                                <TableColumn prefWidth="75.0" text="Name"/>
-                                                <TableColumn prefWidth="75.0" text="Weight"/>
-                                                <TableColumn prefWidth="75.0" text="Price"/>
+                                                <TableColumn prefWidth="75.0" text="Name" />
+                                                <TableColumn prefWidth="75.0" text="Weight" />
+                                                <TableColumn prefWidth="75.0" text="Price" />
                                             </columns>
                                             <VBox.margin>
-                                                <Insets/>
+                                                <Insets />
                                             </VBox.margin>
                                         </TableView>
-                                        <Label text="Room inventory"/>
+                                        <Label text="Room inventory" />
                                         <TableView prefHeight="200.0" prefWidth="200.0">
                                             <columns>
-                                                <TableColumn prefWidth="75.0" text="Name"/>
-                                                <TableColumn prefWidth="75.0" text="Weight"/>
-                                                <TableColumn prefWidth="75.0" text="Price"/>
+                                                <TableColumn prefWidth="75.0" text="Name" />
+                                                <TableColumn prefWidth="75.0" text="Weight" />
+                                                <TableColumn prefWidth="75.0" text="Price" />
                                             </columns>
                                         </TableView>
                                         <BorderPane prefHeight="200.0" prefWidth="200.0">
                                             <left>
-                                                <VBox maxHeight="1.7976931348623157E308"
-                                                      maxWidth="1.7976931348623157E308" spacing="30.0"
-                                                      BorderPane.alignment="CENTER">
+                                                <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="30.0" BorderPane.alignment="CENTER">
                                                     <children>
-                                                        <Button maxWidth="1.7976931348623157E308"
-                                                                mnemonicParsing="false" text="Pay"/>
-                                                        <Button maxWidth="1.7976931348623157E308"
-                                                                mnemonicParsing="false" text="Ask"/>
-                                                        <Button maxWidth="1.7976931348623157E308"
-                                                                mnemonicParsing="false" text="Help">
+                                                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Pay" />
+                                                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Ask" />
+                                                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Help">
                                                             <VBox.margin>
-                                                                <Insets/>
+                                                                <Insets />
                                                             </VBox.margin>
                                                         </Button>
                                                     </children>
@@ -89,48 +84,30 @@
                                             <right>
                                                 <GridPane BorderPane.alignment="CENTER">
                                                     <columnConstraints>
-                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
-                                                                           prefWidth="100.0"/>
-                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
-                                                                           prefWidth="100.0"/>
-                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
-                                                                           prefWidth="100.0"/>
+                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                     </columnConstraints>
                                                     <rowConstraints>
-                                                        <RowConstraints minHeight="10.0" prefHeight="30.0"
-                                                                        vgrow="SOMETIMES"/>
-                                                        <RowConstraints minHeight="10.0" prefHeight="30.0"
-                                                                        vgrow="SOMETIMES"/>
-                                                        <RowConstraints minHeight="10.0" prefHeight="30.0"
-                                                                        vgrow="SOMETIMES"/>
+                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                     </rowConstraints>
                                                     <children>
-                                                        <Button maxHeight="1.7976931348623157E308"
-                                                                maxWidth="1.7976931348623157E308"
-                                                                mnemonicParsing="false" text="Button"
-                                                                GridPane.columnIndex="1"/>
-                                                        <Button maxHeight="1.7976931348623157E308"
-                                                                maxWidth="1.7976931348623157E308"
-                                                                mnemonicParsing="false" text="Button"
-                                                                GridPane.rowIndex="1"/>
-                                                        <Button maxHeight="1.7976931348623157E308"
-                                                                maxWidth="1.7976931348623157E308"
-                                                                mnemonicParsing="false" text="Button"
-                                                                GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                                                        <Button maxHeight="1.7976931348623157E308"
-                                                                maxWidth="1.7976931348623157E308"
-                                                                mnemonicParsing="false" text="Button"
-                                                                GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                                                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="North" GridPane.columnIndex="1" />
+                                                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="West" GridPane.rowIndex="1" />
+                                                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="South" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="East" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                                     </children>
                                                 </GridPane>
                                             </right>
                                             <VBox.margin>
-                                                <Insets top="7.0"/>
+                                                <Insets top="7.0" />
                                             </VBox.margin>
                                         </BorderPane>
                                     </children>
                                     <StackPane.margin>
-                                        <Insets bottom="15.0" left="15.0" right="15.0" top="8.0"/>
+                                        <Insets bottom="15.0" left="15.0" right="15.0" top="8.0" />
                                     </StackPane.margin>
                                 </VBox>
                             </children>
