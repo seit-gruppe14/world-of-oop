@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.geometry.Insets?>
@@ -45,9 +46,23 @@
                                             </right>
                                         </BorderPane>
                                         <Label text="Health" />
-                                        <ProgressBar maxWidth="1.7976931348623157E308" progress="0.0" />
+                                        <ProgressBar fx:id="healthBar" maxWidth="1.7976931348623157E308" progress="0.0">
+                                 <effect>
+                                    <ColorAdjust hue="-1.0">
+                                       <input>
+                                          <Glow />
+                                       </input>
+                                    </ColorAdjust>
+                                 </effect></ProgressBar>
                                         <Label text="Weight" />
-                                        <ProgressBar maxWidth="1.7976931348623157E308" prefWidth="200.0" progress="0.0" />
+                                        <ProgressBar fx:id="weightBar" maxWidth="1.7976931348623157E308" prefWidth="200.0" progress="0.0">
+                                 <effect>
+                                    <ColorAdjust hue="-0.75">
+                                       <input>
+                                          <Glow />
+                                       </input>
+                                    </ColorAdjust>
+                                 </effect></ProgressBar>
                                         <Label text="Inventory" />
                                         <TableView prefHeight="200.0" prefWidth="200.0">
                                             <columns>
