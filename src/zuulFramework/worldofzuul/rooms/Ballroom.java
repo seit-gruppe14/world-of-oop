@@ -19,11 +19,11 @@ public class Ballroom extends Room implements IHaveSpecialEvent {
      * @param game The game that the special event should be applied to
      */
     @Override
-    public void doSpecialEvent(Game game) {
+    public String doSpecialEvent(Game game) {
         
-        // Tell the player that he has lost time when he enter the room
-        System.out.println("You have been destracted so much, that you have lost time!");
         // Update the time by 60 minutes
         game.updateTime(60);
+        
+        return "You have been destracted so much, that you have lost time!\n";
     }
 }

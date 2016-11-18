@@ -101,9 +101,6 @@ public class Game implements ITimeEventAble {
      * Starts the actual game
      */
     public void play() {
-        // Tell the user about the game
-        printWelcome();
-        
         highScore.showScore();
         // The user hasn't finished the game when they start
         boolean finished;
@@ -133,17 +130,17 @@ public class Game implements ITimeEventAble {
     /**
      * Prints the welcome message and a description of the current room
      */
-    private void printWelcome() {
-        System.out.println();
-        System.out.println("Welcöme möney spender.");
-        System.out.println("Tensiön is high at IKEA Ödense as yöu are waiting tö shöp-amök.");
-        System.out.println("It's BLACK FRIDAY and yöu're ön the löököut för the best öffers pössible tö furnish yöur new appartment.");
-        System.out.println("But be careful as the öther shöppers might beat yöu tö it or tramble yöu tö death!");
-        System.out.println("Are yöu ready?");
-        System.out.println("");
-        System.out.printf("If you need assistance type '%s' tö ask öne öf the blönde IKEA emplöyees.%n", CommandWord.HELP);
-        System.out.println();
-        System.out.println(player.getCurrentRoom().getLongDescription());
+    public String getWelcomeMessage() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Welcöme möney spender.").append("\n");
+        stringBuilder.append("Tensiön is high at IKEA Ödense as yöu are waiting tö shöp-amök.").append("\n");
+        stringBuilder.append("It's BLACK FRIDAY and yöu're ön the löököut för the best öffers pössible tö furnish yöur new appartment.").append("\n");
+        stringBuilder.append("But be careful as the öther shöppers might beat yöu tö it or tramble yöu tö death!").append("\n");
+        stringBuilder.append("Are yöu ready?").append("\n");
+        stringBuilder.append("\n");
+        stringBuilder.append(String.format("If you need assistance type '%s' tö ask öne öf the blönde IKEA emplöyees.%n", CommandWord.HELP)).append("\n");
+        stringBuilder.append(player.getCurrentRoom().getLongDescription()).append("\n");
+        return stringBuilder.toString();
     }
 
     /**
@@ -227,6 +224,15 @@ public class Game implements ITimeEventAble {
         return stringBuilder.toString();
     }
 
+    public String askForHelp(String itemType) {
+        if (this.player.getCurrentRoom().hasEmployee()) {
+            this.time.updateTime(5);
+            String helpAnswer = this.player.getCurrentRoom().askForHelp(ItemType.get(itemType));
+            return helpAnswer;
+        }
+        return "There is no employees in this room you can ask.\n";
+    }
+    
     /**
      * Input String direction, moves the player in the direction,
      * and returns a printable signal string.
@@ -240,17 +246,19 @@ public class Game implements ITimeEventAble {
         Room nextRoom = this.player.goRoom(direction);
         
         StringBuilder stringBuilder = new StringBuilder();
-
         if (nextRoom != null) {
             if(nextRoom.isLocked()) {
                 return "The room is locked!\n";
             }
-            if (nextRoom instanceof IHaveSpecialEvent) {
-                ((IHaveSpecialEvent) nextRoom).doSpecialEvent(this);
-            }
+
             stringBuilder.append("You went " + direction + ".").append("\n");
             stringBuilder.append(nextRoom.getLongDescription()).append("\n");
             time.updateTime(15);
+            
+            if (nextRoom instanceof IHaveSpecialEvent) {
+                stringBuilder.append(((IHaveSpecialEvent) nextRoom).doSpecialEvent(this));
+            }
+            
             return stringBuilder.toString();
         }
         
@@ -407,10 +415,14 @@ public class Game implements ITimeEventAble {
     public String pay() {
         Room currentRoom = player.getCurrentRoom();
         if (currentRoom instanceof ICanPay) {
+            StringBuilder stringBuilder = new StringBuilder();
             ICanPay payRoom = (ICanPay) currentRoom;
-            return payRoom.buy(player, this);
+            String paymentMessage = payRoom.buy(player, this);
+            stringBuilder.append(paymentMessage).append("\n");
+            stringBuilder.append("Your score is saved and you can quit safely.").append("\n");
+            return stringBuilder.toString();
         } else {
-            return "There is nowhere you can pay in this room";
+            return "There is nowhere you can pay in this room.\n";
         }
     }
 

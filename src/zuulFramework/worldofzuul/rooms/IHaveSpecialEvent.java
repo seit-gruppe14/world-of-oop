@@ -13,6 +13,6 @@ import zuulFramework.worldofzuul.Game;
  */
 public interface IHaveSpecialEvent {
     
-    void doSpecialEvent(Game game);
+    String doSpecialEvent(Game game);
     
 }

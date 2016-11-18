@@ -62,7 +62,7 @@ public class Controller implements Initializable {
             this.ItemTypeList.add(itemType);
         }
         comboBoxAsk.setItems(ItemTypeList);
-        printWelcome();
+        textArea.setText(this.game.getWelcomeMessage());
 
         drawInitialRoom();
     }
@@ -91,23 +91,15 @@ public class Controller implements Initializable {
     @FXML
     private void handleActionButtons(ActionEvent event) {
         if(event.getSource() == actionButtonPay) {
-            textArea.appendText(game.pay() + "\n");
-            if (game.getPlayer().getCurrentRoom() instanceof Exit) {
-                textArea.appendText("Your score is saved and you can quit safely." + "\n");
-            }
+            textArea.appendText(game.pay());
 	    showWeightBar();
 	    clock.setText(game.getTime().getNiceFormattedTime());
 	    money.setText(game.getPlayer().getMoney());
         }
         if(event.getSource() == comboBoxAsk) {
-            this.game.getTime().updateTime(5);
-            if (game.getPlayer().getCurrentRoom().hasEmployee()) {
-                String itemType = comboBoxAsk.getSelectionModel().getSelectedItem().toString();
-                String helpAnswer = this.game.getPlayer().getCurrentRoom().askForHelp(ItemType.get(itemType));
-                textArea.appendText(helpAnswer);
-            } else {
-                textArea.appendText("There is no employees in this room you can ask." + "\n");
-            }
+            String itemType = comboBoxAsk.getSelectionModel().getSelectedItem().toString();
+            String helpAnswer = this.game.askForHelp(itemType);
+            textArea.appendText(helpAnswer);
         }
         if(event.getSource() == actionButtonHelp) {
             textArea.appendText(game.printHelp());
@@ -118,32 +110,15 @@ public class Controller implements Initializable {
     private void handleButtonMoveEvent(ActionEvent event){
         if (event.getSource()==North) {
             textArea.appendText(game.goRoom("north"));
-            //System.out.println(game.getPlayer().getCurrentRoom().getShortDescription());
         } else if(event.getSource()==West) {
             textArea.appendText(game.goRoom("west"));
-            //System.out.println(game.getPlayer().getCurrentRoom().getShortDescription());
         } else if(event.getSource()==South) {
             textArea.appendText(game.goRoom("south"));
-            //System.out.println(game.getPlayer().getCurrentRoom().getShortDescription());
         }else if(event.getSource()==East){
             textArea.appendText(game.goRoom("east"));
-            //System.out.println(game.getPlayer().getCurrentRoom().getShortDescription());
 	}
 	showHealthBar();
 	clock.setText(game.getTime().getNiceFormattedTime());
-    }
-    
-    /**
-     * Prints the welcome message and a description of the current room
-     */
-    private void printWelcome() {
-        textArea.appendText("Welcöme möney spender.\n");
-        textArea.appendText("Tensiön is high at IKEA Ödense as yöu are waiting tö shöp-amök.\n");
-        textArea.appendText("It's BLACK FRIDAY and yöu're ön the löököut för the best öffers pössible tö furnish yöur new appartment.\n");
-        textArea.appendText("But be careful as the öther shöppers might beat yöu tö it or tramble yöu tö death!\n");
-        textArea.appendText("Are yöu ready?\n");
-        textArea.appendText("\n");
-        textArea.appendText(String.format("If you need assistance type '%s' tö ask öne öf the blönde IKEA emplöyees.%n\n", CommandWord.HELP));
     }
 
     public void showHealthBar() {

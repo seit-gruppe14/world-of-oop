@@ -19,10 +19,10 @@ public class TimeItem extends Item implements IHaveSpecialEvent{
     }
 
     @Override
-    public void doSpecialEvent(Game game) {  
+    public String doSpecialEvent(Game game) {  
         //game.extendGameTime(60);
         game.extendGameTime(60);
-        System.out.println("IKEA will be closing one hour later than scheduled! :)");
+        return "IKEA will be closing one hour later than scheduled! :)";
     }
 }
 
