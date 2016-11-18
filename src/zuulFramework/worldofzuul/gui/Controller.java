@@ -1,4 +1,5 @@
 package zuulFramework.worldofzuul.gui;
+import static java.lang.Compiler.command;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -57,6 +58,7 @@ public class Controller implements Initializable {
         if (event.getSource()==North) {
             System.out.println("You went north");
             textArea.appendText("You went North \n");
+            //game
         } else if(event.getSource()==West) {
             System.out.println("You went West");
             textArea.appendText("You went West \n");
