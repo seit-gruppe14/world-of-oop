@@ -3,10 +3,8 @@ package zuulFramework.worldofzuul.entities;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
 import zuulFramework.worldofzuul.ITimeEventAble;
 import zuulFramework.worldofzuul.gui.Offset;
-import zuulFramework.worldofzuul.gui.animations.MoveTransition;
 import zuulFramework.worldofzuul.rooms.Room;
 import zuulFramework.worldofzuul.rooms.SalesRoom;
 
@@ -18,7 +16,6 @@ import java.util.List;
 public class Monster extends InventoryEntity implements ITimeEventAble {
     private static final double PICK_UP_CHANCE = 0.02;
     private static final double INFLICT_DAMAGE_CHANCE = 0.01;
-    private Circle drawed = null;
 
     public Monster(Room currentRoom){
         this.setCurrentRoom(currentRoom);
@@ -87,22 +84,6 @@ public class Monster extends InventoryEntity implements ITimeEventAble {
 
     @Override
     public void addToScene(ObservableList<Node> drawAt, Offset offset) {
-        offset = offset.add(Offset.getRandomOffsetForRoom());
-        Circle circle = new Circle(offset.X, offset.Y, 5, Paint.valueOf("#FF0000"));
-        drawAt.add(circle);
-
-        this.drawed = circle;
-    }
-
-    @Override
-    public void updateDraw() {
-        if (drawed != null) {
-            Offset o = getCurrentRoom().getLocation().add(Offset.getRandomOffsetForRoom());
-//            drawed.setCenterX(o.X);
-//            drawed.setCenterY(o.Y);
-            MoveTransition mt = new MoveTransition(drawed, o.X, o.Y);
-            mt.play();
-
-        }
+        super.addToScene(drawAt, offset, Paint.valueOf("#FF0000"));
     }
 }

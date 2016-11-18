@@ -8,10 +8,8 @@ package zuulFramework.worldofzuul.entities;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
 import zuulFramework.worldofzuul.Game;
 import zuulFramework.worldofzuul.gui.Offset;
-import zuulFramework.worldofzuul.gui.animations.MoveTransition;
 import zuulFramework.worldofzuul.helpers.SillyMessages;
 import zuulFramework.worldofzuul.rooms.IHaveSpecialEvent;
 import zuulFramework.worldofzuul.rooms.Room;
@@ -36,8 +34,6 @@ public class Player extends InventoryEntity{
      * An array list of items the player has bought
      */
     private List<Item> boughtItems = new ArrayList<Item>();
-    private Circle drawed = null;
-
     /**
      * Sets the current room of the player based on the direction
      *
@@ -197,20 +193,6 @@ public class Player extends InventoryEntity{
 
     @Override
     public void addToScene(ObservableList<Node> drawAt, Offset offset) {
-        offset = offset.add(Offset.getRandomOffsetForRoom());
-        Circle circle = new Circle(offset.X, offset.Y, 5, Paint.valueOf("#000000"));
-        drawAt.add(circle);
-
-        this.drawed = circle;
-    }
-
-    @Override
-    public void updateDraw() {
-        if (drawed != null) {
-            Offset o = getCurrentRoom().getLocation().add(Offset.getRandomOffsetForRoom());
-            MoveTransition mt = new MoveTransition(drawed, o.X, o.Y);
-            mt.play();
-
-        }
+        super.addToScene(drawAt, offset, Paint.valueOf("#000000"));
     }
 }
