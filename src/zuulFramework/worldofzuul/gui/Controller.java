@@ -8,9 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import zuulFramework.worldofzuul.Game;
-import zuulFramework.worldofzuul.Time;
 import zuulFramework.worldofzuul.commands.CommandWord;
 import zuulFramework.worldofzuul.entities.Player;
 
@@ -42,21 +40,27 @@ public class Controller implements Initializable {
     private Button East;
     @FXML
     private Label clock;
+    @FXML
+    private Label money;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Game game = new Game();
         this.game = game;
-        showHealthBar(); //opdaterer ikke - setter kun ved initialisering
-        showWeightBar(); //samme som healthBar
+        showHealthBar(); 
+        showWeightBar();
         printWelcome();
+	clock.setText(game.getTime().getNiceFormattedTime());
+	money.setText(player.getMoney());
     }
     
     @FXML
     private void handleActionButtons(ActionEvent event) {
         if(event.getSource() == actionButtonPay) {
             textArea.appendText("Pay");
+	    showWeightBar();
 	    clock.setText(game.getTime().getNiceFormattedTime());
+	    money.setText(player.getMoney());
         }
         if(event.getSource() == actionButtonAsk) {
             textArea.appendText("Ask");
@@ -85,7 +89,7 @@ public class Controller implements Initializable {
             System.out.println("You went east");
             textArea.appendText("You went East \n");
 	}
-	
+	showHealthBar();
 	clock.setText(game.getTime().getNiceFormattedTime());
     }
     
@@ -113,7 +117,4 @@ public class Controller implements Initializable {
         this.weightBar.setProgress(player.getCarryWeight()/100);
     }
     
-    public void setClock(String n){
-	
-    }
 }

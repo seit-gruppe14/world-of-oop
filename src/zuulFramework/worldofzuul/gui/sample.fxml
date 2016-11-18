@@ -39,10 +39,10 @@
                                     <children>
                                         <BorderPane>
                                             <right>
-                                                <Label maxWidth="1.7976931348623157E308" text="945 SEK" />
+                                                <Label fx:id="money" maxWidth="1.7976931348623157E308" text="Money" />
                                             </right>
                                  <left>
-                                    <Label fx:id="clock" text="Label" BorderPane.alignment="CENTER" />
+                                    <Label fx:id="clock" text="Time" BorderPane.alignment="CENTER" />
                                  </left>
                                         </BorderPane>
                                         <Label text="Health" />
