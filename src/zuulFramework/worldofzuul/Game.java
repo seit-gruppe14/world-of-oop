@@ -233,40 +233,50 @@ public class Game implements ITimeEventAble {
      *
      * @param command the command to check
      */
-    private void goRoom(Direction direction) {
 
-//        if (direction == Direction.NORTH) {
-//            this.player.move();
-//        }
-        /*
-        // Check if the command has a room to go to
-        if (!command.hasSecondWord()) {
-            System.out.println("Go where?");
-            System.out.println(player.getCurrentRoom().getLongDescription());
-            return;
+    public String goRoom(String direction) {
+        
+        Room nextRoom = player.getCurrentRoom().getExit(direction);
+        StringBuilder stringBuilder = new StringBuilder();
+        if (nextRoom != null) {
+            
+            if (nextRoom.isLocked()) {
+                for (Item item : player.getItems()) {
+                    if(nextRoom.unlockRoom(item)) {
+                        break;
+                    };
+                }
+                if (!nextRoom.isLocked()) {
+                    player.setCurrentRoom(nextRoom);
+                    time.updateTime(15);
+                    
+                    if (nextRoom instanceof IHaveSpecialEvent) {
+                        ((IHaveSpecialEvent) nextRoom).doSpecialEvent(this);
+                    }
+                    
+                    stringBuilder.append("You went " + direction + ".").append("\n");
+                    stringBuilder.append(nextRoom.getLongDescription()).append("\n");
+                    return stringBuilder.toString();
+                } else {
+                    return "The door is locked";
+                }
+            } else {
+                player.setCurrentRoom(nextRoom);
+                time.updateTime(15);
+
+                if (nextRoom instanceof IHaveSpecialEvent) {
+                    ((IHaveSpecialEvent) nextRoom).doSpecialEvent(this);
+                }
+                
+                stringBuilder.append("You went " + direction + ".").append("\n");
+                stringBuilder.append(nextRoom.getLongDescription()).append("\n");
+                return stringBuilder.toString();
+            }
+            
+        } else {
+            return "There is no door";
         }
-        // Get to the room we want to go to
-        Room nextRoom = player.goRoom(command.getSecondWord());
-        //Checks if there is not a next room and print and error to user
-        if (nextRoom == null) {
-            //System.out.println("There is no door!");
-        } //If there is a next room the current room will be the next room and prints out the method
-        else {
-            System.out.println(nextRoom.getLongDescription());
-
-            // Change the game time. It always take 15 minutes to change room.
-            time.updateTime(15);
-            // Handle special event rooms
-            if (nextRoom instanceof IHaveSpecialEvent) {
-                ((IHaveSpecialEvent) nextRoom).doSpecialEvent(this);
-            }
-
-            // When we enter the room, we should tell the player that they
-            // can ask the employees, provided there is an employee in the room.
-            if (nextRoom.hasEmployee()) {
-                System.out.println("You met an employee and can ask for the location of an item.\n");
-            }
-        }*/
+        
     }
 
     /**

@@ -12,12 +12,12 @@ import zuulFramework.worldofzuul.commands.CommandWord;
 import zuulFramework.worldofzuul.entities.ItemType;
 import zuulFramework.worldofzuul.rooms.Exit;
 import zuulFramework.worldofzuul.rooms.Room;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
+import zuulFramework.worldofzuul.rooms.IHaveSpecialEvent;
 
 public class Controller implements Initializable {
     
@@ -110,32 +110,24 @@ public class Controller implements Initializable {
                 textArea.appendText("There is no employees in this room you can ask." + "\n");
             }
         }
-        
         if(event.getSource() == actionButtonHelp) {
             textArea.appendText(game.printHelp());
         }
-
     }
     
     @FXML
     private void handleButtonMoveEvent(ActionEvent event){
         if (event.getSource()==North) {
-            System.out.println("You went north");
-            textArea.appendText("You went North \n");
-
-            //game
+            textArea.appendText(game.goRoom("north"));
         } else if(event.getSource()==West) {
-            System.out.println("You went West");
-            textArea.appendText("You went West \n");
+            textArea.appendText(game.goRoom("west"));
         } else if(event.getSource()==South) {
-            System.out.println("You went south");
-            textArea.appendText("You went South \n");
-        }else{
-            System.out.println("You went east");
-            textArea.appendText("You went East \n");
-        }
-        showHealthBar();
-        clock.setText(game.getTime().getNiceFormattedTime());
+            textArea.appendText(game.goRoom("south"));
+        }else if(event.getSource()==East){
+            textArea.appendText(game.goRoom("east"));
+	}
+	showHealthBar();
+	clock.setText(game.getTime().getNiceFormattedTime());
     }
     
     /**

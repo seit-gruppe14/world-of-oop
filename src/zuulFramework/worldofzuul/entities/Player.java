@@ -35,44 +35,6 @@ public class Player extends InventoryEntity{
      */
     private List<Item> boughtItems = new ArrayList<Item>();
     /**
-     * Sets the current room of the player based on the direction
-     *
-     * @param direction which is a direction String
-     * @return next room if the direction exist in the current room, otherwise
-     * return null
-     */
-    public Room goRoom(String direction) {
-
-        Room nextRoom = currentRoom.getExit(direction);
-        if (nextRoom != null) {
-
-            if (nextRoom.isLocked()) {
-                for (Item item : items) {
-                    if(nextRoom.unlockRoom(item)) {
-                        break;
-                    }
-                }
-                if (!nextRoom.isLocked()) {
-                    this.setCurrentRoom(nextRoom);
-                    return nextRoom;
-                } else {
-                    System.out.println("The door is locked");
-                    return null;
-                }
-            } else {
-                System.out.println("The door is open");
-                this.setCurrentRoom(nextRoom);
-                updateDraw();
-                return nextRoom;
-            }
-
-        } else {
-            System.out.println("There is no door");
-            return null;
-        }
-    }
-
-    /**
      * Returns the life of the player. The life decides if the player has died.
      *
      * @return The player's life
