@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import zuulFramework.worldofzuul.Game;
@@ -37,20 +38,29 @@ public class Controller implements Initializable {
     private Button South;
     @FXML
     private Button East;
+    @FXML
+    private Label clock;
+    @FXML
+    private Label money;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Game game = new Game();
         this.game = game;
-        showHealthBar();
-        showWeightBar(); 
+        showHealthBar(); 
+        showWeightBar();
         printWelcome();
+	clock.setText(game.getTime().getNiceFormattedTime());
+	money.setText(player.getMoney());
     }
     
     @FXML
     private void handleActionButtons(ActionEvent event) {
         if(event.getSource() == actionButtonPay) {
             textArea.appendText("Pay");
+	    showWeightBar();
+	    clock.setText(game.getTime().getNiceFormattedTime());
+	    money.setText(player.getMoney());
         }
         if(event.getSource() == actionButtonAsk) {
             textArea.appendText("Ask");
@@ -59,6 +69,7 @@ public class Controller implements Initializable {
         if(event.getSource() == actionButtonHelp) {
             textArea.appendText("Help");
         }
+	
     }
     
     @FXML
@@ -66,6 +77,7 @@ public class Controller implements Initializable {
         if (event.getSource()==North) {
             System.out.println("You went north");
             textArea.appendText("You went North \n");
+
             //game
         } else if(event.getSource()==West) {
             System.out.println("You went West");
@@ -76,7 +88,9 @@ public class Controller implements Initializable {
         }else{
             System.out.println("You went east");
             textArea.appendText("You went East \n");
-        }
+	}
+	showHealthBar();
+	clock.setText(game.getTime().getNiceFormattedTime());
     }
     
     /**
@@ -102,4 +116,5 @@ public class Controller implements Initializable {
     public void showWeightBar() {
         this.weightBar.setProgress(player.getCarryWeight()/100);
     }
+    
 }
