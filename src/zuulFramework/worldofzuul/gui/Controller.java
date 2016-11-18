@@ -22,6 +22,7 @@ import zuulFramework.worldofzuul.rooms.IHaveSpecialEvent;
 public class Controller implements Initializable {
     
     private Game game;
+    private ObservableList<ItemType> ItemTypeList;
 
     @FXML
     private ProgressBar healthBar;
@@ -43,12 +44,10 @@ public class Controller implements Initializable {
     private Button East;
     @FXML
     private ComboBox<ItemType> comboBoxAsk;
-    private ObservableList<ItemType> ItemTypeList;
     @FXML
     private Label clock;
     @FXML
     private Label money;
-
     @FXML
     private Pane mapPane;
 
@@ -119,12 +118,16 @@ public class Controller implements Initializable {
     private void handleButtonMoveEvent(ActionEvent event){
         if (event.getSource()==North) {
             textArea.appendText(game.goRoom("north"));
+            //System.out.println(game.getPlayer().getCurrentRoom().getShortDescription());
         } else if(event.getSource()==West) {
             textArea.appendText(game.goRoom("west"));
+            //System.out.println(game.getPlayer().getCurrentRoom().getShortDescription());
         } else if(event.getSource()==South) {
             textArea.appendText(game.goRoom("south"));
+            //System.out.println(game.getPlayer().getCurrentRoom().getShortDescription());
         }else if(event.getSource()==East){
             textArea.appendText(game.goRoom("east"));
+            //System.out.println(game.getPlayer().getCurrentRoom().getShortDescription());
 	}
 	showHealthBar();
 	clock.setText(game.getTime().getNiceFormattedTime());
@@ -141,8 +144,6 @@ public class Controller implements Initializable {
         textArea.appendText("Are yöu ready?\n");
         textArea.appendText("\n");
         textArea.appendText(String.format("If you need assistance type '%s' tö ask öne öf the blönde IKEA emplöyees.%n\n", CommandWord.HELP));
-        textArea.appendText("\n");
-        textArea.appendText("\n");
     }
 
     public void showHealthBar() {

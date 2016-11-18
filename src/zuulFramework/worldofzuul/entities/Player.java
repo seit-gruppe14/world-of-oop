@@ -137,6 +137,36 @@ public class Player extends InventoryEntity{
     public boolean isPlayerDead() {
         return life <= 0;
     }
+    /**
+     * Input String direction
+     * Returns null to signal no adjecent room,
+     * returns next room to signal room change or check if room is locked.
+     * @param direction
+     * @return Room
+     */
+    public Room goRoom(String direction) {
+        Room nextRoom = this.currentRoom.getExit(direction);
+        if (nextRoom != null) {
+            if (nextRoom.isLocked()) {
+                for (Item item : this.items) {
+                    if(nextRoom.unlockRoom(item)) {
+                        break;
+                    };
+                }
+                if (!nextRoom.isLocked()) {
+                    setCurrentRoom(nextRoom);
+                    return nextRoom;
+                } else {
+                    return nextRoom;
+                }
+            } else {
+                setCurrentRoom(nextRoom);
+                return nextRoom;
+            }
+        } else {
+            return null;
+        }
+    }
 
     @Override
     public String pickUp(String itemName, Game game){

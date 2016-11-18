@@ -36,16 +36,16 @@ public class Game implements ITimeEventAble {
     private String gameOverMessage = null;
 
     private ItemType[] itemList = {
-            ItemType.BED,
-            ItemType.DINNERTABLE,
-            ItemType.DINNERCHAIR,
-            ItemType.SHELVES,
-            ItemType.DESK,
-            ItemType.CUTLERY,
-            ItemType.LAMP,
-            ItemType.COMPUTER,
-            ItemType.LAMP,
-            ItemType.SOFA
+        ItemType.BED,
+        ItemType.DINNERTABLE,
+        ItemType.DINNERCHAIR,
+        ItemType.SHELVES,
+        ItemType.DESK,
+        ItemType.CUTLERY,
+        ItemType.LAMP,
+        ItemType.COMPUTER,
+        ItemType.LAMP,
+        ItemType.SOFA
     };
 
     /**
@@ -228,55 +228,33 @@ public class Game implements ITimeEventAble {
     }
 
     /**
-     * Checks if there is a second word after the CommandWord "GO" And change to
-     * that room of the player if it exists
-     *
-     * @param command the command to check
+     * Input String direction, moves the player in the direction,
+     * and returns a printable signal string.
+     * @param direction
+     * @return String
      */
-
     public String goRoom(String direction) {
         
-        Room nextRoom = player.getCurrentRoom().getExit(direction);
+        //Room nextRoom = player.getCurrentRoom().getExit(direction);
+        
+        Room nextRoom = this.player.goRoom(direction);
+        
         StringBuilder stringBuilder = new StringBuilder();
-        if (nextRoom != null) {
-            
-            if (nextRoom.isLocked()) {
-                for (Item item : player.getItems()) {
-                    if(nextRoom.unlockRoom(item)) {
-                        break;
-                    };
-                }
-                if (!nextRoom.isLocked()) {
-                    player.setCurrentRoom(nextRoom);
-                    time.updateTime(15);
-                    
-                    if (nextRoom instanceof IHaveSpecialEvent) {
-                        ((IHaveSpecialEvent) nextRoom).doSpecialEvent(this);
-                    }
-                    
-                    stringBuilder.append("You went " + direction + ".").append("\n");
-                    stringBuilder.append(nextRoom.getLongDescription()).append("\n");
-                    return stringBuilder.toString();
-                } else {
-                    return "The door is locked";
-                }
-            } else {
-                player.setCurrentRoom(nextRoom);
-                time.updateTime(15);
 
-                if (nextRoom instanceof IHaveSpecialEvent) {
-                    ((IHaveSpecialEvent) nextRoom).doSpecialEvent(this);
-                }
-                
-                stringBuilder.append("You went " + direction + ".").append("\n");
-                stringBuilder.append(nextRoom.getLongDescription()).append("\n");
-                return stringBuilder.toString();
+        if (nextRoom != null) {
+            if(nextRoom.isLocked()) {
+                return "The room is locked!\n";
             }
-            
-        } else {
-            return "There is no door";
+            if (nextRoom instanceof IHaveSpecialEvent) {
+                ((IHaveSpecialEvent) nextRoom).doSpecialEvent(this);
+            }
+            stringBuilder.append("You went " + direction + ".").append("\n");
+            stringBuilder.append(nextRoom.getLongDescription()).append("\n");
+            time.updateTime(15);
+            return stringBuilder.toString();
         }
         
+        return "There is no room in that direction!\n";
     }
 
     /**

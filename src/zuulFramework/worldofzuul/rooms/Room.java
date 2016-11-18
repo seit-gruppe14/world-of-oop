@@ -91,29 +91,7 @@ public class Room implements IDrawable {
      */
     public String getLongDescription() {
         //Gives the player the description in a sentence + direction and neighbor.
-        return "You are " + description + ".\n" + getExitString();
-    }
-
-    /**
-     * This is used in each room to print an overview of exits
-     * @return String
-     */
-    private String getExitString() {
-        // The base of our string
-        StringBuilder sb = new StringBuilder();
-        sb.append("Nearby rooms to the:");
-
-        // Get all directions from the room and save to a list
-        Set<String> keys = exits.keySet();
-
-        // Iterate all the exits in the exit hashmap
-        for (String exit : keys) {
-            // Assign the exit into a string
-            sb.append(" ").append(exit);
-        }
-
-        // Return the final string
-        return sb.toString();
+        return "You are " + description + ".\n";
     }
 
     /**
@@ -281,9 +259,9 @@ public class Room implements IDrawable {
     }
 
     public void setKey(String key){
-        this.key=key;
+        this.key = key;
     }
-
+    
     public boolean isLocked (){
         return this.isLocked;
     }
@@ -406,6 +384,7 @@ public class Room implements IDrawable {
     }
 
     public Offset getLocation() {
-        return location;
+        return this.location;
     }
+
 }
