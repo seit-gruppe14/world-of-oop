@@ -1,22 +1,28 @@
 package zuulFramework.worldofzuul.gui;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import zuulFramework.worldofzuul.Game;
 import zuulFramework.worldofzuul.commands.CommandWord;
+import zuulFramework.worldofzuul.entities.Item;
+import zuulFramework.worldofzuul.entities.ItemType;
 import zuulFramework.worldofzuul.entities.Player;
+import zuulFramework.worldofzuul.rooms.Exit;
 
 public class Controller implements Initializable {
     
     private Game game;
-
-    Player player = new Player();
 
     @FXML
     private ProgressBar healthBar;
@@ -26,8 +32,6 @@ public class Controller implements Initializable {
     private TextArea textArea;
     @FXML
     private Button actionButtonPay;
-    @FXML
-    private Button actionButtonAsk;
     @FXML
     private Button actionButtonHelp;
     @FXML
@@ -39,6 +43,9 @@ public class Controller implements Initializable {
     @FXML
     private Button East;
     @FXML
+    private ComboBox<ItemType> comboBoxAsk;
+    private ObservableList<ItemType> ItemTypeList;
+    @FXML
     private Label clock;
     @FXML
     private Label money;
@@ -47,27 +54,42 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         Game game = new Game();
         this.game = game;
-        showHealthBar(); 
+        showHealthBar();
         showWeightBar();
+        ItemTypeList = FXCollections.observableArrayList();
+        for (ItemType itemType : game.getItemsTypeList()) {
+            this.ItemTypeList.add(itemType);
+        }
+        comboBoxAsk.setItems(ItemTypeList);
         printWelcome();
 	clock.setText(game.getTime().getNiceFormattedTime());
-	money.setText(player.getMoney());
+	money.setText(game.getPlayer().getMoney());
     }
     
     @FXML
     private void handleActionButtons(ActionEvent event) {
         if(event.getSource() == actionButtonPay) {
-            textArea.appendText("Pay");
+            textArea.appendText(game.pay() + "\n");
+            if (game.getPlayer().getCurrentRoom() instanceof Exit) {
+                textArea.appendText("Your score is saved and you can quit safely." + "\n");
+            }
 	    showWeightBar();
 	    clock.setText(game.getTime().getNiceFormattedTime());
-	    money.setText(player.getMoney());
+	    money.setText(game.getPlayer().getMoney());
         }
-        if(event.getSource() == actionButtonAsk) {
-            textArea.appendText("Ask");
+        if(event.getSource() == comboBoxAsk) {
+            this.game.getTime().updateTime(5);
+            if (game.getPlayer().getCurrentRoom().hasEmployee()) {    
+                String itemType = comboBoxAsk.getSelectionModel().getSelectedItem().toString();
+                String helpAnswer = this.game.getPlayer().getCurrentRoom().askForHelp(ItemType.get(itemType));
+                textArea.appendText(helpAnswer);
+            } else {
+                textArea.appendText("There is no employees in this room you can ask." + "\n");
+            }
         }
         
         if(event.getSource() == actionButtonHelp) {
-            textArea.appendText("Help");
+            textArea.appendText(game.printHelp());
         }
 	
     }
@@ -97,7 +119,6 @@ public class Controller implements Initializable {
      * Prints the welcome message and a description of the current room
      */
     private void printWelcome() {
-        textArea.appendText("\n");
         textArea.appendText("Welcöme möney spender.\n");
         textArea.appendText("Tensiön is high at IKEA Ödense as yöu are waiting tö shöp-amök.\n");
         textArea.appendText("It's BLACK FRIDAY and yöu're ön the löököut för the best öffers pössible tö furnish yöur new appartment.\n");
@@ -110,11 +131,11 @@ public class Controller implements Initializable {
     }
     
     public void showHealthBar() {
-        this.healthBar.setProgress(((double)(player.getLife()))/100);
+        this.healthBar.setProgress(((double)(this.game.getPlayer().getLife()))/100);
     }
     
     public void showWeightBar() {
-        this.weightBar.setProgress(player.getCarryWeight()/100);
+        this.weightBar.setProgress(this.game.getPlayer().getCarryWeight()/100);
     }
     
 }

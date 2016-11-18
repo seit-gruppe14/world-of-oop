@@ -84,17 +84,24 @@
                                         </TableView>
                                         <BorderPane prefHeight="200.0" prefWidth="200.0">
                                             <left>
-                                                <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="30.0" BorderPane.alignment="CENTER">
-                                                    <children>
-                                                        <Button fx:id="actionButtonPay" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActionButtons" text="Pay" />
-                                                        <Button fx:id="actionButtonAsk" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActionButtons" text="Ask" />
-                                                        <Button fx:id="actionButtonHelp" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActionButtons" text="Help">
-                                                            <VBox.margin>
-                                                                <Insets />
-                                                            </VBox.margin>
-                                                        </Button>
-                                                    </children>
-                                                </VBox>
+                                    <AnchorPane>
+                                       <children>
+                                                      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="30.0" BorderPane.alignment="CENTER">
+                                                          <children>
+                                                              <Button fx:id="actionButtonPay" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActionButtons" prefHeight="27.0" prefWidth="90.0" text="Pay" />
+                                                <ComboBox fx:id="comboBoxAsk" onAction="#handleActionButtons" prefWidth="90.0" promptText="Ask" />
+                                                              <Button fx:id="actionButtonHelp" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActionButtons" text="Help">
+                                                                  <VBox.margin>
+                                                                      <Insets />
+                                                                  </VBox.margin>
+                                                              </Button>
+                                                          </children>
+                                                      </VBox>
+                                       </children>
+                                       <BorderPane.margin>
+                                          <Insets />
+                                       </BorderPane.margin>
+                                    </AnchorPane>
                                             </left>
                                             <right>
                                                 <GridPane BorderPane.alignment="CENTER">

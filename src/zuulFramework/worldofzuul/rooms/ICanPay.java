@@ -17,5 +17,5 @@ public interface ICanPay {
      * @param game    The game instance running
      * @return A boolean indicating if the purchase was successful
      */
-    boolean buy(Player player, Command command, Game game);
+    String buy(Player player, Game game);
 }
