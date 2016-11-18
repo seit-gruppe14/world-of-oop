@@ -1,11 +1,11 @@
 package zuulFramework.worldofzuul.gui;
-import static java.lang.Compiler.command;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import zuulFramework.worldofzuul.Game;
 import zuulFramework.worldofzuul.commands.CommandWord;
@@ -14,7 +14,15 @@ import zuulFramework.worldofzuul.entities.Player;
 public class Controller implements Initializable {
     
     private Game game;
-    
+
+    Player player = new Player();
+
+    @FXML
+    private ProgressBar healthBar;
+    @FXML
+    private ProgressBar weightBar;
+    @FXML
+    private TextArea textArea;
     @FXML
     private Button actionButtonPay;
     @FXML
@@ -29,13 +37,13 @@ public class Controller implements Initializable {
     private Button South;
     @FXML
     private Button East;
-    @FXML
-    private TextArea textArea;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Game game = new Game();
         this.game = game;
+        showHealthBar();
+        showWeightBar(); 
         printWelcome();
     }
     
@@ -85,5 +93,13 @@ public class Controller implements Initializable {
         textArea.appendText(String.format("If you need assistance type '%s' tö ask öne öf the blönde IKEA emplöyees.%n\n", CommandWord.HELP));
         textArea.appendText("\n");
         textArea.appendText("\n");
+    }
+    
+    public void showHealthBar() {
+        this.healthBar.setProgress(((double)(player.getLife()))/100);
+    }
+    
+    public void showWeightBar() {
+        this.weightBar.setProgress(player.getCarryWeight()/100);
     }
 }

@@ -19,7 +19,7 @@ public abstract class InventoryEntity extends MovingEntity {
      * The MAX_CARRY_WEIGHT indicates the player's maximum carry weight
      */
     private static final double MAX_CARRY_WEIGHT = 100.0;
-
+    
     /**
      * Returns the player's carry weight.
      *
@@ -96,5 +96,4 @@ public abstract class InventoryEntity extends MovingEntity {
     public void setItems(List<Item> items) {
         this.items = items;
     }
-
 }
