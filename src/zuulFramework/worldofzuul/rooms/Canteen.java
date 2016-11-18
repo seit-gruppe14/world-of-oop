@@ -24,8 +24,9 @@ public class Canteen extends Room implements ICanPay {
      * @return always returns true when a player buys food
      */
     @Override
-    public boolean buy(Player player, Command command, Game game) {
-
+    public String buy(Player player, Game game) {
+        return "";
+        /*
         if (command.hasSecondWord()) {
             // Use command to define how much life a player wishes for, depends on 
             // how much food they buy
@@ -52,6 +53,7 @@ public class Canteen extends Room implements ICanPay {
             System.out.println("You must specify how much you would by for");
         }
         return false;
+        */
     }
 
 }

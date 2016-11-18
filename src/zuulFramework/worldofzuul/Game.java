@@ -187,11 +187,11 @@ public class Game implements ITimeEventAble {
                 drop(command);
                 break;
             case PAY:
-                wantToQuit = pay(command);
+                //wantToQuit = pay(command);
                 break;
             case ASK:
                 if (player.getCurrentRoom().hasEmployee()) {
-                    askForHelp(command);
+                    //askForHelp(command);
                 } else {
                     System.out.println("There is not employee in this room you can ask.");
                 }
@@ -203,42 +203,32 @@ public class Game implements ITimeEventAble {
     /**
      * Prints a welcome to the user And a list of the commands that can be used
      */
-    private void printHelp() {
-        // Make new list of items to buy
+    public String printHelp() {
         List<ItemType> itemsToBuy = new ArrayList<ItemType>();
-        for (ItemType itemType : itemList) {
+        for (ItemType itemType : getItemsTypeList()) {
             itemsToBuy.add(itemType);
         }
 
-        // Copy both bought items and items in inventory
-        // to new list
         List<Item> boughtItems = new ArrayList<>();
         boughtItems.addAll(player.getBoughtItems());
         boughtItems.addAll(player.getItems());
-        
-        // If the item is bought by the player 
-        // remove the item from itemsToBuy
+
         for (Item boughtItem : boughtItems) {
             itemsToBuy.remove(boughtItem.getType());
         }
+        StringBuilder stringBuilder = new StringBuilder();
         
-        // if you haven't bought every item, then print the rest of 
-        // itemsToBuy
         if (itemsToBuy.size() > 0) {
-            System.out.println("You still need to buy the following:");
-            
-            // Print the list of items you still need to buy
+            stringBuilder.append("You still need to buy the following:").append("\n");
+
             for (ItemType itemType : itemsToBuy) {
-                System.out.println(itemType.toString());
+                stringBuilder.append(itemType.toString()).append("\n");
             }
-        
+
         } else {
-            System.out.println("You have bought everything you need. ");
+            stringBuilder.append("You have bought everything you need.");
         }
-        System.out.println();
-        System.out.println("Your command words are:");
-        parser.showCommands();
-        System.out.println("Type a command word to get further information.");
+        return stringBuilder.toString();
     }
 
     /**
@@ -430,56 +420,13 @@ public class Game implements ITimeEventAble {
      *
      * @param command the command
      */
-    public boolean pay(Command command) {
-
-        // Check if the currentroom is a room where you can pay
+    public String pay() {
         Room currentRoom = player.getCurrentRoom();
-        // If you can pay, then you pay
         if (currentRoom instanceof ICanPay) {
             ICanPay payRoom = (ICanPay) currentRoom;
-            payRoom.buy(player, command, this);
-
-        } // else print an error
-        else {
-            System.out.println("There is nowhere you can pay in this room");
-        }
-        if (currentRoom instanceof Exit) {
-            System.out.println("If you wish to quit the game type 'quit'");
-            String wishToQuit;
-            Scanner quit = new Scanner(System.in);
-            wishToQuit = quit.nextLine();
-            if (wishToQuit.equalsIgnoreCase("quit")) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * A player can ask for help when he enters a room if he wants to
-     *
-     * @param command the command
-     */
-    public void askForHelp(Command command) {
-
-        // Check if the player ask for help with a specific item
-        if (command.hasSecondWord()) {
-            String secondWord = command.getSecondWord();
-            ItemType itemType = ItemType.get(secondWord);
-            if (itemType == ItemType.NONE) {
-                System.out.println("The blonde assistant doesn't know about that thing. ");
-            } else {
-                player.getCurrentRoom().askForHelp(itemType);
-            }
-            time.updateTime(5);
-        } // Else print a list with the items that you can get help with out
-        else {
-            System.out.println("You can ask for help for finding these items:");
-            for (ItemType itemType : ItemType.values()) {
-                if (itemType != ItemType.NONE) {
-                    System.out.println(itemType.toString());
-                }
-            }
+            return payRoom.buy(player, this);
+        } else {
+            return "There is nowhere you can pay in this room";
         }
     }
 
@@ -527,6 +474,14 @@ public class Game implements ITimeEventAble {
     
     public void extendGameTime(int time){
         gameEndTime += time;
+    }
+    
+    public ItemType[] getItemsTypeList (){
+        return this.itemList;
+    }
+    
+    public Time getTime() {
+        return this.time;
     }
 
 }
