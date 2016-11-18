@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import zuulFramework.worldofzuul.Game;
@@ -43,8 +44,11 @@ public class Controller implements Initializable {
     private Button East;
     @FXML
     private ComboBox<ItemType> comboBoxAsk;
-    
     private ObservableList<ItemType> ItemTypeList;
+    @FXML
+    private Label clock;
+    @FXML
+    private Label money;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -58,6 +62,8 @@ public class Controller implements Initializable {
         }
         comboBoxAsk.setItems(ItemTypeList);
         printWelcome();
+	clock.setText(game.getTime().getNiceFormattedTime());
+	money.setText(game.getPlayer().getMoney());
     }
     
     @FXML
@@ -67,6 +73,9 @@ public class Controller implements Initializable {
             if (game.getPlayer().getCurrentRoom() instanceof Exit) {
                 textArea.appendText("Your score is saved and you can quit safely." + "\n");
             }
+	    showWeightBar();
+	    clock.setText(game.getTime().getNiceFormattedTime());
+	    money.setText(game.getPlayer().getMoney());
         }
         if(event.getSource() == comboBoxAsk) {
             this.game.getTime().updateTime(5);
@@ -75,13 +84,14 @@ public class Controller implements Initializable {
                 String helpAnswer = this.game.getPlayer().getCurrentRoom().askForHelp(ItemType.get(itemType));
                 textArea.appendText(helpAnswer);
             } else {
-                textArea.appendText("There is no employees in this room you can ask.");
+                textArea.appendText("There is no employees in this room you can ask." + "\n");
             }
         }
         
         if(event.getSource() == actionButtonHelp) {
             textArea.appendText(game.printHelp());
         }
+	
     }
     
     @FXML
@@ -89,6 +99,7 @@ public class Controller implements Initializable {
         if (event.getSource()==North) {
             System.out.println("You went north");
             textArea.appendText("You went North \n");
+
             //game
         } else if(event.getSource()==West) {
             System.out.println("You went West");
@@ -99,7 +110,9 @@ public class Controller implements Initializable {
         }else{
             System.out.println("You went east");
             textArea.appendText("You went East \n");
-        }
+	}
+	showHealthBar();
+	clock.setText(game.getTime().getNiceFormattedTime());
     }
     
     /**
@@ -124,4 +137,5 @@ public class Controller implements Initializable {
     public void showWeightBar() {
         this.weightBar.setProgress(this.game.getPlayer().getCarryWeight()/100);
     }
+    
 }

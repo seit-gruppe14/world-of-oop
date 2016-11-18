@@ -134,7 +134,7 @@ public class Room {
         // is in the room they are at
         if (this.itemTypes.contains(itemType)) {
             // Tell the user they are already in the room
-            return "The items you are looking for are in this room.";
+            return "The items you are looking for are in this room.\n";
         }
 
         // Loop over all the nearby room
@@ -143,10 +143,10 @@ public class Room {
         String direction = findRoomWithItems(itemType, this.getExits().entrySet(), "", checkedRooms);
         // We couldn't find the itemtype anywhere
         if (direction == null) {
-            return "Couldn't find any room that contains this item.";
+            return "Couldn't find any room that contains this item.\n";
         } else {
             direction = shortenDirection(direction);
-            return String.format("The item you are looking for is %s of this room. \n", direction);
+            return String.format("The item you are looking for is %s of this room.\n", direction);
         }
     }
 

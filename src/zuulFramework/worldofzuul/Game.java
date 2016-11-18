@@ -483,5 +483,4 @@ public class Game implements ITimeEventAble {
     public Time getTime() {
         return this.time;
     }
-
 }

@@ -26,7 +26,7 @@ public class Player extends InventoryEntity{
     /**
      * The money indicates the remaining money of the Player
      */
-    private int money;
+    private int money = 10000;
     /**
      * An array list of items the player has bought
      */
@@ -94,8 +94,8 @@ public class Player extends InventoryEntity{
      *
      * @return money which is an int representation of the player's life
      */
-    public int getMoney() {
-        return money;
+    public String getMoney() {
+        return Integer.toString(money) + " SEK";
     }
 
     /**
