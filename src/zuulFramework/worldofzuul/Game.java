@@ -174,7 +174,7 @@ public class Game implements ITimeEventAble {
                 break;
             // If the user ask to go to a certain room, to there
             case GO:
-                goRoom(command);
+                //goRoom(command);
                 break;
             // If the user asked to quit the game, quit
             case QUIT:
@@ -247,7 +247,12 @@ public class Game implements ITimeEventAble {
      *
      * @param command the command to check
      */
-    private void goRoom(Command command) {
+    private void goRoom(Direction direction) {
+        /*
+        if (direction == Direction.NORTH) {
+            this.player.move();
+        }*/
+        /*
         // Check if the command has a room to go to
         if (!command.hasSecondWord()) {
             System.out.println("Go where?");
@@ -275,7 +280,7 @@ public class Game implements ITimeEventAble {
             if (nextRoom.hasEmployee()) {
                 System.out.println("You met an employee and can ask for the location of an item.\n");
             }
-        }
+        }*/
     }
 
     /**
@@ -523,4 +528,5 @@ public class Game implements ITimeEventAble {
     public void extendGameTime(int time){
         gameEndTime += time;
     }
+
 }
