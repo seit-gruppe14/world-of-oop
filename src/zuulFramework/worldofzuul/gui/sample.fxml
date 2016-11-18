@@ -71,9 +71,9 @@
                                             <left>
                                                 <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="30.0" BorderPane.alignment="CENTER">
                                                     <children>
-                                                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Pay" />
-                                                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Ask" />
-                                                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Help">
+                                                        <Button fx:id="actionButtonPay" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActionButtons" text="Pay" />
+                                                        <Button fx:id="actionButtonAsk" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActionButtons" text="Ask" />
+                                                        <Button fx:id="actionButtonHelp" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActionButtons" text="Help">
                                                             <VBox.margin>
                                                                 <Insets />
                                                             </VBox.margin>
