@@ -38,12 +38,12 @@
                                 <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                                     <children>
                                         <BorderPane>
-                                            <left>
-                                                <Label maxWidth="1.7976931348623157E308" text="12:350" />
-                                            </left>
                                             <right>
                                                 <Label maxWidth="1.7976931348623157E308" text="945 SEK" />
                                             </right>
+                                 <left>
+                                    <Label fx:id="clock" text="Label" BorderPane.alignment="CENTER" />
+                                 </left>
                                         </BorderPane>
                                         <Label text="Health" />
                                         <ProgressBar fx:id="healthBar" maxWidth="1.7976931348623157E308" progress="0.0">

@@ -528,5 +528,8 @@ public class Game implements ITimeEventAble {
     public void extendGameTime(int time){
         gameEndTime += time;
     }
-
+    
+    public Time getTime() {
+	return this.time;
+    }
 }

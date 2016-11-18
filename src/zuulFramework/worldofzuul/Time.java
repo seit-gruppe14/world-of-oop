@@ -8,6 +8,8 @@ package zuulFramework.worldofzuul;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javafx.scene.control.Label;
+import zuulFramework.worldofzuul.gui.Controller;
 
 /**
  *
@@ -32,6 +34,7 @@ public class Time {
     public Time(Game game) {
         this.game = game;
         this.callbacks = new ArrayList<TimeCallback>();
+	
     }
     
     public List<TimeCallback> getList() {
