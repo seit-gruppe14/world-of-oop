@@ -1,5 +1,6 @@
 package zuulFramework.worldofzuul.entities;
 
+import zuulFramework.worldofzuul.gui.IDrawable;
 import zuulFramework.worldofzuul.rooms.Room;
 
 import java.util.Map;
@@ -8,7 +9,7 @@ import java.util.Set;
 /**
  * Describes an entity that can move around between rooms
  */
-public abstract class MovingEntity extends Entity {
+public abstract class MovingEntity extends Entity implements IDrawable {
     public void move() {
         Set<Map.Entry<String, Room>> rooms;
         rooms = currentRoom.getExits().entrySet();
@@ -25,5 +26,11 @@ public abstract class MovingEntity extends Entity {
             }
             iterator++;
         }
+    }
+
+    @Override
+    public void setCurrentRoom(Room targetRoom) {
+        super.setCurrentRoom(targetRoom);
+        updateDraw();
     }
 }

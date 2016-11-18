@@ -8,8 +8,6 @@ package zuulFramework.worldofzuul;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import javafx.scene.control.Label;
-import zuulFramework.worldofzuul.gui.Controller;
 
 /**
  *
@@ -66,7 +64,9 @@ public class Time {
      */
     private void doTimeEvent() {
         //Run through all the timecallbacks 
-        for (TimeCallback callback : this.callbacks) {
+        List<TimeCallback> callbacks1 = this.callbacks;
+        for (int i = 0; i < callbacks1.size(); i++) {
+            TimeCallback callback = callbacks1.get(i);
             // Get callbacks and save it in the variable event, 
             // type ITimeEventAble
             ITimeEventAble event = callback.getCallback();
@@ -75,8 +75,8 @@ public class Time {
             // time between events then use the method timeCallback to call time
             // and player and then set the timeSinceLastCallback to 0
             if (callback.getTimeSinceLastCallback() >= event.getTimeBetweenEvents()) {
-                event.timeCallback(this.time, game.getPlayer());
                 callback.setTimeSinceLastCallback(0);
+                event.timeCallback(this.time, game.getPlayer());
             }
         }
     }
@@ -114,12 +114,14 @@ public class Time {
             this.time++;
             // Call a method doTimeEvent
             doTimeEvent();
-            // Run through all the timecallbacks
-            for (TimeCallback callback : callbacks) {
-                // set time since last callback, by using get time since last
-                // callback and add timeDif
-                callback.setTimeSinceLastCallback(callback.getTimeSinceLastCallback() + timeDif);
-            }
+
+        }
+
+        // Run through all the timecallbacks
+        for (TimeCallback callback : callbacks) {
+            // set time since last callback, by using get time since last
+            // callback and add timeDif
+            callback.setTimeSinceLastCallback(callback.getTimeSinceLastCallback() + timeDif);
         }
     }
 

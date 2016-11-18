@@ -138,6 +138,6 @@ description=At a place where nerds spend their time
 numberOfMonsters=6
 numberOfEmployees=0
 specialItem=1
-links=1:entrance,2:kitchen,3:ballroom,4:canteen,5:dinningRoom,6:exit,7:livingRoom,8:bedroom,9:childrensRoom,10:office,11:toilet
+links=1:entrance,2:kitchen,3:ballroom,4:canteen,5:dinningRoom,6:exit,7:livingRoom,8:bedroom,9:childrensRoom,10:office,11:toilet,11:east
 keyType=cutlery
 itemTypes=computer

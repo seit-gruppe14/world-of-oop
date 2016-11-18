@@ -1,15 +1,20 @@
 package zuulFramework.worldofzuul.rooms;
 
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.shape.Line;
 import zuulFramework.worldofzuul.Direction;
 import zuulFramework.worldofzuul.entities.Employee;
 import zuulFramework.worldofzuul.entities.Entity;
-import zuulFramework.worldofzuul.entities.ItemType;
 import zuulFramework.worldofzuul.entities.Item;
+import zuulFramework.worldofzuul.entities.ItemType;
+import zuulFramework.worldofzuul.gui.IDrawable;
+import zuulFramework.worldofzuul.gui.Offset;
 
 import java.util.*;
 
 
-public class Room {
+public class Room implements IDrawable {
     /**
      * Describes the current room.
      */   
@@ -29,6 +34,8 @@ public class Room {
      * A map of rooms used save exits.
      */
     private HashMap<String, Room> exits;
+    private boolean hasDrawn = false;
+    private Offset location = null;
 
     /**
      * Construct at room with a description and a set number of items in it, each room has a number of exits.
@@ -41,10 +48,10 @@ public class Room {
         this.description = description;
         // Create the hashmaps to save exists.
         exits = new HashMap<String, Room>();
-        
+
         this.id = id;
-        
-        
+
+
     }
 
     /**
@@ -275,14 +282,15 @@ public class Room {
     public void setLock(boolean isLocked) {
         this.isLocked = isLocked;
     }
+
     public void setKey(String key){
         this.key=key;
     }
-    
+
     public boolean isLocked (){
         return this.isLocked;
     }
-    
+
     public boolean unlockRoom(Item item){
         if (item.getType().toString().equalsIgnoreCase(key)) {
             System.out.println("You unlocked the room");
@@ -292,5 +300,115 @@ public class Room {
             System.out.println("You didnt unlock the room");
             return false;
         }
+    }
+
+    @Override
+    public void addToScene(ObservableList<Node> drawAt, Offset offset) {
+        if (hasDrawn) return;
+        hasDrawn = true;
+        this.location = offset;
+        final double doorSpace = 60;
+        final double wallLength = 100;
+        double topX = offset.X;
+        double topY = offset.Y;
+
+        // Draw north side
+        Line l = new Line(topX, topY, topX + wallLength, topY);
+        drawAt.add(l);
+
+        // Check if we have a door to the north
+        if (exits.containsKey(Direction.NORTH)) {
+            // If we do, then make space for a door
+            double endX = topX + (wallLength - doorSpace) / 2;
+            l.setEndX(endX);
+            Line l2 = new Line(topX + (wallLength - doorSpace) / 2 + doorSpace, topY, topX + wallLength, topY);
+            drawAt.add(l2);
+        }
+
+        // Draw east side
+        l = new Line(topX + wallLength, topY, topX + wallLength, topY + wallLength);
+        drawAt.add(l);
+
+        if (exits.containsKey(Direction.EAST)) {
+            double endY = topY + (wallLength - doorSpace) / 2;
+            l.setEndY(endY);
+            Line l2 = new Line(topX + wallLength, topY + (wallLength - doorSpace) / 2 + doorSpace, topX + wallLength, topY + wallLength);
+            drawAt.add(l2);
+        }
+
+        // Draw west side
+        l = new Line(topX, topY, topX, topY + wallLength);
+        drawAt.add(l);
+
+        if (exits.containsKey(Direction.WEST)) {
+            double endY = topY + (wallLength - doorSpace) / 2;
+            l.setEndY(endY);
+            Line l2 = new Line(topX, topY + (wallLength - doorSpace) / 2 + doorSpace, topX, topY + wallLength);
+            drawAt.add(l2);
+        }
+
+        // Draw south side
+        l = new Line(topX, topY + wallLength, topX + wallLength, topY + wallLength);
+        drawAt.add(l);
+
+        if (exits.containsKey(Direction.SOUTH)) {
+            double endX = topX + (wallLength - doorSpace) / 2;
+            l.setEndX(endX);
+            Line l2 = new Line(topX + (wallLength - doorSpace) / 2 + doorSpace, topY + wallLength, topX + wallLength, topY + wallLength);
+            drawAt.add(l2);
+        }
+
+        for (Entity entity : this.entities) {
+            if (entity instanceof IDrawable) {
+                ((IDrawable) entity).addToScene(drawAt, offset);
+            }
+        }
+    }
+
+    @Override
+    public void updateDraw() {
+
+    }
+
+    public Offset calculateOffsetToRoom(Room r) {
+        if (r == this) {
+            return new Offset();
+        }
+        List<Room> searchedRooms = new ArrayList<Room>();
+        searchedRooms.add(this);
+        for (Map.Entry<String, Room> entry : this.getExits().entrySet()) {
+            Offset o = Offset.getOffset(entry.getKey());
+            if (o == null) continue;
+            if (entry.getValue() == r) return o;
+
+            o = calculateOffset(r, entry.getValue().getExits().entrySet(), o, searchedRooms);
+            if (o != null) return o;
+        }
+        return null;
+    }
+
+    private Offset calculateOffset(Room r, Set<Map.Entry<String, Room>> rooms, Offset currentOffset, List<Room> searchedRooms) {
+
+        for (Map.Entry<String, Room> subEntry : rooms) {
+            // If we checked this room, then don't check it again
+            if (searchedRooms.contains(subEntry.getValue())) continue;
+
+            Offset o = Offset.getOffset(subEntry.getKey());
+            if (o == null) {
+                continue;
+            }
+            searchedRooms.add(subEntry.getValue());
+
+            Offset totalOffset = currentOffset.add(o);
+            if (subEntry.getValue() == r) return totalOffset;
+            o = calculateOffset(r, subEntry.getValue().getExits().entrySet(), totalOffset, searchedRooms);
+            if (o != null) return o;
+        }
+        // Nothing was found
+        return null;
+    }
+
+    public Offset getLocation() {
+        return location;
     }
 }

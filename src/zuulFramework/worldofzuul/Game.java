@@ -7,23 +7,17 @@ import zuulFramework.worldofzuul.entities.Item;
 import zuulFramework.worldofzuul.entities.ItemType;
 import zuulFramework.worldofzuul.entities.Player;
 import zuulFramework.worldofzuul.helpers.SillyMessages;
-import zuulFramework.worldofzuul.rooms.Exit;
-import zuulFramework.worldofzuul.rooms.Room;
-import zuulFramework.worldofzuul.rooms.SalesRoom;
-import zuulFramework.worldofzuul.rooms.WorldLoader;
-import zuulFramework.worldofzuul.rooms.ICanPay;
-import zuulFramework.worldofzuul.rooms.IHaveSpecialEvent;
+import zuulFramework.worldofzuul.rooms.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * The "main" in the game
  */
 public class Game implements ITimeEventAble {
 
+    private final Room startRoom;
     private int gameEndTime = 22 * 60;
     /**
      * Handles reading commands from the user
@@ -81,6 +75,8 @@ public class Game implements ITimeEventAble {
         // Add own time callback
         // witch takes an instance of the Game object as a parameter
         time.addTimeEvent(this);
+
+        this.startRoom = getPlayer().getCurrentRoom();
 
     }
 
@@ -217,7 +213,7 @@ public class Game implements ITimeEventAble {
             itemsToBuy.remove(boughtItem.getType());
         }
         StringBuilder stringBuilder = new StringBuilder();
-        
+
         if (itemsToBuy.size() > 0) {
             stringBuilder.append("You still need to buy the following:").append("\n");
 
@@ -238,10 +234,10 @@ public class Game implements ITimeEventAble {
      * @param command the command to check
      */
     private void goRoom(Direction direction) {
-        /*
-        if (direction == Direction.NORTH) {
-            this.player.move();
-        }*/
+
+//        if (direction == Direction.NORTH) {
+//            this.player.move();
+//        }
         /*
         // Check if the command has a room to go to
         if (!command.hasSecondWord()) {
@@ -475,12 +471,16 @@ public class Game implements ITimeEventAble {
     public void extendGameTime(int time){
         gameEndTime += time;
     }
-    
+
     public ItemType[] getItemsTypeList (){
         return this.itemList;
     }
-    
+
     public Time getTime() {
         return this.time;
+    }
+
+    public Room getStartRoom() {
+        return startRoom;
     }
 }

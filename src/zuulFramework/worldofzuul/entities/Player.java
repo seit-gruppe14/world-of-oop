@@ -5,15 +5,20 @@
  */
 package zuulFramework.worldofzuul.entities;
 
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
+import zuulFramework.worldofzuul.Game;
+import zuulFramework.worldofzuul.gui.Offset;
+import zuulFramework.worldofzuul.gui.animations.MoveTransition;
 import zuulFramework.worldofzuul.helpers.SillyMessages;
+import zuulFramework.worldofzuul.rooms.IHaveSpecialEvent;
 import zuulFramework.worldofzuul.rooms.Room;
-
+import zuulFramework.worldofzuul.rooms.SalesRoom;
 
 import java.util.ArrayList;
 import java.util.List;
-import zuulFramework.worldofzuul.Game;
-import zuulFramework.worldofzuul.rooms.IHaveSpecialEvent;
-import zuulFramework.worldofzuul.rooms.SalesRoom;
 
 /**
  * @author Christian
@@ -31,6 +36,7 @@ public class Player extends InventoryEntity{
      * An array list of items the player has bought
      */
     private List<Item> boughtItems = new ArrayList<Item>();
+    private Circle drawed = null;
 
     /**
      * Sets the current room of the player based on the direction
@@ -40,15 +46,15 @@ public class Player extends InventoryEntity{
      * return null
      */
     public Room goRoom(String direction) {
-        
+
         Room nextRoom = currentRoom.getExit(direction);
         if (nextRoom != null) {
-            
+
             if (nextRoom.isLocked()) {
                 for (Item item : items) {
                     if(nextRoom.unlockRoom(item)) {
                         break;
-                    };
+                    }
                 }
                 if (!nextRoom.isLocked()) {
                     this.setCurrentRoom(nextRoom);
@@ -60,9 +66,10 @@ public class Player extends InventoryEntity{
             } else {
                 System.out.println("The door is open");
                 this.setCurrentRoom(nextRoom);
+                updateDraw();
                 return nextRoom;
             }
-            
+
         } else {
             System.out.println("There is no door");
             return null;
@@ -172,7 +179,7 @@ public class Player extends InventoryEntity{
     public boolean isPlayerDead() {
         return life <= 0;
     }
-    
+
     @Override
     public String pickUp(String itemName, Game game){
         SalesRoom sr = ((SalesRoom) currentRoom);
@@ -180,11 +187,30 @@ public class Player extends InventoryEntity{
         if(item instanceof IHaveSpecialEvent) {
             ((IHaveSpecialEvent)item).doSpecialEvent(game);
             sr.removeItem(itemName);
-            
+
         } else {
             super.pickUp(itemName, game);
         }
-  
+
         return null;
+    }
+
+    @Override
+    public void addToScene(ObservableList<Node> drawAt, Offset offset) {
+        offset = offset.add(Offset.getRandomOffsetForRoom());
+        Circle circle = new Circle(offset.X, offset.Y, 5, Paint.valueOf("#000000"));
+        drawAt.add(circle);
+
+        this.drawed = circle;
+    }
+
+    @Override
+    public void updateDraw() {
+        if (drawed != null) {
+            Offset o = getCurrentRoom().getLocation().add(Offset.getRandomOffsetForRoom());
+            MoveTransition mt = new MoveTransition(drawed, o.X, o.Y);
+            mt.play();
+
+        }
     }
 }

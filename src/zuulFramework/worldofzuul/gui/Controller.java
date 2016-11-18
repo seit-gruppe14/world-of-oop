@@ -1,24 +1,23 @@
 package zuulFramework.worldofzuul.gui;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
 import zuulFramework.worldofzuul.Game;
 import zuulFramework.worldofzuul.commands.CommandWord;
-import zuulFramework.worldofzuul.entities.Item;
 import zuulFramework.worldofzuul.entities.ItemType;
-import zuulFramework.worldofzuul.entities.Player;
 import zuulFramework.worldofzuul.rooms.Exit;
+import zuulFramework.worldofzuul.rooms.Room;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
     
@@ -50,6 +49,9 @@ public class Controller implements Initializable {
     @FXML
     private Label money;
 
+    @FXML
+    private Pane mapPane;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Game game = new Game();
@@ -62,10 +64,31 @@ public class Controller implements Initializable {
         }
         comboBoxAsk.setItems(ItemTypeList);
         printWelcome();
-	clock.setText(game.getTime().getNiceFormattedTime());
-	money.setText(game.getPlayer().getMoney());
+
+        drawInitialRoom();
     }
-    
+
+    private void drawInitialRoom() {
+        Room startRoom = game.getPlayer().getCurrentRoom();
+        startRoom.addToScene(mapPane.getChildren(), new Offset());
+
+        List<Room> drawnRooms = new ArrayList<>();
+        drawnRooms.add(startRoom);
+
+        drawRooms(drawnRooms, startRoom.getExits().values(), startRoom);
+    }
+
+    private void drawRooms(List<Room> drawnRooms, Collection<Room> entries, Room startRoom) {
+        for (Room entry : entries) {
+            if (drawnRooms.contains(entry)) continue;
+            drawnRooms.add(entry);
+            entry.addToScene(mapPane.getChildren(), startRoom.calculateOffsetToRoom(entry));
+            drawRooms(drawnRooms, entry.getExits().values(), startRoom);
+        }
+        clock.setText(game.getTime().getNiceFormattedTime());
+        money.setText(game.getPlayer().getMoney());
+    }
+
     @FXML
     private void handleActionButtons(ActionEvent event) {
         if(event.getSource() == actionButtonPay) {
@@ -79,7 +102,7 @@ public class Controller implements Initializable {
         }
         if(event.getSource() == comboBoxAsk) {
             this.game.getTime().updateTime(5);
-            if (game.getPlayer().getCurrentRoom().hasEmployee()) {    
+            if (game.getPlayer().getCurrentRoom().hasEmployee()) {
                 String itemType = comboBoxAsk.getSelectionModel().getSelectedItem().toString();
                 String helpAnswer = this.game.getPlayer().getCurrentRoom().askForHelp(ItemType.get(itemType));
                 textArea.appendText(helpAnswer);
@@ -91,7 +114,7 @@ public class Controller implements Initializable {
         if(event.getSource() == actionButtonHelp) {
             textArea.appendText(game.printHelp());
         }
-	
+
     }
     
     @FXML
@@ -110,9 +133,9 @@ public class Controller implements Initializable {
         }else{
             System.out.println("You went east");
             textArea.appendText("You went East \n");
-	}
-	showHealthBar();
-	clock.setText(game.getTime().getNiceFormattedTime());
+        }
+        showHealthBar();
+        clock.setText(game.getTime().getNiceFormattedTime());
     }
     
     /**
@@ -129,13 +152,13 @@ public class Controller implements Initializable {
         textArea.appendText("\n");
         textArea.appendText("\n");
     }
-    
+
     public void showHealthBar() {
         this.healthBar.setProgress(((double)(this.game.getPlayer().getLife()))/100);
     }
-    
+
     public void showWeightBar() {
         this.weightBar.setProgress(this.game.getPlayer().getCarryWeight()/100);
     }
-    
+
 }
