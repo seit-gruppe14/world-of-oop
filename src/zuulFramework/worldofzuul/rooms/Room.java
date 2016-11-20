@@ -253,6 +253,13 @@ public class Room implements IDrawable {
         }
         return false;
     }
+
+    public boolean hasItems() {
+        if(this.itemTypes.size()>0) {
+            return true;
+        }
+        return false;
+    }
     
     public void setLock(boolean isLocked) {
         this.isLocked = isLocked;

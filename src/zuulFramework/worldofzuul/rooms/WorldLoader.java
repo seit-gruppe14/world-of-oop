@@ -38,7 +38,7 @@ public class WorldLoader {
                 // Avoid empty lines and additional whitespace
                 line = line.trim();
                 if (line.equals("")) continue;
-                System.out.println(line);
+                //System.out.println(line);
                 //Checks the parser state to enable state changes.
                 switch (ps) {
                     case AWAITING_OBJECT_TYPE:
@@ -83,11 +83,7 @@ public class WorldLoader {
                         } else {
                             throw new Exception("Unexpected result of split " + line);
                         }
-
-
                         rc.setAttribute(attribute, value);
-
-
                         break;
                 }
             }
@@ -180,8 +176,6 @@ public class WorldLoader {
         List<RoomContainer> roomContainers = readWorld(path);
         return rebuildWorld(roomContainers, time);
     }
-
-
 
     /**
      * The parser states used in rebuildWorld().

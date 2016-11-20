@@ -174,7 +174,7 @@ public class Game implements ITimeEventAble {
                 wantToQuit = quit(command);
                 break;
             case PICKUP:
-                pickUp(command);
+                //pickUp(command);
                 break;
             case DROP:
                 drop(command);
@@ -239,10 +239,9 @@ public class Game implements ITimeEventAble {
      * @param direction
      * @return String
      */
-    public String goRoom(String direction) {
+    public String handleRoomMovement(String direction) {
         
         //Room nextRoom = player.getCurrentRoom().getExit(direction);
-        
         Room nextRoom = this.player.goRoom(direction);
         
         StringBuilder stringBuilder = new StringBuilder();
@@ -288,8 +287,12 @@ public class Game implements ITimeEventAble {
      *
      * @param command the command
      */
-    public void pickUp(Command command) {
-
+    public void pickUp(String selectedItem) {
+        
+        this.player.pickUp(selectedItem, this);
+        
+        
+        /*
         // Check if the player has choosen an item to pick up
         if (command.hasSecondWord()) {
 
@@ -317,6 +320,7 @@ public class Game implements ITimeEventAble {
                 System.out.println("There is nothing in this room that can be picked up.");
             }
         }
+        */
     }
 
     private void printItemList(List<Item> items) {
