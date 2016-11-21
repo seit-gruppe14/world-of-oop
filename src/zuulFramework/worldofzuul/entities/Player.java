@@ -148,7 +148,7 @@ public class Player extends InventoryEntity{
                 for (Item item : this.items) {
                     if(nextRoom.unlockRoom(item)) {
                         break;
-                    };
+                    }
                 }
                 if (!nextRoom.isLocked()) {
                     setCurrentRoom(nextRoom);
@@ -178,6 +178,11 @@ public class Player extends InventoryEntity{
         }
 
         return null;
+    }
+
+    @Override
+    protected double moveStartDelay() {
+        return 0;
     }
 
     @Override

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Describes an entity that can move around between rooms
@@ -87,23 +88,32 @@ public abstract class MovingEntity extends Entity implements IDrawable {
         transitions.add(pathTransition);
     }
 
+    protected double moveStartDelay() {
+        return Math.random() * 3000;
+    }
+
     @Override
     public void updateDraw() {
         if (drawed != null) {
-            transitions.forEach(Animation::pause);
+            List<Transition> transitionsBefore = transitions.stream().collect(Collectors.toList());
             transitions.clear();
 
-            drawed.setCenterX(drawed.getCenterX() + drawed.getTranslateX());
-            drawed.setCenterY(drawed.getCenterY() + drawed.getTranslateY());
-            drawed.setTranslateX(0);
-            drawed.setTranslateY(0);
             Offset o = getCurrentRoom().getLocation().add(Offset.getRandomOffsetForRoom());
             MoveTransition mt = new MoveTransition(drawed, o.X, o.Y);
             mt.setOnFinished(event -> {
                 addWaitingAnimation();
             });
-            mt.play();
-            transitions.add(mt);
+
+            PauseTransition pt = new PauseTransition(Duration.millis(moveStartDelay()));
+            pt.setOnFinished(event -> {
+                transitionsBefore.forEach(Animation::pause);
+                mt.beforeStart();
+            });
+
+            Transition fullTransition = new SequentialTransition(pt, mt);
+            fullTransition.play();
+
+            transitions.add(fullTransition);
         }
     }
 }
