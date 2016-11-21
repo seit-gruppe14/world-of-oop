@@ -203,7 +203,8 @@ public class Controller implements Initializable {
         Item selectedItem = this.tableViewRoomInventory.getSelectionModel().getSelectedItem();
         
         if(isDoubleClick(selectedItem)) {
-            this.game.pickUp(selectedItem.getName());
+            String responseMessage = this.game.pickUp(selectedItem.getName());
+            this.textArea.appendText(responseMessage);
             updateWeightBar();
         }
     }
@@ -224,7 +225,6 @@ public class Controller implements Initializable {
     private boolean isDoubleClick(Item selectedItem) {
         // First if statement handles an error event if no item has been selected before.
         if (this.itemLastSelect == null) {
-            System.out.println("test1");
             this.itemLastClick = new Date();
             this.itemLastSelect = selectedItem;
         // Second if statement handles the event of a "double click"
@@ -234,7 +234,6 @@ public class Controller implements Initializable {
         (this
                 .itemLastSelect
                 .getName())) {
-            System.out.println("test2");
             // Sets a temporary click date to check wether the click was rapid.
             Date roomItemSecondClick = new Date();
             // Calculates the difference on click date to create a difference which is checkable for later use
@@ -250,7 +249,6 @@ public class Controller implements Initializable {
         // If the click is not a double click then store the clicked item and
         // click date.
         } else {
-            System.out.println("test3");
             this.itemLastClick = new Date();
             this.itemLastSelect = selectedItem;
         }

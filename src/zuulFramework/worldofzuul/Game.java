@@ -262,16 +262,16 @@ public class Game implements ITimeEventAble {
         if (player.getCurrentRoom() instanceof SalesRoom) {
             Item currentItem = this.player.pickUp(selectedItem, this);
             if (currentItem==null) {
-                return "Oh no something went horribly wrong";
+                return "Oh no something went horribly wrong\n";
             }else{
                 if (currentItem.getWeight()+player.getCarryWeight()>player.getMaxCarryWeight()) {
-                    return "Max carry weight exceeded";
+                    return "Max carry weight exceeded\n";
                 }else{
-                    return "Item was added to your inventory";
+                    return "Item was added to your inventory\n";
                 }
             }
         } else {
-            throw new Exception("Error on item pickup");
+            throw new Exception("Error on item pickup\n");
         }
     }
 
@@ -285,9 +285,9 @@ public class Game implements ITimeEventAble {
         if (player.getCurrentRoom() instanceof SalesRoom) {
             time.updateTime(5);
             this.player.drop(selectedItem.getName());
-            return "You dropped an item: " + selectedItem.getType();
+            return "You dropped an item: " + selectedItem.getType() + "\n";
         } else {
-            return "You can't drop items in this room.";
+            return "You can't drop items in this room.\n";
         }
     }
 
@@ -337,7 +337,7 @@ public class Game implements ITimeEventAble {
                 // The time is up, but the player cannot yet leave.
                 // sooo.. Game over!!
                 gameOver("You did not manage to get to the exit before IKEA closed. \n"
-                        + "The security guards threw you out, and destroyed all the things you bought.");
+                        + "The security guards threw you out, and destroyed all the things you bought.\n");
             }
         }
     }

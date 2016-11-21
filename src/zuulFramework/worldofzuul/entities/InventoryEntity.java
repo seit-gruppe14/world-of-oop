@@ -7,6 +7,7 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import zuulFramework.worldofzuul.Game;
+import zuulFramework.worldofzuul.rooms.Room;
 
 /**
  * Describes an entity that has inventory
@@ -65,12 +66,12 @@ public abstract class InventoryEntity extends MovingEntity {
      * string with an error message
      */
     public Item pickUp(String itemName, Game game) {
-        Item item = ((SalesRoom) currentRoom).removeItem(itemName);
+        Item item = ((SalesRoom) this.currentRoom).removeItem(itemName);
         if (item == null) {
             return null;
         }
         if(item.getWeight() + this.getCarryWeight() > MAX_CARRY_WEIGHT) {
-            //TODO add item back to room
+            ((SalesRoom) this.currentRoom).addItem(item);
             return item;
         }
         items.add(item);
