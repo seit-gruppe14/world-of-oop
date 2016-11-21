@@ -1,38 +1,44 @@
 package zuulFramework.worldofzuul.gui;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.Pane;
-import zuulFramework.worldofzuul.Game;
-import zuulFramework.worldofzuul.entities.ItemType;
-import zuulFramework.worldofzuul.rooms.Room;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import zuulFramework.worldofzuul.Game;
 import zuulFramework.worldofzuul.entities.Item;
+import zuulFramework.worldofzuul.entities.ItemType;
+import zuulFramework.worldofzuul.rooms.Room;
 import zuulFramework.worldofzuul.rooms.SalesRoom;
 
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Stream;
+
 public class Controller implements Initializable {
-    
-    private Game game;
-    private ObservableList<ItemType> ItemTypeList;
-    private ObservableList<Item> playerInventory;
-    private ObservableList<Item> roomInventory;
-    
+
+    public ListView<String> highscoresList;
+    public ListView<String> mapsList;
+    public BorderPane startPane;
+    public SplitPane gamePane;
     // This date is needed to handle a double click event on the room items table
     Date roomItemLastClick;
     // This item is needded to handle a dobule click event on the room items table
     Item roomItemLastSelect;
-
+    private Game game;
+    private ObservableList<ItemType> ItemTypeList;
+    private ObservableList<Item> playerInventory;
+    private ObservableList<Item> roomInventory;
     @FXML
     private ProgressBar healthBar;
     @FXML
@@ -83,9 +89,38 @@ public class Controller implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Game game = new Game();
-        this.game = game;
-        
+
+        // Display possible maps that can be played
+        try (Stream<Path> paths = Files.walk(Paths.get(""))) {
+            ObservableList<String> mapFiles = FXCollections.observableArrayList();
+
+            paths
+                    // Filter for files only, remove all folders
+                    .filter(Files::isRegularFile)
+                    // Make the Path object into a string
+                    .map(Path::toString)
+                    // Only take .wop files
+                    .filter(path -> path.endsWith(".wop"))
+                    // Only take the nice file name
+                    .map(path -> path.substring(0, path.lastIndexOf(".")))
+                    // Add each path to the collection of files
+                    .forEach(mapFiles::add);
+
+            // Actually display the items
+            mapsList.setItems(mapFiles);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Starts a new game with the specified map
+     *
+     * @param mapLocation The path to the map file for the game
+     */
+    private void initializeGame(String mapLocation) {
+        this.game = new Game(mapLocation);
+
         updateHealthBar();
         updateWeightBar();
         updatePlayerInventoryTabel();
@@ -261,5 +296,27 @@ public class Controller implements Initializable {
             this.roomItemLastClick = new Date();
             this.roomItemLastSelect = selectedItem;
         }
+    }
+
+    @FXML
+    private void onStartNewGameClicked(ActionEvent event) {
+        // If nothing is selected, then we can't start the game
+        if (mapsList.getSelectionModel().isEmpty()) {
+            // Show an error message to the player
+            new Alert(Alert.AlertType.ERROR, "Please select a map file to the right before you attempt to start the game").showAndWait();
+            return;
+        }
+
+        String mapToLoad = mapsList.getSelectionModel().getSelectedItem();
+        mapToLoad += ".wop";
+        initializeGame(mapToLoad);
+        startPane.setVisible(false);
+        gamePane.setVisible(true);
+
+    }
+
+    @FXML
+    private void onExitClicked(ActionEvent event) {
+        Platform.exit();
     }
 }

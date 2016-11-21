@@ -5,152 +5,221 @@
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.Group?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<GridPane xmlns:fx="http://javafx.com/fxml/1" alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8"
-          fx:controller="zuulFramework.worldofzuul.gui.Controller">
-    <columnConstraints>
-        <ColumnConstraints />
-    </columnConstraints>
-    <rowConstraints>
-        <RowConstraints />
-    </rowConstraints>
+<StackPane xmlns:fx="http://javafx.com/fxml/1" alignment="center" prefHeight="845.0" prefWidth="1393.0"
+           xmlns="http://javafx.com/javafx/8.0.102" fx:controller="zuulFramework.worldofzuul.gui.Controller">
     <children>
-        <StackPane prefHeight="845.0" prefWidth="1393.0">
-            <children>
-                <SplitPane dividerPositions="0.6878453038674033" prefHeight="160.0" prefWidth="200.0">
-                    <items>
-                        <StackPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                            <children>
-                                <SplitPane dividerPositions="0.7169069462647444" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
-                                    <items>
-                                        <StackPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                                            <children>
-                                                <Group>
-                                                   <children>
-                                                       <Pane fx:id="mapPane" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="0.0" />
-                                                   </children>
-                                                </Group>
-                                            </children>
-                                        </StackPane>
-                                        <StackPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                                            <children>
-                                                <TextArea fx:id="textArea" editable="false" prefHeight="200.0" prefWidth="200.0" />
-                                            </children>
-                                        </StackPane>
-                                    </items>
-                                </SplitPane>
-                            </children>
-                        </StackPane>
-                        <StackPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                            <children>
-                                <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+        <SplitPane fx:id="gamePane" dividerPositions="0.6878453038674033" prefHeight="160.0" prefWidth="200.0"
+                   visible="false">
+            <items>
+                <StackPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                    <children>
+                        <SplitPane dividerPositions="0.7169069462647444" orientation="VERTICAL" prefHeight="200.0"
+                                   prefWidth="160.0">
+                            <items>
+                                <StackPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                     <children>
-                                        <BorderPane>
-                                            <right>
-                                                <Label fx:id="money" maxWidth="1.7976931348623157E308" text="Money" />
-                                            </right>
-                                 <left>
-                                    <Label fx:id="clock" text="Time" BorderPane.alignment="CENTER" />
-                                 </left>
-                                        </BorderPane>
-                                        <Label text="Health" />
-                                        <ProgressBar fx:id="healthBar" maxWidth="1.7976931348623157E308" progress="0.0">
-                                 <effect>
-                                    <ColorAdjust hue="-1.0">
-                                       <input>
-                                          <Glow />
-                                       </input>
-                                    </ColorAdjust>
-                                 </effect></ProgressBar>
-                                        <Label text="Weight" />
-                                        <ProgressBar fx:id="weightBar" maxWidth="1.7976931348623157E308" prefWidth="200.0" progress="0.0">
-                                 <effect>
-                                    <ColorAdjust hue="-0.75">
-                                       <input>
-                                          <Glow />
-                                       </input>
-                                    </ColorAdjust>
-                                 </effect></ProgressBar>
-                                        <Label text="Inventory" />
-                                        <TableView fx:id="tableViewPlayerInventory" onMouseClicked="#handleRowSelect" prefHeight="200.0" prefWidth="200.0">
-                                            <columnResizePolicy>
-                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                                            </columnResizePolicy>
-                                            <columns>
-                                                <TableColumn fx:id="tableColumnPlayerInventoryName" prefWidth="75.0" text="Name" />
-                                                <TableColumn fx:id="tableColumnPlayerInventoryWeight" prefWidth="75.0" text="Weight" />
-                                                <TableColumn fx:id="tableColumnPlayerInventoryPrice" prefWidth="75.0" text="Price" />
-                                            </columns>
-                                            <VBox.margin>
-                                                <Insets />
-                                            </VBox.margin>
-                                        </TableView>
-                                        <Label text="Room inventory" />
-                                        <TableView fx:id="tableViewRoomInventory" onMouseClicked="#handleRowSelect" prefHeight="200.0" prefWidth="200.0">
-                                            <columnResizePolicy>
-                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                                            </columnResizePolicy>
-                                            <columns>
-                                                <TableColumn fx:id="tableColumnRoomInventoryName" prefWidth="75.0" text="Name" />
-                                                <TableColumn fx:id="tableColumnRoomInventoryWeight" prefWidth="75.0" text="Weight" />
-                                                <TableColumn fx:id="tableColumnRoomInventoryPrice" prefWidth="75.0" text="Price" />
-                                            </columns>
-                                        </TableView>
-                                        <BorderPane prefHeight="200.0" prefWidth="200.0">
-                                            <left>
-                                    <AnchorPane>
-                                       <children>
-                                                      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="30.0" BorderPane.alignment="CENTER">
-                                                          <children>
-                                                              <Button fx:id="actionButtonPay" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActionButtons" prefHeight="27.0" prefWidth="90.0" text="Pay" />
-                                                <ComboBox fx:id="comboBoxAsk" onAction="#handleActionButtons" prefWidth="90.0" promptText="Ask" />
-                                                              <Button fx:id="actionButtonHelp" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActionButtons" text="Help">
-                                                                  <VBox.margin>
-                                                                      <Insets />
-                                                                  </VBox.margin>
-                                                              </Button>
-                                                          </children>
-                                                      </VBox>
-                                       </children>
-                                       <BorderPane.margin>
-                                          <Insets />
-                                       </BorderPane.margin>
-                                    </AnchorPane>
-                                            </left>
-                                            <right>
-                                                <GridPane BorderPane.alignment="CENTER">
-                                                    <columnConstraints>
-                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                    </columnConstraints>
-                                                    <rowConstraints>
-                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                    </rowConstraints>
-                                                    <children>
-                                                        <Button fx:id="North" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonMoveEvent" text="North" GridPane.columnIndex="1" />
-                                                        <Button fx:id="West" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonMoveEvent" text="West" GridPane.rowIndex="1" />
-                                                        <Button fx:id="South" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonMoveEvent" text="South" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                        <Button fx:id="East" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonMoveEvent" text="East" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                                    </children>
-                                                </GridPane>
-                                            </right>
-                                            <VBox.margin>
-                                                <Insets top="7.0" />
-                                            </VBox.margin>
-                                        </BorderPane>
+                                        <Group>
+                                            <children>
+                                                <Pane fx:id="mapPane" minHeight="0.0" minWidth="0.0" prefHeight="0.0"
+                                                      prefWidth="0.0"/>
+                                            </children>
+                                        </Group>
                                     </children>
-                                    <StackPane.margin>
-                                        <Insets bottom="15.0" left="15.0" right="15.0" top="8.0" />
-                                    </StackPane.margin>
-                                </VBox>
+                                </StackPane>
+                                <StackPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                    <children>
+                                        <TextArea fx:id="textArea" editable="false" prefHeight="200.0"
+                                                  prefWidth="200.0"/>
+                                    </children>
+                                </StackPane>
+                            </items>
+                        </SplitPane>
+                    </children>
+                </StackPane>
+                <StackPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                    <children>
+                        <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                            <children>
+                                <BorderPane>
+                                    <right>
+                                        <Label fx:id="money" maxWidth="1.7976931348623157E308" text="Money"/>
+                                    </right>
+                                    <left>
+                                        <Label fx:id="clock" text="Time" BorderPane.alignment="CENTER"/>
+                                    </left>
+                                </BorderPane>
+                                <Label text="Health"/>
+                                <ProgressBar fx:id="healthBar" maxWidth="1.7976931348623157E308" progress="0.0">
+                                    <effect>
+                                        <ColorAdjust hue="-1.0">
+                                            <input>
+                                                <Glow/>
+                                            </input>
+                                        </ColorAdjust>
+                                    </effect>
+                                </ProgressBar>
+                                <Label text="Weight"/>
+                                <ProgressBar fx:id="weightBar" maxWidth="1.7976931348623157E308" prefWidth="200.0"
+                                             progress="0.0">
+                                    <effect>
+                                        <ColorAdjust hue="-0.75">
+                                            <input>
+                                                <Glow/>
+                                            </input>
+                                        </ColorAdjust>
+                                    </effect>
+                                </ProgressBar>
+                                <Label text="Inventory"/>
+                                <TableView fx:id="tableViewPlayerInventory" onMouseClicked="#handleRowSelect"
+                                           prefHeight="200.0" prefWidth="200.0">
+                                    <columnResizePolicy>
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                                    </columnResizePolicy>
+                                    <columns>
+                                        <TableColumn fx:id="tableColumnPlayerInventoryName" prefWidth="75.0"
+                                                     text="Name"/>
+                                        <TableColumn fx:id="tableColumnPlayerInventoryWeight" prefWidth="75.0"
+                                                     text="Weight"/>
+                                        <TableColumn fx:id="tableColumnPlayerInventoryPrice" prefWidth="75.0"
+                                                     text="Price"/>
+                                    </columns>
+                                    <VBox.margin>
+                                        <Insets/>
+                                    </VBox.margin>
+                                </TableView>
+                                <Label text="Room inventory"/>
+                                <TableView fx:id="tableViewRoomInventory" onMouseClicked="#handleRowSelect"
+                                           prefHeight="200.0" prefWidth="200.0">
+                                    <columnResizePolicy>
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                                    </columnResizePolicy>
+                                    <columns>
+                                        <TableColumn fx:id="tableColumnRoomInventoryName" prefWidth="75.0" text="Name"/>
+                                        <TableColumn fx:id="tableColumnRoomInventoryWeight" prefWidth="75.0"
+                                                     text="Weight"/>
+                                        <TableColumn fx:id="tableColumnRoomInventoryPrice" prefWidth="75.0"
+                                                     text="Price"/>
+                                    </columns>
+                                </TableView>
+                                <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                    <left>
+                                        <AnchorPane>
+                                            <children>
+                                                <VBox maxHeight="1.7976931348623157E308"
+                                                      maxWidth="1.7976931348623157E308" spacing="30.0"
+                                                      BorderPane.alignment="CENTER">
+                                                    <children>
+                                                        <Button fx:id="actionButtonPay"
+                                                                maxWidth="1.7976931348623157E308"
+                                                                mnemonicParsing="false" onAction="#handleActionButtons"
+                                                                prefHeight="27.0" prefWidth="90.0" text="Pay"/>
+                                                        <ComboBox fx:id="comboBoxAsk" onAction="#handleActionButtons"
+                                                                  prefWidth="90.0" promptText="Ask"/>
+                                                        <Button fx:id="actionButtonHelp"
+                                                                maxWidth="1.7976931348623157E308"
+                                                                mnemonicParsing="false" onAction="#handleActionButtons"
+                                                                text="Help">
+                                                            <VBox.margin>
+                                                                <Insets/>
+                                                            </VBox.margin>
+                                                        </Button>
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                            <BorderPane.margin>
+                                                <Insets/>
+                                            </BorderPane.margin>
+                                        </AnchorPane>
+                                    </left>
+                                    <right>
+                                        <GridPane BorderPane.alignment="CENTER">
+                                            <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                            </rowConstraints>
+                                            <children>
+                                                <Button fx:id="North" maxHeight="1.7976931348623157E308"
+                                                        maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                                        onAction="#handleButtonMoveEvent" text="North"
+                                                        GridPane.columnIndex="1"/>
+                                                <Button fx:id="West" maxHeight="1.7976931348623157E308"
+                                                        maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                                        onAction="#handleButtonMoveEvent" text="West"
+                                                        GridPane.rowIndex="1"/>
+                                                <Button fx:id="South" maxHeight="1.7976931348623157E308"
+                                                        maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                                        onAction="#handleButtonMoveEvent" text="South"
+                                                        GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                                <Button fx:id="East" maxHeight="1.7976931348623157E308"
+                                                        maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                                        onAction="#handleButtonMoveEvent" text="East"
+                                                        GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                                            </children>
+                                        </GridPane>
+                                    </right>
+                                    <VBox.margin>
+                                        <Insets top="7.0"/>
+                                    </VBox.margin>
+                                </BorderPane>
                             </children>
-                        </StackPane>
-                    </items>
-                </SplitPane>
-            </children>
-        </StackPane>
+                            <StackPane.margin>
+                                <Insets bottom="15.0" left="15.0" right="15.0" top="8.0"/>
+                            </StackPane.margin>
+                        </VBox>
+                    </children>
+                </StackPane>
+            </items>
+        </SplitPane>
+        <BorderPane fx:id="startPane" visible="true">
+            <top>
+                <ImageView fitHeight="580.0" fitWidth="1387.0" pickOnBounds="true" preserveRatio="true"
+                           BorderPane.alignment="CENTER">
+                    <image>
+                        <Image url="@title.png"/>
+                    </image>
+                </ImageView>
+            </top>
+            <center>
+                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#onStartNewGameClicked" text="Start new game">
+                            <VBox.margin>
+                                <Insets bottom="20.0"/>
+                            </VBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#onExitClicked" text="Exit"/>
+                    </children>
+                </VBox>
+            </center>
+            <left>
+                <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <top>
+                        <Label text="Possible maps" BorderPane.alignment="CENTER"/>
+                    </top>
+                    <center>
+                        <ListView fx:id="mapsList" BorderPane.alignment="CENTER"/>
+                    </center>
+                </BorderPane>
+            </left>
+            <right>
+                <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <top>
+                        <Label text="Highscores" BorderPane.alignment="CENTER"/>
+                    </top>
+                    <center>
+                        <ListView fx:id="highscoresList" BorderPane.alignment="CENTER"/>
+                    </center>
+                </BorderPane>
+            </right>
+        </BorderPane>
     </children>
-</GridPane>
+</StackPane>

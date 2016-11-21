@@ -50,8 +50,9 @@ public class Game implements ITimeEventAble {
 
     /**
      * Creates a new game, with default values
+     * @param mapLocation
      */
-    public Game() {
+    public Game(String mapLocation) {
         // Initialize a new time, 
         // with an instance of the Game object as a parameter
         time = new Time(this);
@@ -67,7 +68,7 @@ public class Game implements ITimeEventAble {
         player = new Player();
 
         // Create all the rooms in the game
-        createRooms();
+        createRooms(mapLocation);
 
         // Initialize the parser for reading in commands
         parser = new Parser();
@@ -82,12 +83,13 @@ public class Game implements ITimeEventAble {
 
     /**
      * Create the rooms in the game and any exits between them
+     * @param mapLocation
      */
-    private void createRooms() {
+    private void createRooms(String mapLocation) {
         //Initializing the different rooms
         List<Room> rooms = null;
         try {
-            rooms = WorldLoader.LoadWorld("map.wop", time);
+            rooms = WorldLoader.LoadWorld(mapLocation, time);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -275,7 +277,6 @@ public class Game implements ITimeEventAble {
     //TODO integrate this into JavaFX
     /**
      * The player is able to pick up items in the room
-     * @param command the command
      */
     public void pickUp(String selectedItem) {
         this.player.pickUp(selectedItem, this);
@@ -320,7 +321,6 @@ public class Game implements ITimeEventAble {
 
     /**
      * Handles the player payment, and score setting.
-     * @param command the command
      */
     public String pay() {
         Room currentRoom = player.getCurrentRoom();
