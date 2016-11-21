@@ -12,6 +12,7 @@ import zuulFramework.worldofzuul.gui.IDrawable;
 import zuulFramework.worldofzuul.gui.Offset;
 
 import java.util.*;
+import javafx.scene.paint.Paint;
 
 
 public class Room implements IDrawable {
@@ -20,13 +21,15 @@ public class Room implements IDrawable {
      */   
     protected String description;
     protected ArrayList<ItemType> itemTypes = new ArrayList<ItemType>();
-
+    
+    private ArrayList<Line> lines = new ArrayList<>();
+    
     /**
      * The entities currently in the room
      */
     // Use a set, as it can't contain duplicates, which we don't want
     protected Set<Entity> entities = new HashSet<>();
-
+    
     private int id;
     private boolean isLocked;
     private String key;
@@ -36,7 +39,7 @@ public class Room implements IDrawable {
     private HashMap<String, Room> exits;
     private boolean hasDrawn = false;
     private Offset location = null;
-
+    
     /**
      * Construct at room with a description and a set number of items in it, each room has a number of exits.
      * whom are stored in a hashmap.
@@ -292,6 +295,9 @@ public class Room implements IDrawable {
         if (item.getType().toString().equalsIgnoreCase(key)) {
             System.out.println("You unlocked the room");
             isLocked=false;
+            for (Line line : lines) {
+                line.setOpacity(0);
+            }
             return true;
         } else {
             System.out.println("You didnt unlock the room");
@@ -324,6 +330,12 @@ public class Room implements IDrawable {
             double endX = topX + (wallLength - doorSpace) / 2;
             l.setEndX(endX);
             Line l2 = new Line(topX + (wallLength - doorSpace) / 2 + doorSpace, topY, topX + wallLength, topY);
+            if (isLocked) {
+              Line l3 = new Line(endX,topY,endX+60,topY);
+              l3.setStroke(Paint.valueOf("FF0000"));
+              drawAt.add(l3);
+              lines.add(l3);
+            }
             drawAt.add(l2);
         }
 
@@ -336,6 +348,12 @@ public class Room implements IDrawable {
             l.setEndY(endY);
             Line l2 = new Line(topX + wallLength, topY + (wallLength - doorSpace) / 2 + doorSpace, topX + wallLength, topY + wallLength);
             drawAt.add(l2);
+            if (isLocked) {
+                Line l3=new Line(topX+wallLength,endY,topX+wallLength,endY+60);
+                l3.setStroke(Paint.valueOf("FF0000"));
+                drawAt.add(l3);
+                lines.add(l3);
+            }
         }
 
         // Draw west side
@@ -347,6 +365,12 @@ public class Room implements IDrawable {
             l.setEndY(endY);
             Line l2 = new Line(topX, topY + (wallLength - doorSpace) / 2 + doorSpace, topX, topY + wallLength);
             drawAt.add(l2);
+            if (isLocked) {
+                Line l3=new Line(topX,endY,topX,endY+60);
+                l3.setStroke(Paint.valueOf("FF0000"));
+                drawAt.add(l3);
+                lines.add(l3);
+            }
         }
 
         // Draw south side
@@ -358,6 +382,12 @@ public class Room implements IDrawable {
             l.setEndX(endX);
             Line l2 = new Line(topX + (wallLength - doorSpace) / 2 + doorSpace, topY + wallLength, topX + wallLength, topY + wallLength);
             drawAt.add(l2);
+            if (isLocked) {
+              Line l3 = new Line(endX,topY+wallLength,endX+60,topY+wallLength);
+              l3.setStroke(Paint.valueOf("FF0000"));
+              drawAt.add(l3);
+              lines.add(l3);
+            }
         }
 
         for (Entity entity : this.entities) {

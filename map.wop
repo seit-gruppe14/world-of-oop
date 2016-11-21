@@ -55,7 +55,7 @@ numberOfMonsters=3
 numberOfEmployees=0
 specialItem=0
 links=2:west,6:north,7:east,8:south
-keyType=
+keyType=cutlery
 itemTypes=dinnerchair,dinnertable
 
 [room]
