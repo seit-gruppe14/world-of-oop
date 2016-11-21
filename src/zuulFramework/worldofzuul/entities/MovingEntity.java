@@ -75,7 +75,7 @@ public abstract class MovingEntity extends Entity implements IDrawable {
         path.getElements().add(new LineTo(drawed.getCenterX(), drawed.getCenterY()));
 
         PathTransition pathTransition = new PathTransition();
-        pathTransition.setDuration(Duration.millis(10000 + ((int) Math.random() * 3000)));
+        pathTransition.setDuration(Duration.millis(10000 + ((int) (Math.random() * 3000))));
         pathTransition.setPath(path);
         pathTransition.setNode(this.drawed);
         pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
@@ -90,10 +90,16 @@ public abstract class MovingEntity extends Entity implements IDrawable {
     @Override
     public void updateDraw() {
         if (drawed != null) {
-            waitingAnimation.stop();
+            waitingAnimation.pause();
+            drawed.setCenterX(drawed.getCenterX() + drawed.getTranslateX());
+            drawed.setCenterY(drawed.getCenterY() + drawed.getTranslateY());
+            drawed.setTranslateX(0);
+            drawed.setTranslateY(0);
             Offset o = getCurrentRoom().getLocation().add(Offset.getRandomOffsetForRoom());
             MoveTransition mt = new MoveTransition(drawed, o.X, o.Y);
-            mt.setOnFinished(event -> addWaitingAnimation());
+            mt.setOnFinished(event -> {
+                addWaitingAnimation();
+            });
             mt.play();
         }
     }
