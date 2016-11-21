@@ -27,6 +27,11 @@ public class Controller implements Initializable {
     private ObservableList<ItemType> ItemTypeList;
     private ObservableList<Item> playerInventory;
     private ObservableList<Item> roomInventory;
+    
+    // This date is needed to handle a double click event on the room items table
+    Date roomItemLastClick;
+    // This item is needded to handle a dobule click event on the room items table
+    Item roomItemLastSelect;
 
     @FXML
     private ProgressBar healthBar;
@@ -71,21 +76,29 @@ public class Controller implements Initializable {
     @FXML
     private TableColumn<Item, Integer> tableColumnRoomInventoryPrice;
 
+    /**
+     * The controller initialization, sets the new game.
+     * @param location
+     * @param resources 
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Game game = new Game();
         this.game = game;
+        
         updateHealthBar();
         updateWeightBar();
         updatePlayerInventoryTabel();
         updateRoomInventoryTabel();
-        
         setAskCombBox();
         textArea.setText(this.game.getWelcomeMessage());
-        
         drawInitialRoom();
     }
 
+    // TODO finish comment
+    /**
+     * 
+     */
     private void drawInitialRoom() {
         Room startRoom = game.getPlayer().getCurrentRoom();
         startRoom.addToScene(mapPane.getChildren(), new Offset());
@@ -96,67 +109,94 @@ public class Controller implements Initializable {
         drawRooms(drawnRooms, startRoom.getExits().values(), startRoom);
     }
 
+    // TODO finish comment
+    /**
+     * 
+     * @param drawnRooms
+     * @param entries
+     * @param startRoom 
+     */
     private void drawRooms(List<Room> drawnRooms, Collection<Room> entries, Room startRoom) {
         for (Room entry : entries) {
             if (drawnRooms.contains(entry)) continue;
             drawnRooms.add(entry);
-            entry.addToScene(mapPane.getChildren(), startRoom.calculateOffsetToRoom(entry));
+            entry.addToScene(this.mapPane.getChildren(), startRoom.calculateOffsetToRoom(entry));
             drawRooms(drawnRooms, entry.getExits().values(), startRoom);
         }
-        clock.setText(game.getTime().getNiceFormattedTime());
-        money.setText(game.getPlayer().getMoney());
+        this.clock.setText(this.game.getTime().getNiceFormattedTime());
+        this.money.setText(this.game.getPlayer().getMoney());
     }
-
+    
+    /**
+     * This method handles the action button events, the event types are ASK, PAY, HELP
+     * @param event 
+     */
     @FXML
     private void handleActionButtons(ActionEvent event) {
-        if(event.getSource() == actionButtonPay) {
-            textArea.appendText(game.pay());
+        if(event.getSource() == this.actionButtonPay) {
+            this.textArea.appendText(this.game.pay());
 	    updateWeightBar();
-	    clock.setText(game.getTime().getNiceFormattedTime());
-	    money.setText(game.getPlayer().getMoney());
+	    this.clock.setText(this.game.getTime().getNiceFormattedTime());
+	    this.money.setText(this.game.getPlayer().getMoney());
         }
-        if(event.getSource() == comboBoxAsk) {
-            String itemType = comboBoxAsk.getSelectionModel().getSelectedItem().toString();
+        if(event.getSource() == this.comboBoxAsk) {
+            String itemType = this.comboBoxAsk.getSelectionModel().getSelectedItem().toString();
             String helpAnswer = this.game.askForHelp(itemType);
-            textArea.appendText(helpAnswer);
+            this.textArea.appendText(helpAnswer);
         }
-        if(event.getSource() == actionButtonHelp) {
-            textArea.appendText(game.printHelp());
+        if(event.getSource() == this.actionButtonHelp) {
+            this.textArea.appendText(this.game.printHelp());
         }
     }
     
+    /**
+     * This method handles the move buttons, the event types are north, west, south, east.
+     * @param event 
+     */
     @FXML
     private void handleButtonMoveEvent(ActionEvent event){
-        if (event.getSource()==North) {
-            textArea.appendText(game.handleRoomMovement("north"));
-        } else if(event.getSource()==West) {
-            textArea.appendText(game.handleRoomMovement("west"));
-        } else if(event.getSource()==South) {
-            textArea.appendText(game.handleRoomMovement("south"));
-        }else if(event.getSource()==East){
-            textArea.appendText(game.handleRoomMovement("east"));
+        if (event.getSource() == North) {
+            this.textArea.appendText(this.game.handleRoomMovement("north"));
+        } else if(event.getSource() == West) {
+            this.textArea.appendText(this.game.handleRoomMovement("west"));
+        } else if(event.getSource() == South) {
+            this.textArea.appendText(this.game.handleRoomMovement("south"));
+        }else if(event.getSource() == East){
+            this.textArea.appendText(this.game.handleRoomMovement("east"));
 	}
         updateRoomInventoryTabel();
 	updateHealthBar();
-	clock.setText(game.getTime().getNiceFormattedTime());
+	this.clock.setText(this.game.getTime().getNiceFormattedTime());
     }
 
+    /**
+     * Call this method to update the health bar
+     */
     private void updateHealthBar() {
         this.healthBar.setProgress(((double)(this.game.getPlayer().getLife()))/100);
     }
 
+    /**
+     * Call this method to update the weight bar
+     */
     private void updateWeightBar() {
         this.weightBar.setProgress(this.game.getPlayer().getCarryWeight()/100);
     }
     
+    /**
+     * Sets the items of the combo box used for the ask method.
+     */
     private void setAskCombBox() {
-        ItemTypeList = FXCollections.observableArrayList();
-        for (ItemType itemType : game.getItemsTypeList()) {
+        this.ItemTypeList = FXCollections.observableArrayList();
+        for (ItemType itemType : this.game.getItemsTypeList()) {
             this.ItemTypeList.add(itemType);
         }
-        comboBoxAsk.setItems(ItemTypeList);
+        this.comboBoxAsk.setItems(this.ItemTypeList);
     }
 
+    /**
+     * Call this method when updating the player items observable list.
+     */
     private void updatePlayerInventoryTabel() {
         this.playerInventory = FXCollections.observableArrayList();
         for(Item item : this.game.getPlayer().getItems()) {
@@ -169,32 +209,44 @@ public class Controller implements Initializable {
         this.tableViewPlayerInventory.setItems(this.playerInventory);
     }
     
+    /**
+     * Call this method when updating the room items observable list.
+     */
     private void updateRoomInventoryTabel() {
         this.roomInventory = FXCollections.observableArrayList();
         if (this.game.getPlayer().getCurrentRoom().hasItems()) {
             SalesRoom currentRoom = (SalesRoom) this.game.getPlayer().getCurrentRoom();
             for(Item item : currentRoom.getItems()) {
-                roomInventory.add(item);
+                this.roomInventory.add(item);
             }
             this.tableColumnRoomInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
             this.tableColumnRoomInventoryWeight.setCellValueFactory(new PropertyValueFactory<Item, Double>("weight"));
             this.tableColumnRoomInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
         }
-        this.tableViewRoomInventory.setItems(roomInventory);
+        this.tableViewRoomInventory.setItems(this.roomInventory);
     }
-    
-    Date roomItemLastClick;
-    Item roomItemLastSelect;
-    
+    /**
+     * Handles the item selection on room inventory, and adds the selected item
+     * to the player when double clicking.
+     * @param event MouseClickEvent transformed to a double click event.
+     */
     @FXML
     private void handleRowSelect(MouseEvent event) {
+        // Sets a current selected Item which is used for checking with last selected item.
         Item selectedItem = this.tableViewRoomInventory.getSelectionModel().getSelectedItem();
+        // First if statement handles an error event if no item has been selected before.
         if (this.roomItemLastSelect == null) {
             this.roomItemLastClick = new Date();
             this.roomItemLastSelect = selectedItem;
+        // Second if statement handles the event of a "double click"
         } else if (selectedItem.getName().equals(this.roomItemLastSelect.getName())) {
+            // Sets a temporary click date to check wether the click was rapid.
             Date roomItemSecondClick = new Date();
+            // Calculates the difference on click date to create a difference which is checkable for later use
             long roomItemClickDifference = this.roomItemLastClick.getTime() - roomItemSecondClick.getTime();
+            // If the click difference is smaller than 300 millisecounds then
+            // the item has to be added to player inventory and the tables has
+            // to be updated accordingly.
             if (roomItemClickDifference < 300) {
                 this.game.pickUp(selectedItem.getName());
                 updatePlayerInventoryTabel();
@@ -203,6 +255,8 @@ public class Controller implements Initializable {
             } else {
                 this.roomItemLastClick = roomItemSecondClick;
             }
+        // If the click is not a double click then store the clicked item and
+        // click date.
         } else {
             this.roomItemLastClick = new Date();
             this.roomItemLastSelect = selectedItem;
