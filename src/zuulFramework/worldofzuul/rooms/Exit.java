@@ -43,8 +43,6 @@ public class Exit extends Room implements ICanPay {
         // Move the items to a separate referable list of items
         player.moveItemsToBoughtItems();
 
-        return "You spend $" + sum + " and 45 minutes.\n";
+        return "You spend " + sum + " SEK and 45 minutes.\n";
     }
-
-
 }
