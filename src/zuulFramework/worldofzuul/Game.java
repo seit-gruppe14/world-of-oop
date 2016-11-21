@@ -142,7 +142,8 @@ public class Game implements ITimeEventAble {
         stringBuilder.append(player.getCurrentRoom().getLongDescription()).append("\n");
         return stringBuilder.toString();
     }
-
+    
+    //TODO remove processCommand method when all the following commands are integrated into JavaFX
     /**
      * Process the provided command, and acts upon it
      *
@@ -162,39 +163,22 @@ public class Game implements ITimeEventAble {
 
         // If the user asked for help, print that
         switch (commandWord) {
-            case HELP:
-                printHelp();
-                break;
-            // If the user ask to go to a certain room, to there
-            case GO:
-                //goRoom(command);
-                break;
             // If the user asked to quit the game, quit
             case QUIT:
                 wantToQuit = quit(command);
                 break;
-            case PICKUP:
-                pickUp(command);
-                break;
             case DROP:
                 drop(command);
-                break;
-            case PAY:
-                //wantToQuit = pay(command);
-                break;
-            case ASK:
-                if (player.getCurrentRoom().hasEmployee()) {
-                    //askForHelp(command);
-                } else {
-                    System.out.println("There is not employee in this room you can ask.");
-                }
                 break;
         }
         return wantToQuit;
     }
 
     /**
-     * Prints a welcome to the user And a list of the commands that can be used
+     * Returns the item help discription, which tells the player what items is
+     * needed to fully complete the game, the string is formatted to be handled
+     * be JavaFX.
+     * @return String
      */
     public String printHelp() {
         List<ItemType> itemsToBuy = new ArrayList<ItemType>();
@@ -224,6 +208,12 @@ public class Game implements ITimeEventAble {
         return stringBuilder.toString();
     }
 
+    /**
+     * Input String itemType, and return an string that describes the direction
+     * towards the itemTypes that JavaFX can handle.
+     * @param itemType
+     * @return String direction
+     */
     public String askForHelp(String itemType) {
         if (this.player.getCurrentRoom().hasEmployee()) {
             this.time.updateTime(5);
@@ -235,14 +225,13 @@ public class Game implements ITimeEventAble {
     
     /**
      * Input String direction, moves the player in the direction,
-     * and returns a printable signal string.
+     * and returns a printable signal string that JavaFX can handle.
      * @param direction
      * @return String
      */
-    public String goRoom(String direction) {
+    public String handleRoomMovement(String direction) {
         
         //Room nextRoom = player.getCurrentRoom().getExit(direction);
-        
         Room nextRoom = this.player.goRoom(direction);
         
         StringBuilder stringBuilder = new StringBuilder();
@@ -265,9 +254,9 @@ public class Game implements ITimeEventAble {
         return "There is no room in that direction!\n";
     }
 
+    //TODO integrate this into JavaFX
     /**
      * Checks if the command QUIT has been used
-     *
      * @param command the command to check
      * @return a boolean expression
      */
@@ -282,92 +271,14 @@ public class Game implements ITimeEventAble {
             return true;
         }
     }
-
+    
+    //TODO integrate this into JavaFX
     /**
      * The player is able to pick up items in the room
-     *
      * @param command the command
      */
-    public void pickUp(Command command) {
-
-        // Check if the player has choosen an item to pick up
-        if (command.hasSecondWord()) {
-
-            // Ask the player objekt to pick up an item in the room
-            String success = player.pickUp(command.getSecondWord(), this);
-
-            // If the player can pick up the item, then print the item the
-            // player has picked up
-            if (success == null) {
-                System.out.println("you picked up " + command.getSecondWord() + ".");
-            } // Else print an error
-            else {
-                System.out.printf("Could not pick up %s.\n%s\n", command.getSecondWord(), success);
-            }
-        } // else print a list of the items in the room out to the player.
-        else {
-            Room currentRoom = player.getCurrentRoom();
-            if (currentRoom instanceof SalesRoom) {
-                System.out.println("The following items can be picked up in this room: ");
-                SalesRoom sr = (SalesRoom) currentRoom;
-                List<Item> items = sr.getItems();
-                printItemList(items);
-                // else print error
-            } else {
-                System.out.println("There is nothing in this room that can be picked up.");
-            }
-        }
-    }
-
-    private void printItemList(List<Item> items) {
-        // Find the length of the longest name of the items
-        int longestItemNameStringLength = 0;
-        for (Item item : items) {
-            int length = item.getName().length();
-            if (length > longestItemNameStringLength) {
-                longestItemNameStringLength = length;
-            }
-        }
-        String itemNameString = "Item name";
-        if (longestItemNameStringLength < itemNameString.length()) {
-            longestItemNameStringLength = itemNameString.length();
-        }
-
-        // Find the longest price string length
-        int longestPriceStringLength = 0;
-        for (Item item : items) {
-            String priceString = String.format("$%d", item.getPrice());
-            int length = priceString.length();
-            if(length > longestPriceStringLength){
-                longestPriceStringLength = length;
-            }
-        }
-        String priceString = "Price";
-        if (priceString.length() > longestPriceStringLength){
-            longestPriceStringLength = priceString.length();
-        }
-
-
-        // Find the longest weight string length
-        int longestWeightStringLength = 0;
-        for (Item item : items) {
-            String weightString = String.format("%3.2f kg", item.getWeight());
-            int length = weightString.length();
-            if (length > longestWeightStringLength) {
-                longestWeightStringLength = length;
-            }
-        }
-        String weightString = "Weight";
-        if (weightString.length() > longestWeightStringLength) {
-            longestWeightStringLength = weightString.length();
-        }
-
-        System.out.printf("| %" + longestItemNameStringLength + "s | Price | %" + longestWeightStringLength + "s |\n", itemNameString, weightString);
-        for (Item item : items) {
-            System.out.printf("| %" + longestItemNameStringLength + "s | ", item.getName());
-            System.out.printf("%" + longestPriceStringLength + "s | ", String.format("$%d", item.getPrice()));
-            System.out.printf("%" + longestWeightStringLength + "s |\n", String.format("%3.2f kg", item.getWeight()));
-        }
+    public void pickUp(String selectedItem) {
+        this.player.pickUp(selectedItem, this);
     }
 
     /**
@@ -398,7 +309,7 @@ public class Game implements ITimeEventAble {
                 } else {
                     System.out.println("Here is a list of items that you can drop");
 
-                    printItemList(items);
+                    //printItemList(items); // Method outdated
                 }
             }
         } else {
@@ -408,8 +319,7 @@ public class Game implements ITimeEventAble {
     }
 
     /**
-     * A player can pay in a room.
-     *
+     * Handles the player payment, and score setting.
      * @param command the command
      */
     public String pay() {
@@ -426,12 +336,21 @@ public class Game implements ITimeEventAble {
         }
     }
 
+    /**
+     * Sets the time between each and all callbacks
+     * @return 
+     */
     @Override
     public int getTimeBetweenEvents() {
         // We want 60 minutes between each and all callbacks
         return 60;
     }
-
+    
+    /**
+     * Handles the callback that checks if the game has ended.
+     * @param timeAt
+     * @param player 
+     */
     @Override
     public void timeCallback(int timeAt, Player player) {
         // If the current time is more than 22 o'clock
@@ -453,33 +372,56 @@ public class Game implements ITimeEventAble {
 
     /**
      * Marks the game for gameover
-     *
-     * @param description
+     * @param description String
      */
     private void gameOver(String description) {
         this.gameOverMessage = description;
     }
 
+    /**
+     * Get the Player instance of the game
+     * @return the player instance of the game
+     */
     public Player getPlayer() {
         return player;
     }
     
+    /**
+     * Update the time with a given amount
+     * @param timeDif integer
+     */
     public void updateTime(int timeDif){
         time.updateTime(timeDif);
     }
     
+    /**
+     * Extend the time with a given amount
+     * @param time integer
+     */
     public void extendGameTime(int time){
         gameEndTime += time;
     }
 
+    /**
+     * Get the list of game item types
+     * @return 
+     */
     public ItemType[] getItemsTypeList (){
         return this.itemList;
     }
 
+    /**
+     * Get the current game time
+     * @return Time current game time
+     */
     public Time getTime() {
         return this.time;
     }
 
+    /**
+     * Get the player start room
+     * @return Room the player start room
+     */
     public Room getStartRoom() {
         return startRoom;
     }

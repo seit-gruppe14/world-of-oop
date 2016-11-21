@@ -36,7 +36,6 @@ public class Player extends InventoryEntity{
     private List<Item> boughtItems = new ArrayList<Item>();
     /**
      * Returns the life of the player. The life decides if the player has died.
-     *
      * @return The player's life
      */
     public int getLife() {
@@ -46,7 +45,6 @@ public class Player extends InventoryEntity{
     /**
      * Sets the player's life. The mutator is used for resetting the player's
      * life.
-     *
      * @param life which is an int
      */
     public void setLife(int life) {
@@ -56,7 +54,6 @@ public class Player extends InventoryEntity{
     /**
      * Returns the player's money. The money decides if a player can afford
      * items.
-     *
      * @return money which is an int representation of the player's life
      */
     public String getMoney() {
@@ -65,7 +62,6 @@ public class Player extends InventoryEntity{
 
     /**
      * Sets the player's money. The mutator is used for resetting player money.
-     *
      * @param money which is an int representation of the player's money
      */
     public void setMoney(int money) {
@@ -83,7 +79,6 @@ public class Player extends InventoryEntity{
 
     /**
      * Removes a given amount of life from the player's life.
-     *
      * @param life which is an int type
      */
     public void removeLife(int life) {
@@ -93,7 +88,6 @@ public class Player extends InventoryEntity{
 
     /**
      * Adds a given amount of money to the player's money.
-     *
      * @param money which is an int type
      */
     public void addMoney(double money) {
@@ -102,7 +96,6 @@ public class Player extends InventoryEntity{
 
     /**
      * Removes a given amount of money from the player's money.
-     *
      * @param money which is an int type
      */
     public void removeMoney(double money) {
@@ -133,14 +126,18 @@ public class Player extends InventoryEntity{
     public void clearBoughtItems() {
         this.boughtItems.clear();
     }
-
+    
+    /**
+     * Used to check if player is dead of life loss
+     * @return true if player health is 0 or below otherwise false
+     */
     public boolean isPlayerDead() {
         return life <= 0;
     }
     /**
      * Input String direction
      * Returns null to signal no adjecent room,
-     * returns next room to signal room change or check if room is locked.
+     * returns next room to signal room change or locked room.
      * @param direction
      * @return Room
      */

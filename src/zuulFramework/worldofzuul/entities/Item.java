@@ -5,6 +5,9 @@
  */
 package zuulFramework.worldofzuul.entities;
 
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import zuulFramework.worldofzuul.helpers.NameGenerator;
 
 /**
@@ -12,9 +15,9 @@ import zuulFramework.worldofzuul.helpers.NameGenerator;
  */
 public class Item {
     private ItemType type;
-    private double weight;
-    private String name;
-    private int price;
+    private SimpleDoubleProperty weight;
+    private SimpleStringProperty name;
+    private SimpleIntegerProperty price;
 
     /**
      * Constructs an item with the type ItemType.
@@ -23,9 +26,9 @@ public class Item {
      */
     public Item(ItemType type) {
         this.type = type;
-        this.weight = type.getWeight();
-        this.name = NameGenerator.pickRandomName();
-        this.price = type.getPrice();
+        this.weight = new SimpleDoubleProperty(type.getWeight());
+        this.name = new SimpleStringProperty(NameGenerator.pickRandomName());
+        this.price = new SimpleIntegerProperty(type.getPrice());
     }
 
     public Item() {
@@ -41,26 +44,30 @@ public class Item {
     }
 
     public double getWeight() {
-        return weight;
+        return this.weight.getValue();
     }
 
     public void setWeight(double weight) {
-        this.weight = weight;
+        this.weight = new SimpleDoubleProperty(weight);
     }
 
     public String getName() {
-        return name;
+        return this.name.getValue();
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = new SimpleStringProperty(name);
     }
 
     public int getPrice() {
-        return price;
+        return this.price.getValue();
     }
 
     public void setPrice(int price) {
-        this.price = price;
+        this.price = new SimpleIntegerProperty(price);
+    }
+    
+    public String toString() {
+        return this.name.getValue();
     }
 }

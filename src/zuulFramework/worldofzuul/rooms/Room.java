@@ -40,7 +40,6 @@ public class Room implements IDrawable {
     /**
      * Construct at room with a description and a set number of items in it, each room has a number of exits.
      * whom are stored in a hashmap.
-     *
      * @param description the description of the room
      */
     public Room(String description, int id) {
@@ -56,7 +55,6 @@ public class Room implements IDrawable {
 
     /**
      * Gets the id of the room
-     *
      * @return
      */
     public int getId() {
@@ -65,7 +63,6 @@ public class Room implements IDrawable {
 
     /**
      * Set an exit to to points to a certain room
-     *
      * @param direction The direction of the exit
      * @param neighbor  The room the exit goes in to.
      */
@@ -76,7 +73,6 @@ public class Room implements IDrawable {
 
     /**
      * Gets the description of the room
-     *
      * @return String
      */
     public String getShortDescription() {
@@ -86,7 +82,6 @@ public class Room implements IDrawable {
     /**
      * Gets a longer description of the room
      * which is description + a list of exists
-     *
      * @return String
      */
     public String getLongDescription() {
@@ -96,7 +91,6 @@ public class Room implements IDrawable {
 
     /**
      * Get the room in the direction we requests
-     *
      * @param direction The direction of the other room, compared to the this
      * @return The neighbor room
      */
@@ -107,7 +101,6 @@ public class Room implements IDrawable {
 
     /**
      * Searches for a room with the items the user is asking for.
-     *
      * @param itemType The itemtype to search for
      */
     public String askForHelp(ItemType itemType) {
@@ -134,7 +127,6 @@ public class Room implements IDrawable {
 
     /**
      * Normalizes a direction string to be more useable, and less rediculous.
-     *
      * @param longDirection the long direction string
      * @return a nice direction string
      */
@@ -191,7 +183,6 @@ public class Room implements IDrawable {
 
     /**
      * Recursively looks in rooms for rooms that has a certain itemtype
-     *
      * @param itemType     The itemtype to look for
      * @param rooms        The rooms to check. These rooms will have their rooms checked and so on
      * @param direction    The current direction that has to be moved to get here
@@ -222,7 +213,6 @@ public class Room implements IDrawable {
 
     /**
      * Gets all the exists of a given room.
-     *
      * @return
      */
     public Map<String, Room> getExits() {
@@ -245,6 +235,10 @@ public class Room implements IDrawable {
         this.entities.remove(e);
     }
 
+    /**
+     * Check if there is an employee in the room
+     * @return true if there is more than zero employees in the room
+     */
     public boolean hasEmployee() {
         for (Entity entity : this.entities) {
             if(entity instanceof Employee) {
@@ -253,19 +247,47 @@ public class Room implements IDrawable {
         }
         return false;
     }
+
+    /**
+     * Check if the room has items types
+     * @return true if there is more than zero items in the room otherwise false
+     */
+    public boolean hasItems() {
+        if(this.itemTypes.size() > 0) {
+            return true;
+        }
+        return false;
+    }
     
+    /**
+     * Set the locked status
+     * @param isLocked boolean
+     */
     public void setLock(boolean isLocked) {
         this.isLocked = isLocked;
     }
 
+    /**
+     * Sets the room key, which is an item type in string format
+     * @param key String
+     */
     public void setKey(String key){
         this.key = key;
     }
     
+    /**
+     * Check if the room is locked
+     * @return true if room is locked otherwise false
+     */
     public boolean isLocked (){
         return this.isLocked;
     }
 
+    /**
+     * Unlock the room using a item
+     * @param item
+     * @return true if room is successfully unlocked, otherwise false
+     */
     public boolean unlockRoom(Item item){
         if (item.getType().toString().equalsIgnoreCase(key)) {
             System.out.println("You unlocked the room");
@@ -277,6 +299,11 @@ public class Room implements IDrawable {
         }
     }
 
+    /**
+     * Draws room and adds it to the current JavaFX scene
+     * @param drawAt
+     * @param offset 
+     */
     @Override
     public void addToScene(ObservableList<Node> drawAt, Offset offset) {
         if (hasDrawn) return;
@@ -340,11 +367,13 @@ public class Room implements IDrawable {
         }
     }
 
+    // TODO add comment on this
     @Override
     public void updateDraw() {
 
     }
 
+    //TODO add comment ont his
     public Offset calculateOffsetToRoom(Room r) {
         if (r == this) {
             return new Offset();
@@ -362,6 +391,7 @@ public class Room implements IDrawable {
         return null;
     }
 
+    //TODO add comment on this
     private Offset calculateOffset(Room r, Set<Map.Entry<String, Room>> rooms, Offset currentOffset, List<Room> searchedRooms) {
 
         for (Map.Entry<String, Room> subEntry : rooms) {
@@ -383,6 +413,10 @@ public class Room implements IDrawable {
         return null;
     }
 
+    /**
+     * Get the room offset to be used in a GUI
+     * @return Offset
+     */
     public Offset getLocation() {
         return this.location;
     }
