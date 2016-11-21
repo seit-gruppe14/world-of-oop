@@ -28,10 +28,6 @@ public class Item {
         this.price = type.getPrice();
     }
 
-    public Item() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     public ItemType getType() {
         return type;
     }
