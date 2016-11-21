@@ -1,8 +1,6 @@
 package zuulFramework.worldofzuul.entities;
 
-import javafx.animation.Interpolator;
-import javafx.animation.PathTransition;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.paint.Paint;
@@ -16,6 +14,8 @@ import zuulFramework.worldofzuul.gui.Offset;
 import zuulFramework.worldofzuul.gui.animations.MoveTransition;
 import zuulFramework.worldofzuul.rooms.Room;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,8 +23,8 @@ import java.util.Set;
  * Describes an entity that can move around between rooms
  */
 public abstract class MovingEntity extends Entity implements IDrawable {
-    PathTransition waitingAnimation;
     private Circle drawed;
+    private List<Transition> transitions = new ArrayList<>();
 
     public void move() {
         Set<Map.Entry<String, Room>> rooms;
@@ -84,13 +84,15 @@ public abstract class MovingEntity extends Entity implements IDrawable {
         pathTransition.setInterpolator(Interpolator.LINEAR);
         pathTransition.play();
 
-        waitingAnimation = pathTransition;
+        transitions.add(pathTransition);
     }
 
     @Override
     public void updateDraw() {
         if (drawed != null) {
-            waitingAnimation.pause();
+            transitions.forEach(Animation::pause);
+            transitions.clear();
+
             drawed.setCenterX(drawed.getCenterX() + drawed.getTranslateX());
             drawed.setCenterY(drawed.getCenterY() + drawed.getTranslateY());
             drawed.setTranslateX(0);
@@ -101,6 +103,7 @@ public abstract class MovingEntity extends Entity implements IDrawable {
                 addWaitingAnimation();
             });
             mt.play();
+            transitions.add(mt);
         }
     }
 }
