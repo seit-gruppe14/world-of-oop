@@ -24,9 +24,6 @@ import zuulFramework.worldofzuul.rooms.SalesRoom;
 public class Controller implements Initializable {
     
     private Game game;
-    private ObservableList<ItemType> ItemTypeList;
-    private ObservableList<Item> playerInventory;
-    private ObservableList<Item> roomInventory;
     
     // This date is needed to handle a double click event on the room items table
     Date itemLastClick;
@@ -88,7 +85,7 @@ public class Controller implements Initializable {
         
         updateHealthBar();
         updateWeightBar();
-        updatePlayerInventoryTabel();
+        setPlayerInventoryTabel();
         updateRoomInventoryTabel();
         setAskCombBox();
         textArea.setText(this.game.getWelcomeMessage());
@@ -165,43 +162,34 @@ public class Controller implements Initializable {
      * Sets the items of the combo box used for the ask method.
      */
     private void setAskCombBox() {
-        this.ItemTypeList = FXCollections.observableArrayList();
-        for (ItemType itemType : this.game.getItemsTypeList()) {
-            this.ItemTypeList.add(itemType);
-        }
-        this.comboBoxAsk.setItems(this.ItemTypeList);
+        this.comboBoxAsk.setItems(this.game.getItemsTypeList());
     }
 
     //TODO Observable list into player and room
     /**
      * Call this method when updating the player items observable list.
      */
-    private void updatePlayerInventoryTabel() {
-        this.playerInventory = FXCollections.observableArrayList();
-        for(Item item : this.game.getPlayer().getItems()) {
-            this.playerInventory.add(item);
-        }
+    private void setPlayerInventoryTabel() {
         this.tableColumnPlayerInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
         this.tableColumnPlayerInventoryWeight.setCellValueFactory(new PropertyValueFactory<Item, Double>("weight"));
         this.tableColumnPlayerInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
-        this.tableViewPlayerInventory.setItems(this.playerInventory);
+        this.tableViewPlayerInventory.setItems(this.game.getPlayer().getItems());
     }
     
     /**
      * Call this method when updating the room items observable list.
      */
     private void updateRoomInventoryTabel() {
-        this.roomInventory = FXCollections.observableArrayList();
         if (this.game.getPlayer().getCurrentRoom().hasItems()) {
             SalesRoom currentRoom = (SalesRoom) this.game.getPlayer().getCurrentRoom();
-            for(Item item : currentRoom.getItems()) {
-                this.roomInventory.add(item);
-            }
             this.tableColumnRoomInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
             this.tableColumnRoomInventoryWeight.setCellValueFactory(new PropertyValueFactory<Item, Double>("weight"));
             this.tableColumnRoomInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
+            this.tableViewRoomInventory.setItems(currentRoom.getItems());
+        } else {
+            //Sets a empty observable array list to handle an none-salesroom
+            this.tableViewRoomInventory.setItems(FXCollections.observableArrayList());
         }
-        this.tableViewRoomInventory.setItems(this.roomInventory);
     }
     
     /**
@@ -210,14 +198,12 @@ public class Controller implements Initializable {
      * @param event MouseClickEvent transformed to a double click event.
      */
     @FXML
-    private void onRoomItemPickup(MouseEvent event) {
+    private void onRoomItemPickup(MouseEvent event) throws Exception {
          // Sets a current selected Item which is used for checking with last selected item.
         Item selectedItem = this.tableViewRoomInventory.getSelectionModel().getSelectedItem();
         
         if(isDoubleClick(selectedItem)) {
             this.game.pickUp(selectedItem.getName());
-            updatePlayerInventoryTabel();
-            updateRoomInventoryTabel();
             updateWeightBar();
         }
     }
@@ -225,24 +211,30 @@ public class Controller implements Initializable {
     @FXML
     private void onPlayerItemDrop(MouseEvent event) {
          // Sets a current selected Item which is used for checking with last selected item.
+         if (!this.tableViewPlayerInventory.getSelectionModel().isEmpty()) {
         Item selectedItem = this.tableViewPlayerInventory.getSelectionModel().getSelectedItem();
-        
         if(isDoubleClick(selectedItem)) {
             //this.game.pickUp(selectedItem.getName());
-            //this.game.drop();
-            updatePlayerInventoryTabel();
-            updateRoomInventoryTabel();
+            this.game.drop(selectedItem);
             updateWeightBar();
-        } 
+        }
+      }
     }
     
     private boolean isDoubleClick(Item selectedItem) {
         // First if statement handles an error event if no item has been selected before.
         if (this.itemLastSelect == null) {
+            System.out.println("test1");
             this.itemLastClick = new Date();
             this.itemLastSelect = selectedItem;
         // Second if statement handles the event of a "double click"
-        } else if (selectedItem.getName().equals(this.itemLastSelect.getName())) {
+        } else if (selectedItem
+                .getName()
+                .equalsIgnoreCase
+        (this
+                .itemLastSelect
+                .getName())) {
+            System.out.println("test2");
             // Sets a temporary click date to check wether the click was rapid.
             Date roomItemSecondClick = new Date();
             // Calculates the difference on click date to create a difference which is checkable for later use
@@ -258,6 +250,7 @@ public class Controller implements Initializable {
         // If the click is not a double click then store the clicked item and
         // click date.
         } else {
+            System.out.println("test3");
             this.itemLastClick = new Date();
             this.itemLastSelect = selectedItem;
         }

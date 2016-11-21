@@ -11,6 +11,8 @@ import zuulFramework.worldofzuul.rooms.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  * The "main" in the game
@@ -35,7 +37,7 @@ public class Game implements ITimeEventAble {
 
     private String gameOverMessage = null;
 
-    private ItemType[] itemList = {
+    private ObservableList<ItemType> itemList = FXCollections.observableArrayList(
         ItemType.BED,
         ItemType.DINNERTABLE,
         ItemType.DINNERCHAIR,
@@ -46,7 +48,7 @@ public class Game implements ITimeEventAble {
         ItemType.COMPUTER,
         ItemType.LAMP,
         ItemType.SOFA
-    };
+    );
 
     /**
      * Creates a new game, with default values
@@ -159,9 +161,6 @@ public class Game implements ITimeEventAble {
             case QUIT:
                 wantToQuit = quit(command);
                 break;
-            case DROP:
-                drop(command);
-                break;
         }
         return wantToQuit;
     }
@@ -258,8 +257,13 @@ public class Game implements ITimeEventAble {
      * The player is able to pick up items in the room
      * @param command the command
      */
-    public void pickUp(String selectedItem) {
-        this.player.pickUp(selectedItem, this);
+    public void pickUp(String selectedItem) throws Exception {
+        time.updateTime(5);
+        if (player.getCurrentRoom() instanceof SalesRoom) {
+            this.player.pickUp(selectedItem, this);
+        } else {
+            throw new Exception("Error on item pickup");
+        }
     }
 
     /**
@@ -267,36 +271,15 @@ public class Game implements ITimeEventAble {
      *
      * @param command the command
      */
-    public void drop(Command command) {
-
+    public String drop(Item selectedItem) {
         // Check if the player can drop an item off in this room.
         if (player.getCurrentRoom() instanceof SalesRoom) {
-
-            // If the player has typed an item that is avaiable then he can drop
-            // the item.
-            if (command.hasSecondWord()) {
-                boolean dropped = player.drop(command.getSecondWord());
-                if (dropped) {
-                    System.out.println("You dropped the item " + command.getSecondWord() + " in the room");
-                } // else print an error
-                else {
-                    System.out.println("You have no such item dropped");
-                }
-            } // Else print a list of the items that the player can drop.
-            else {
-                List<Item> items = player.getItems();
-                if (items.isEmpty()) {
-                    System.out.println("You don't have anything in your inventory you can drop");
-                } else {
-                    System.out.println("Here is a list of items that you can drop");
-
-                    //printItemList(items); // Method outdated
-                }
-            }
+            time.updateTime(5);
+            this.player.drop(selectedItem.getName());
+            return "You dropped an item: " + selectedItem.getType();
         } else {
-            System.out.println("You cannot drop anything in this room.");
+            return "You can't drop items in this room.";
         }
-
     }
 
     /**
@@ -386,7 +369,7 @@ public class Game implements ITimeEventAble {
      * Get the list of game item types
      * @return 
      */
-    public ItemType[] getItemsTypeList (){
+    public ObservableList<ItemType> getItemsTypeList (){
         return this.itemList;
     }
 

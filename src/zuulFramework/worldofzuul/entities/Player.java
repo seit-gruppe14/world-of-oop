@@ -17,6 +17,7 @@ import zuulFramework.worldofzuul.rooms.SalesRoom;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.collections.FXCollections;
 
 /**
  * @author Christian
@@ -33,7 +34,8 @@ public class Player extends InventoryEntity{
     /**
      * An array list of items the player has bought
      */
-    private List<Item> boughtItems = new ArrayList<Item>();
+    private ObservableList<Item> boughtItems = FXCollections.observableArrayList();
+    
     /**
      * Returns the life of the player. The life decides if the player has died.
      * @return The player's life
@@ -108,7 +110,7 @@ public class Player extends InventoryEntity{
      */
     public void moveItemsToBoughtItems() {
         this.boughtItems = this.items;
-        this.items = new ArrayList<>();
+        this.items = FXCollections.observableArrayList();
     }
 
     /**

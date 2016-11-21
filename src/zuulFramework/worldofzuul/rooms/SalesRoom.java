@@ -11,6 +11,8 @@ import zuulFramework.worldofzuul.entities.ItemType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  * SalesRoom can create an instance of a room that contains a set of items in a
@@ -23,7 +25,7 @@ public class SalesRoom extends Room {
     /**
      * A list containing items for every room
      */
-    private ArrayList <Item> items = new ArrayList<Item>();
+    private ObservableList<Item> items = FXCollections.observableArrayList();;
 
     /**
      * Creates an instance of a SalesRoom with seven items of a specific
@@ -34,7 +36,7 @@ public class SalesRoom extends Room {
      */
     public SalesRoom(String description, int id, ItemType... itemTypes) {
         super(description, id);
-        this.itemTypes = new ArrayList<ItemType>(itemTypes.length);
+        this.itemTypes = FXCollections.observableArrayList(itemTypes);
         Collections.addAll(this.itemTypes, itemTypes);
         //construct a set number of items every time a new room is created, the items vary from room to room.
         for (int i = 0; i < itemTypes.length; i++) {
@@ -70,7 +72,7 @@ public class SalesRoom extends Room {
         return null;
     }
 
-    public List<Item> getItems() {
+    public ObservableList<Item> getItems() {
         return items;
     }
     

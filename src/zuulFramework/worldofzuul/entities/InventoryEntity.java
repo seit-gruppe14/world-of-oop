@@ -4,6 +4,8 @@ import zuulFramework.worldofzuul.rooms.SalesRoom;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import zuulFramework.worldofzuul.Game;
 
 /**
@@ -13,7 +15,7 @@ public abstract class InventoryEntity extends MovingEntity {
     /**
      * The array list items contains the player's items
      */
-    protected List<Item> items = new ArrayList<>();
+    protected ObservableList<Item> items = FXCollections.observableArrayList();;
 
     /**
      * The MAX_CARRY_WEIGHT indicates the player's maximum carry weight
@@ -81,7 +83,7 @@ public abstract class InventoryEntity extends MovingEntity {
      *
      * @return List of Items which is an ArrayList of the Items type
      */
-    public List<Item> getItems() {
+    public ObservableList<Item> getItems() {
         return items;
     }
 
@@ -91,7 +93,7 @@ public abstract class InventoryEntity extends MovingEntity {
      *
      * @param items which is an ArrayList of items
      */
-    public void setItems(List<Item> items) {
+    public void setItems(ObservableList<Item> items) {
         this.items = items;
     }
 }
