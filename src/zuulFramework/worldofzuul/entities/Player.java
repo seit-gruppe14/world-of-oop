@@ -168,17 +168,16 @@ public class Player extends InventoryEntity{
     }
 
     @Override
-    public String pickUp(String itemName, Game game){
+    public Item pickUp(String itemName, Game game){
         SalesRoom sr = ((SalesRoom) currentRoom);
         Item item = sr.getItem(itemName);
         if(item instanceof IHaveSpecialEvent) {
             ((IHaveSpecialEvent)item).doSpecialEvent(game);
             sr.removeItem(itemName);
-
+            
         } else {
-            super.pickUp(itemName, game);
+            return super.pickUp(itemName, game);
         }
-
         return null;
     }
 

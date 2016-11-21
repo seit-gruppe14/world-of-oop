@@ -64,17 +64,17 @@ public abstract class InventoryEntity extends MovingEntity {
      * @return null if the item was picked up without issues otherwise a
      * string with an error message
      */
-    public String pickUp(String itemName, Game game) {
+    public Item pickUp(String itemName, Game game) {
         Item item = ((SalesRoom) currentRoom).removeItem(itemName);
         if (item == null) {
-            return "Could not find item";
+            return null;
         }
         if(item.getWeight() + this.getCarryWeight() > MAX_CARRY_WEIGHT) {
             //TODO add item back to room
-            return "Item is too heavy";
+            return item;
         }
         items.add(item);
-        return null;
+        return item;
     }
 
 
@@ -85,6 +85,10 @@ public abstract class InventoryEntity extends MovingEntity {
      */
     public ObservableList<Item> getItems() {
         return items;
+    }
+    
+    public double getMaxCarryWeight(){
+        return MAX_CARRY_WEIGHT;
     }
 
     /**

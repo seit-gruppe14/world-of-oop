@@ -210,15 +210,15 @@ public class Controller implements Initializable {
 
     @FXML
     private void onPlayerItemDrop(MouseEvent event) {
-         // Sets a current selected Item which is used for checking with last selected item.
-         if (!this.tableViewPlayerInventory.getSelectionModel().isEmpty()) {
-        Item selectedItem = this.tableViewPlayerInventory.getSelectionModel().getSelectedItem();
-        if(isDoubleClick(selectedItem)) {
-            //this.game.pickUp(selectedItem.getName());
-            this.game.drop(selectedItem);
-            updateWeightBar();
+        // Sets a current selected Item which is used for checking with last selected item.
+        if (!this.tableViewPlayerInventory.getSelectionModel().isEmpty()) {
+            Item selectedItem = this.tableViewPlayerInventory.getSelectionModel().getSelectedItem();
+            if(isDoubleClick(selectedItem)) {
+                //this.game.pickUp(selectedItem.getName());
+                this.game.drop(selectedItem);
+                updateWeightBar();
+            }
         }
-      }
     }
     
     private boolean isDoubleClick(Item selectedItem) {

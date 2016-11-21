@@ -257,10 +257,19 @@ public class Game implements ITimeEventAble {
      * The player is able to pick up items in the room
      * @param command the command
      */
-    public void pickUp(String selectedItem) throws Exception {
+    public String pickUp(String selectedItem) throws Exception {
         time.updateTime(5);
         if (player.getCurrentRoom() instanceof SalesRoom) {
-            this.player.pickUp(selectedItem, this);
+            Item currentItem = this.player.pickUp(selectedItem, this);
+            if (currentItem==null) {
+                return "Oh no something went horribly wrong";
+            }else{
+                if (currentItem.getWeight()+player.getCarryWeight()>player.getMaxCarryWeight()) {
+                    return "Max carry weight exceeded";
+                }else{
+                    return "Item was added to your inventory";
+                }
+            }
         } else {
             throw new Exception("Error on item pickup");
         }
