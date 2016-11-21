@@ -5,9 +5,6 @@
  */
 package zuulFramework.worldofzuul.entities;
 
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import zuulFramework.worldofzuul.helpers.NameGenerator;
 
 /**
@@ -15,9 +12,9 @@ import zuulFramework.worldofzuul.helpers.NameGenerator;
  */
 public class Item {
     private ItemType type;
-    private SimpleDoubleProperty weight;
-    private SimpleStringProperty name;
-    private SimpleIntegerProperty price;
+    private double weight;
+    private String name;
+    private int price;
 
     /**
      * Constructs an item with the type ItemType.
@@ -26,9 +23,9 @@ public class Item {
      */
     public Item(ItemType type) {
         this.type = type;
-        this.weight = new SimpleDoubleProperty(type.getWeight());
-        this.name = new SimpleStringProperty(NameGenerator.pickRandomName());
-        this.price = new SimpleIntegerProperty(type.getPrice());
+        this.weight = type.getWeight();
+        this.name = NameGenerator.pickRandomName();
+        this.price = type.getPrice();
     }
 
     public Item() {
@@ -44,30 +41,30 @@ public class Item {
     }
 
     public double getWeight() {
-        return this.weight.getValue();
+        return this.weight;
     }
 
     public void setWeight(double weight) {
-        this.weight = new SimpleDoubleProperty(weight);
+        this.weight = weight;
     }
 
     public String getName() {
-        return this.name.getValue();
+        return this.name;
     }
 
     public void setName(String name) {
-        this.name = new SimpleStringProperty(name);
+        this.name = name;
     }
 
     public int getPrice() {
-        return this.price.getValue();
+        return this.price;
     }
 
     public void setPrice(int price) {
-        this.price = new SimpleIntegerProperty(price);
+        this.price = price;
     }
-    
+
     public String toString() {
-        return this.name.getValue();
+        return this.name;
     }
 }
