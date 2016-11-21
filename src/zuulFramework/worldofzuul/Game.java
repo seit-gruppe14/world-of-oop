@@ -92,7 +92,6 @@ public class Game implements ITimeEventAble {
             e.printStackTrace();
         }
         System.out.println(rooms);
-
         // The first room in the list, will always be the room the player starts in
         player.setCurrentRoom(rooms.get(0));
     }
@@ -104,9 +103,7 @@ public class Game implements ITimeEventAble {
         highScore.showScore();
         // The user hasn't finished the game when they start
         boolean finished;
-
         System.out.printf("You have %d life.\n", player.getLife());
-        
         // Ask the user for commands, and do whatever the user told us
         do {
             if (gameOverMessage != null) {
@@ -117,13 +114,11 @@ public class Game implements ITimeEventAble {
             System.out.printf("The time is now %s\n", time.getNiceFormattedTime());
             Command command = parser.getCommand();
             finished = processCommand(command);
-
             if (player.isPlayerDead()) {
                 gameOver(SillyMessages.getDeathMessage());
             }
         } while (!finished);
         highScore.printScore(itemList);
-        
         System.out.println("Thank you for playing.  Good bye.");
     }
 
@@ -152,15 +147,12 @@ public class Game implements ITimeEventAble {
      */
     private boolean processCommand(Command command) {
         boolean wantToQuit = false;
-
         CommandWord commandWord = command.getCommandWord();
-
         // If we don't know the command, then tell the user
         if (commandWord == CommandWord.UNKNOWN) {
             System.out.println("I don't know what you mean...");
             return false;
         }
-
         // If the user asked for help, print that
         switch (commandWord) {
             // If the user asked to quit the game, quit
@@ -189,19 +181,15 @@ public class Game implements ITimeEventAble {
         List<Item> boughtItems = new ArrayList<>();
         boughtItems.addAll(player.getBoughtItems());
         boughtItems.addAll(player.getItems());
-
         for (Item boughtItem : boughtItems) {
             itemsToBuy.remove(boughtItem.getType());
         }
         StringBuilder stringBuilder = new StringBuilder();
-
         if (itemsToBuy.size() > 0) {
             stringBuilder.append("You still need to buy the following:").append("\n");
-
             for (ItemType itemType : itemsToBuy) {
                 stringBuilder.append(itemType.toString()).append("\n");
             }
-
         } else {
             stringBuilder.append("You have bought everything you need.");
         }
@@ -230,27 +218,20 @@ public class Game implements ITimeEventAble {
      * @return String
      */
     public String handleRoomMovement(String direction) {
-        
-        //Room nextRoom = player.getCurrentRoom().getExit(direction);
         Room nextRoom = this.player.goRoom(direction);
-        
         StringBuilder stringBuilder = new StringBuilder();
         if (nextRoom != null) {
             if(nextRoom.isLocked()) {
                 return "The room is locked!\n";
             }
-
             stringBuilder.append("You went " + direction + ".").append("\n");
             stringBuilder.append(nextRoom.getLongDescription()).append("\n");
             time.updateTime(15);
-            
             if (nextRoom instanceof IHaveSpecialEvent) {
                 stringBuilder.append(((IHaveSpecialEvent) nextRoom).doSpecialEvent(this));
             }
-            
             return stringBuilder.toString();
         }
-        
         return "There is no room in that direction!\n";
     }
 
@@ -367,7 +348,6 @@ public class Game implements ITimeEventAble {
                         + "The security guards threw you out, and destroyed all the things you bought.");
             }
         }
-
     }
 
     /**

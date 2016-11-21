@@ -67,12 +67,10 @@ public abstract class InventoryEntity extends MovingEntity {
         if (item == null) {
             return "Could not find item";
         }
-
         if(item.getWeight() + this.getCarryWeight() > MAX_CARRY_WEIGHT) {
+            //TODO add item back to room
             return "Item is too heavy";
         }
-
-
         items.add(item);
         return null;
     }
