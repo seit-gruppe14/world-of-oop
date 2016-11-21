@@ -13,16 +13,17 @@ import zuulFramework.worldofzuul.gui.Offset;
 
 import java.util.*;
 import javafx.scene.paint.Paint;
-
+import javafx.collections.FXCollections;
 
 public class Room implements IDrawable {
     /**
      * Describes the current room.
      */   
     protected String description;
-    protected ArrayList<ItemType> itemTypes = new ArrayList<ItemType>();
-    
+
     private ArrayList<Line> lines = new ArrayList<>();
+
+    protected ObservableList<ItemType> itemTypes = FXCollections.observableArrayList();
     
     /**
      * The entities currently in the room
@@ -256,8 +257,11 @@ public class Room implements IDrawable {
      * @return true if there is more than zero items in the room otherwise false
      */
     public boolean hasItems() {
-        if(this.itemTypes.size() > 0) {
-            return true;
+        if (this instanceof SalesRoom) {
+            if(this.itemTypes.size() > 0) {
+                return true;
+            }
+            return false;    
         }
         return false;
     }

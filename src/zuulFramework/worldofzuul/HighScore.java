@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+import javafx.collections.ObservableList;
 
 /**
  *
@@ -31,7 +32,7 @@ public class HighScore {
      * @param listOfItems
      * @return Gives the calculated score. 
      */
-    public int calcScore(ItemType[] listOfItems) {
+    public int calcScore(ObservableList<ItemType> listOfItems) {
         
         int score = 0;
         // The HashSet prevent cases of duplicate item types being bought.
@@ -43,7 +44,7 @@ public class HighScore {
         }
         //Loops through the HashSet and checks for unique item types and adds 10 to score for each unique item type. 
         for (int j = 0; j < s.size(); j++) {
-            if (s.contains(listOfItems[j])) {
+            if (s.contains(listOfItems.get(j))) {
                 score += 10;
             }
         }
@@ -118,7 +119,7 @@ public class HighScore {
         }
     }
     
-    public void printScore(ItemType[] itemList) {
+    public void printScore(ObservableList<ItemType> itemList) {
             try {
             int score = calcScore(itemList);
             System.out.println("Your score was " + score);

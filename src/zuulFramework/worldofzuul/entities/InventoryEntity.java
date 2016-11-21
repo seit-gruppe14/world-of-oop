@@ -4,7 +4,10 @@ import zuulFramework.worldofzuul.rooms.SalesRoom;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import zuulFramework.worldofzuul.Game;
+import zuulFramework.worldofzuul.rooms.Room;
 
 /**
  * Describes an entity that has inventory
@@ -13,7 +16,7 @@ public abstract class InventoryEntity extends MovingEntity {
     /**
      * The array list items contains the player's items
      */
-    protected List<Item> items = new ArrayList<>();
+    protected ObservableList<Item> items = FXCollections.observableArrayList();;
 
     /**
      * The MAX_CARRY_WEIGHT indicates the player's maximum carry weight
@@ -62,19 +65,17 @@ public abstract class InventoryEntity extends MovingEntity {
      * @return null if the item was picked up without issues otherwise a
      * string with an error message
      */
-    public String pickUp(String itemName, Game game) {
-        Item item = ((SalesRoom) currentRoom).removeItem(itemName);
+    public Item pickUp(String itemName, Game game) {
+        Item item = ((SalesRoom) this.currentRoom).removeItem(itemName);
         if (item == null) {
-            return "Could not find item";
+            return null;
         }
-
         if(item.getWeight() + this.getCarryWeight() > MAX_CARRY_WEIGHT) {
-            return "Item is too heavy";
+            ((SalesRoom) this.currentRoom).addItem(item);
+            return item;
         }
-
-
         items.add(item);
-        return null;
+        return item;
     }
 
 
@@ -83,8 +84,12 @@ public abstract class InventoryEntity extends MovingEntity {
      *
      * @return List of Items which is an ArrayList of the Items type
      */
-    public List<Item> getItems() {
+    public ObservableList<Item> getItems() {
         return items;
+    }
+    
+    public double getMaxCarryWeight(){
+        return MAX_CARRY_WEIGHT;
     }
 
     /**
@@ -93,7 +98,7 @@ public abstract class InventoryEntity extends MovingEntity {
      *
      * @param items which is an ArrayList of items
      */
-    public void setItems(List<Item> items) {
+    public void setItems(ObservableList<Item> items) {
         this.items = items;
     }
 }

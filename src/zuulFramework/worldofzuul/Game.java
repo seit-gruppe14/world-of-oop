@@ -11,6 +11,8 @@ import zuulFramework.worldofzuul.rooms.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  * The "main" in the game
@@ -35,7 +37,7 @@ public class Game implements ITimeEventAble {
 
     private String gameOverMessage = null;
 
-    private ItemType[] itemList = {
+    private ObservableList<ItemType> itemList = FXCollections.observableArrayList(
         ItemType.BED,
         ItemType.DINNERTABLE,
         ItemType.DINNERCHAIR,
@@ -44,7 +46,7 @@ public class Game implements ITimeEventAble {
         ItemType.CUTLERY,
         ItemType.COMPUTER,
         ItemType.SOFA
-    };
+    );
 
     /**
      * Creates a new game, with default values
@@ -92,7 +94,6 @@ public class Game implements ITimeEventAble {
             e.printStackTrace();
         }
         System.out.println(rooms);
-
         // The first room in the list, will always be the room the player starts in
         player.setCurrentRoom(rooms.get(0));
     }
@@ -104,9 +105,7 @@ public class Game implements ITimeEventAble {
         highScore.showScore();
         // The user hasn't finished the game when they start
         boolean finished;
-
         System.out.printf("You have %d life.\n", player.getLife());
-        
         // Ask the user for commands, and do whatever the user told us
         do {
             if (gameOverMessage != null) {
@@ -117,13 +116,11 @@ public class Game implements ITimeEventAble {
             System.out.printf("The time is now %s\n", time.getNiceFormattedTime());
             Command command = parser.getCommand();
             finished = processCommand(command);
-
             if (player.isPlayerDead()) {
                 gameOver(SillyMessages.getDeathMessage());
             }
         } while (!finished);
         highScore.printScore(itemList);
-        
         System.out.println("Thank you for playing.  Good bye.");
     }
 
@@ -152,23 +149,17 @@ public class Game implements ITimeEventAble {
      */
     private boolean processCommand(Command command) {
         boolean wantToQuit = false;
-
         CommandWord commandWord = command.getCommandWord();
-
         // If we don't know the command, then tell the user
         if (commandWord == CommandWord.UNKNOWN) {
             System.out.println("I don't know what you mean...");
             return false;
         }
-
         // If the user asked for help, print that
         switch (commandWord) {
             // If the user asked to quit the game, quit
             case QUIT:
                 wantToQuit = quit(command);
-                break;
-            case DROP:
-                drop(command);
                 break;
         }
         return wantToQuit;
@@ -189,19 +180,15 @@ public class Game implements ITimeEventAble {
         List<Item> boughtItems = new ArrayList<>();
         boughtItems.addAll(player.getBoughtItems());
         boughtItems.addAll(player.getItems());
-
         for (Item boughtItem : boughtItems) {
             itemsToBuy.remove(boughtItem.getType());
         }
         StringBuilder stringBuilder = new StringBuilder();
-
         if (itemsToBuy.size() > 0) {
             stringBuilder.append("You still need to buy the following:").append("\n");
-
             for (ItemType itemType : itemsToBuy) {
                 stringBuilder.append(itemType.toString()).append("\n");
             }
-
         } else {
             stringBuilder.append("You have bought everything you need.");
         }
@@ -230,27 +217,20 @@ public class Game implements ITimeEventAble {
      * @return String
      */
     public String handleRoomMovement(String direction) {
-        
-        //Room nextRoom = player.getCurrentRoom().getExit(direction);
         Room nextRoom = this.player.goRoom(direction);
-        
         StringBuilder stringBuilder = new StringBuilder();
         if (nextRoom != null) {
             if(nextRoom.isLocked()) {
                 return "The room is locked!\n";
             }
-
             stringBuilder.append("You went " + direction + ".").append("\n");
             stringBuilder.append(nextRoom.getLongDescription()).append("\n");
             time.updateTime(15);
-            
             if (nextRoom instanceof IHaveSpecialEvent) {
                 stringBuilder.append(((IHaveSpecialEvent) nextRoom).doSpecialEvent(this));
             }
-            
             return stringBuilder.toString();
         }
-        
         return "There is no room in that direction!\n";
     }
 
@@ -276,8 +256,22 @@ public class Game implements ITimeEventAble {
     /**
      * The player is able to pick up items in the room
      */
-    public void pickUp(String selectedItem) {
-        this.player.pickUp(selectedItem, this);
+    public String pickUp(String selectedItem) throws Exception {
+        time.updateTime(5);
+        if (player.getCurrentRoom() instanceof SalesRoom) {
+            Item currentItem = this.player.pickUp(selectedItem, this);
+            if (currentItem==null) {
+                return "Oh no something went horribly wrong\n";
+            }else{
+                if (currentItem.getWeight()+player.getCarryWeight()>player.getMaxCarryWeight()) {
+                    return "Max carry weight exceeded\n";
+                }else{
+                    return "Item was added to your inventory\n";
+                }
+            }
+        } else {
+            throw new Exception("Error on item pickup\n");
+        }
     }
 
     /**
@@ -285,36 +279,15 @@ public class Game implements ITimeEventAble {
      *
      * @param command the command
      */
-    public void drop(Command command) {
-
+    public String drop(Item selectedItem) {
         // Check if the player can drop an item off in this room.
         if (player.getCurrentRoom() instanceof SalesRoom) {
-
-            // If the player has typed an item that is avaiable then he can drop
-            // the item.
-            if (command.hasSecondWord()) {
-                boolean dropped = player.drop(command.getSecondWord());
-                if (dropped) {
-                    System.out.println("You dropped the item " + command.getSecondWord() + " in the room");
-                } // else print an error
-                else {
-                    System.out.println("You have no such item dropped");
-                }
-            } // Else print a list of the items that the player can drop.
-            else {
-                List<Item> items = player.getItems();
-                if (items.isEmpty()) {
-                    System.out.println("You don't have anything in your inventory you can drop");
-                } else {
-                    System.out.println("Here is a list of items that you can drop");
-
-                    //printItemList(items); // Method outdated
-                }
-            }
+            time.updateTime(5);
+            this.player.drop(selectedItem.getName());
+            return "You dropped an item: " + selectedItem.getType() + "\n";
         } else {
-            System.out.println("You cannot drop anything in this room.");
+            return "You can't drop items in this room.\n";
         }
-
     }
 
     /**
@@ -362,10 +335,9 @@ public class Game implements ITimeEventAble {
                 // The time is up, but the player cannot yet leave.
                 // sooo.. Game over!!
                 gameOver("You did not manage to get to the exit before IKEA closed. \n"
-                        + "The security guards threw you out, and destroyed all the things you bought.");
+                        + "The security guards threw you out, and destroyed all the things you bought.\n");
             }
         }
-
     }
 
     /**
@@ -404,7 +376,7 @@ public class Game implements ITimeEventAble {
      * Get the list of game item types
      * @return 
      */
-    public ItemType[] getItemsTypeList (){
+    public ObservableList<ItemType> getItemsTypeList (){
         return this.itemList;
     }
 
