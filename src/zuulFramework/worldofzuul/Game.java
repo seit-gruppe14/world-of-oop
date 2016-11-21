@@ -42,9 +42,7 @@ public class Game implements ITimeEventAble {
         ItemType.SHELVES,
         ItemType.DESK,
         ItemType.CUTLERY,
-        ItemType.LAMP,
         ItemType.COMPUTER,
-        ItemType.LAMP,
         ItemType.SOFA
     };
 
