@@ -16,6 +16,7 @@ import zuulFramework.worldofzuul.entities.Item;
 import zuulFramework.worldofzuul.entities.ItemType;
 import zuulFramework.worldofzuul.rooms.Room;
 import zuulFramework.worldofzuul.rooms.SalesRoom;
+import zuulFramework.worldofzuul.helpers.SillyMessages;
 
 import java.io.IOException;
 import java.net.URL;
@@ -89,6 +90,8 @@ public class Controller implements Initializable {
     private Label quitText;
     @FXML
     private Label scoreLabel;
+    @FXML
+    private Label gameOverMessage;
 
     /**
      * The controller initialization, sets the new game.
@@ -382,6 +385,13 @@ public class Controller implements Initializable {
     
     public void gameOver(){
 	quitText.setText("GAME OVER!");
+	if (this.game.getPlayer().isPlayerDead()){
+	    gameOverMessage.setText(SillyMessages.getDeathMessage());
+	}
+	else {
+	gameOverMessage.setText(this.game.gameOver("You did not manage to get to the exit before IKEA closed. \n"
+                        + "The security guards threw you out, and destroyed all the things you bought.\n"));
+	}
 	quitGame();
     }
     
