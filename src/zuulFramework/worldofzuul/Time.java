@@ -76,7 +76,7 @@ public class Time {
             // and player and then set the timeSinceLastCallback to 0
             if (callback.getTimeSinceLastCallback() >= event.getTimeBetweenEvents()) {
                 callback.setTimeSinceLastCallback(0);
-                event.timeCallback(this.time, game.getPlayer());
+                event.timeCallback(this.time, game);
             }
         }
     }

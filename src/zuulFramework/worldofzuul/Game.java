@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import zuulFramework.worldofzuul.entities.Monster;
 
 /**
  * The "main" in the game
@@ -31,9 +32,8 @@ public class Game implements ITimeEventAble {
      * The player instance
      */
     private Player player;
-
+    
     private HighScore highScore;
-
 
     private String gameOverMessage = null;
 
@@ -47,6 +47,7 @@ public class Game implements ITimeEventAble {
         ItemType.COMPUTER,
         ItemType.SOFA
     );
+    private IEventMessages eventMessagesCallback;
 
     /**
      * Creates a new game, with default values
@@ -66,7 +67,7 @@ public class Game implements ITimeEventAble {
 
         // Initialize a new player
         player = new Player();
-
+        
         // Create all the rooms in the game
         createRooms(mapLocation);
 
@@ -323,7 +324,7 @@ public class Game implements ITimeEventAble {
      * @param player 
      */
     @Override
-    public void timeCallback(int timeAt, Player player) {
+    public void timeCallback(int timeAt, Game game) {
         // If the current time is more than 22 o'clock
         if (timeAt >= gameEndTime) {
             // If the time is up, and the player is in an exit room, then they should end the game
@@ -395,4 +396,13 @@ public class Game implements ITimeEventAble {
     public Room getStartRoom() {
         return startRoom;
     }
+    
+    public void addEventMessages(String eventMessage) {
+        this.eventMessagesCallback.handle(eventMessage);
+    }
+    
+    public void addMessageListener(IEventMessages i) {
+        this.eventMessagesCallback = i;
+    }
+    
 }

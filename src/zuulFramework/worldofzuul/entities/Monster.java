@@ -7,15 +7,17 @@ import zuulFramework.worldofzuul.ITimeEventAble;
 import zuulFramework.worldofzuul.gui.Offset;
 import zuulFramework.worldofzuul.rooms.Room;
 import zuulFramework.worldofzuul.rooms.SalesRoom;
+import zuulFramework.worldofzuul.helpers.SillyMessages;
 
 import java.util.List;
+import zuulFramework.worldofzuul.Game;
 
 /**
  * Created by Rasmus Hansen .
  */
 public class Monster extends InventoryEntity implements ITimeEventAble {
     private static final double PICK_UP_CHANCE = 0.02;
-    private static final double INFLICT_DAMAGE_CHANCE = 0.01;
+    private static final double INFLICT_DAMAGE_CHANCE = 0.01; 
 
     public Monster(Room currentRoom){
         this.setCurrentRoom(currentRoom);
@@ -29,6 +31,12 @@ public class Monster extends InventoryEntity implements ITimeEventAble {
     public int inflictDamage() {
         return (int) (Math.random() * 6 + 4);
     }
+    
+    public String damageMessages() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(SillyMessages.getDamageMessage()).append(" You took ").append(inflictDamage()).append(" damage.").append("\n");
+        return stringBuilder.toString();   
+    }
 
     /**
      * Limits the amount of moves the "monsters" can make
@@ -41,7 +49,7 @@ public class Monster extends InventoryEntity implements ITimeEventAble {
         //We want an amount of time between monster actions (Subject to change).
         return 60;
     }
-
+    
     /**
      * The method defines the "monsters" actions throughout the game.
      * @param timeAt It's the given time when the callback happens.
@@ -49,13 +57,14 @@ public class Monster extends InventoryEntity implements ITimeEventAble {
      * @param player The player object, is used to get items.
      */
     @Override
-    public void timeCallback(int timeAt, Player player) {
+    public void timeCallback(int timeAt, Game game) {
 
         //Check if the player is in the same room as a monster.
-        if (getCurrentRoom().equals(player.getCurrentRoom())){
+        if (getCurrentRoom().equals(game.getPlayer().getCurrentRoom())){
             //The monster has 10% chance of doing damage to the player.
             if (Math.random() < INFLICT_DAMAGE_CHANCE) {
-                player.removeLife(inflictDamage());
+                game.getPlayer().removeLife(inflictDamage());
+                game.addEventMessages(damageMessages());
                 return;
             }
             //The monster has 20% chance of picking up an item.
