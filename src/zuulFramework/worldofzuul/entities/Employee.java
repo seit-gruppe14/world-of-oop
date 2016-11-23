@@ -3,6 +3,7 @@ package zuulFramework.worldofzuul.entities;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.paint.Paint;
+import zuulFramework.worldofzuul.Game;
 import zuulFramework.worldofzuul.ITimeEventAble;
 import zuulFramework.worldofzuul.gui.Offset;
 import zuulFramework.worldofzuul.rooms.Room;
@@ -23,7 +24,7 @@ public class Employee extends MovingEntity implements ITimeEventAble{
     }
 
     @Override
-    public void timeCallback(int timeAt, Player player) {
+    public void timeCallback(int timeAt, Game game) {
         move();
     }
 

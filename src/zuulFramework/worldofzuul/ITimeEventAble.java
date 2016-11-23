@@ -18,5 +18,5 @@ public interface ITimeEventAble {
      * @param timeAt The time of the callback
      * @param player The player playing the game
      */
-    void timeCallback(int timeAt, Player player);
+    void timeCallback(int timeAt, Game game);
 }

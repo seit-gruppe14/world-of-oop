@@ -136,7 +136,12 @@ public class Controller implements Initializable {
         setAskCombBox();
         textArea.setText(this.game.getWelcomeMessage());
         drawInitialRoom();
+        
+        this.game.addMessageListener(message -> {
+            this.textArea.appendText(message);
+        });
     }
+    
 
     // TODO finish comment
     /**
@@ -205,7 +210,7 @@ public class Controller implements Initializable {
     private void updateHealthBar() {
         this.healthBar.setProgress(((double)(this.game.getPlayer().getLife()))/100);
     }
-
+    
     /**
      * Call this method to update the weight bar
      */
@@ -313,14 +318,15 @@ public class Controller implements Initializable {
     @FXML
     private void onPayButtonClick(ActionEvent event) {
         this.textArea.appendText(this.game.pay());
-        updateWeightBar();
 	if (this.game.getTime().getCurrentTime() >= this.game.getGameEndTime()){
 	    gameOver();
 	}
 	if (this.game.getPlayer().isPlayerDead()){
 	    gameOver();
 	}
-	
+        updateWeightBar();
+        updateHealthBar();
+
         this.clock.setText(this.game.getTime().getNiceFormattedTime());
         this.money.setText(this.game.getPlayer().getMoney());
         updateRoomInventoryTabel();
