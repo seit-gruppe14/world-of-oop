@@ -24,7 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Stream;
-import zuulFramework.worldofzuul.IEventMessages;
+import zuulFramework.worldofzuul.rooms.ICanPay;
 
 public class Controller implements Initializable {
     
@@ -32,6 +32,7 @@ public class Controller implements Initializable {
     public ListView<String> mapsList;
     public BorderPane startPane;
     public SplitPane gamePane;
+    public BorderPane quitPane;
     
     private Game game;
 
@@ -82,6 +83,12 @@ public class Controller implements Initializable {
     private TableColumn<Item, Double> tableColumnRoomInventoryWeight;
     @FXML
     private TableColumn<Item, Integer> tableColumnRoomInventoryPrice;
+    @FXML
+    private Button actionButtonQuit;
+    @FXML
+    private TextField quitText;
+    @FXML
+    private Label scoreLabel;
 
     /**
      * The controller initialization, sets the new game.
@@ -185,6 +192,7 @@ public class Controller implements Initializable {
 	}
         updateRoomInventoryTabel();
 	updateHealthBar();
+        setPlayerInventoryTabel();
 	this.clock.setText(this.game.getTime().getNiceFormattedTime());
     }
 
@@ -224,13 +232,18 @@ public class Controller implements Initializable {
      * Call this method when updating the room items observable list.
      */
     private void updateRoomInventoryTabel() {
-        if (this.game.getPlayer().getCurrentRoom().hasItems()) {
-            SalesRoom currentRoom = (SalesRoom) this.game.getPlayer().getCurrentRoom();
-            this.tableColumnRoomInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
-            this.tableColumnRoomInventoryWeight.setCellValueFactory(new PropertyValueFactory<Item, Double>("weight"));
-            this.tableColumnRoomInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
-            this.tableViewRoomInventory.setItems(currentRoom.getItems());
-        } else {
+        if(this.game.getPlayer().getCurrentRoom() instanceof ICanPay) {
+        this.tableColumnRoomInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
+        this.tableColumnRoomInventoryWeight.setCellValueFactory(new PropertyValueFactory<Item, Double>("weight"));
+        this.tableColumnRoomInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
+        this.tableViewRoomInventory.setItems(this.game.getPlayer().getBoughtItems());
+        }else if (this.game.getPlayer().getCurrentRoom().hasItems()) {
+        SalesRoom currentRoom = (SalesRoom) this.game.getPlayer().getCurrentRoom();
+        this.tableColumnRoomInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
+        this.tableColumnRoomInventoryWeight.setCellValueFactory(new PropertyValueFactory<Item, Double>("weight"));
+        this.tableColumnRoomInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
+        this.tableViewRoomInventory.setItems(currentRoom.getItems());
+        }else{
             //Sets a empty observable array list to handle an none-salesroom
             this.tableViewRoomInventory.setItems(FXCollections.observableArrayList());
         }
@@ -246,7 +259,7 @@ public class Controller implements Initializable {
          // Sets a current selected Item which is used for checking with last selected item.
         Item selectedItem = this.tableViewRoomInventory.getSelectionModel().getSelectedItem();
         
-        if(isDoubleClick(selectedItem)) {
+        if(isDoubleClick(selectedItem) && !this.game.getPlayer().getBoughtItems().contains(selectedItem)) {
             String responseMessage = this.game.pickUp(selectedItem.getName());
             this.textArea.appendText(responseMessage);
             updateWeightBar();
@@ -272,12 +285,7 @@ public class Controller implements Initializable {
             this.itemLastClick = new Date();
             this.itemLastSelect = selectedItem;
         // Second if statement handles the event of a "double click"
-        } else if (selectedItem
-                .getName()
-                .equalsIgnoreCase
-        (this
-                .itemLastSelect
-                .getName())) {
+        } else if (selectedItem.getName().equalsIgnoreCase(this.itemLastSelect.getName())) {
             // Sets a temporary click date to check wether the click was rapid.
             Date roomItemSecondClick = new Date();
             // Calculates the difference on click date to create a difference which is checkable for later use
@@ -305,6 +313,7 @@ public class Controller implements Initializable {
         updateWeightBar();
         this.clock.setText(this.game.getTime().getNiceFormattedTime());
         this.money.setText(this.game.getPlayer().getMoney());
+        updateRoomInventoryTabel();
     }
 
     @FXML
@@ -333,6 +342,7 @@ public class Controller implements Initializable {
         initializeGame(mapToLoad);
         startPane.setVisible(false);
         gamePane.setVisible(true);
+	quitPane.setVisible(false);
 
     }
 
@@ -340,5 +350,14 @@ public class Controller implements Initializable {
     private void onExitClicked(ActionEvent event) {
         Platform.exit();
     }
-    
+
+    @FXML
+    private void onQuitButtonClick(ActionEvent event) {
+	scoreLabel.setText(game.getHighScore().getScore());
+	startPane.setVisible(false);
+        gamePane.setVisible(false);
+	quitPane.setVisible(true);
+	
+    }
+     
 }

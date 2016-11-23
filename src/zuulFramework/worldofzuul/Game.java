@@ -235,7 +235,7 @@ public class Game implements ITimeEventAble {
         return "There is no room in that direction!\n";
     }
 
-    //TODO integrate this into JavaFX
+    //TODO integrate this into JavaFX (remove)
     /**
      * Checks if the command QUIT has been used
      * @param command the command to check
@@ -345,8 +345,8 @@ public class Game implements ITimeEventAble {
      * Marks the game for gameover
      * @param description String
      */
-    private void gameOver(String description) {
-        this.gameOverMessage = description;
+    public String gameOver(String description) {
+        return this.gameOverMessage = description;
     }
 
     /**
@@ -388,6 +388,10 @@ public class Game implements ITimeEventAble {
     public Time getTime() {
         return this.time;
     }
+    
+    public HighScore getHighScore() {
+	return this.highScore;
+    }
 
     /**
      * Get the player start room
@@ -404,5 +408,8 @@ public class Game implements ITimeEventAble {
     public void addMessageListener(IEventMessages i) {
         this.eventMessagesCallback = i;
     }
-    
+
+    public int getGameEndTime(){
+	return gameEndTime;
+    }
 }
