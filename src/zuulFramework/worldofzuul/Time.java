@@ -54,6 +54,12 @@ public class Time {
         if (minutes.length() != 2) {
             minutes = "0" + minutes;
         }
+	
+	if (time > game.getGameEndTime()) {
+	    return game.gameOver("You did not manage to get to the exit before IKEA closed. \n"
+                        + "The security guards threw you out, and destroyed all the things you bought.\n");
+	}
+	
 
         return String.format("%2s:%2s", hours, minutes);
     }

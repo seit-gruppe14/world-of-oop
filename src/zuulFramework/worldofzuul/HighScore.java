@@ -21,6 +21,7 @@ import javafx.collections.ObservableList;
  */
 public class HighScore {
     private Game game;
+    private int scoreToPrint;
     
     public HighScore (Game game){
         this.game = game;
@@ -52,6 +53,7 @@ public class HighScore {
         for (int i = 12; i > 0; i--) {
             score = (int) (score * ((0.083 * i) + 1));
         }
+	scoreToPrint = score;
         return score;
     }
 /**
@@ -130,4 +132,9 @@ public class HighScore {
             System.out.println("IOException caught");
         }
     }
+    
+    public String getScore(){
+	return scoreToPrint + "";
+    }
+
 }

@@ -32,6 +32,7 @@ public class Controller implements Initializable {
     public ListView<String> mapsList;
     public BorderPane startPane;
     public SplitPane gamePane;
+    public BorderPane quitPane;
     
     private Game game;
 
@@ -82,6 +83,12 @@ public class Controller implements Initializable {
     private TableColumn<Item, Double> tableColumnRoomInventoryWeight;
     @FXML
     private TableColumn<Item, Integer> tableColumnRoomInventoryPrice;
+    @FXML
+    private Button actionButtonQuit;
+    @FXML
+    private TextField quitText;
+    @FXML
+    private Label scoreLabel;
 
     /**
      * The controller initialization, sets the new game.
@@ -330,6 +337,7 @@ public class Controller implements Initializable {
         initializeGame(mapToLoad);
         startPane.setVisible(false);
         gamePane.setVisible(true);
+	quitPane.setVisible(false);
 
     }
 
@@ -337,4 +345,15 @@ public class Controller implements Initializable {
     private void onExitClicked(ActionEvent event) {
         Platform.exit();
     }
+
+    @FXML
+    private void onQuitButtonClick(ActionEvent event) {
+	scoreLabel.setText(game.getHighScore().getScore());
+	startPane.setVisible(false);
+        gamePane.setVisible(false);
+	quitPane.setVisible(true);
+	
+    }
+    
+    
 }
