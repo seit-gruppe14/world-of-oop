@@ -86,7 +86,7 @@ public class Controller implements Initializable {
     @FXML
     private Button actionButtonQuit;
     @FXML
-    private TextField quitText;
+    private Label quitText;
     @FXML
     private Label scoreLabel;
 
@@ -185,6 +185,14 @@ public class Controller implements Initializable {
         }else if(event.getSource() == East){
             this.textArea.appendText(this.game.handleRoomMovement("east"));
 	}
+	if (this.game.getTime().getCurrentTime() >= this.game.getGameEndTime()){
+	    gameOver();
+	}
+	if (this.game.getPlayer().isPlayerDead()){
+	    gameOver();
+	}
+	
+	
         updateRoomInventoryTabel();
 	updateHealthBar();
         setPlayerInventoryTabel();
@@ -306,6 +314,13 @@ public class Controller implements Initializable {
     private void onPayButtonClick(ActionEvent event) {
         this.textArea.appendText(this.game.pay());
         updateWeightBar();
+	if (this.game.getTime().getCurrentTime() >= this.game.getGameEndTime()){
+	    gameOver();
+	}
+	if (this.game.getPlayer().isPlayerDead()){
+	    gameOver();
+	}
+	
         this.clock.setText(this.game.getTime().getNiceFormattedTime());
         this.money.setText(this.game.getPlayer().getMoney());
         updateRoomInventoryTabel();
@@ -348,12 +363,20 @@ public class Controller implements Initializable {
 
     @FXML
     private void onQuitButtonClick(ActionEvent event) {
-	scoreLabel.setText(game.getHighScore().getScore());
+	quitText.setText("You sucessfully quitted!");
+	quitGame();
+    }
+    
+    public void quitGame(){
+	scoreLabel.setText(this.game.getHighScore().getScore());
 	startPane.setVisible(false);
         gamePane.setVisible(false);
 	quitPane.setVisible(true);
-	
     }
     
+    public void gameOver(){
+	quitText.setText("GAME OVER!");
+	quitGame();
+    }
     
 }

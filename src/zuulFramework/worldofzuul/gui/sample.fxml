@@ -194,13 +194,6 @@
             </right>
         </BorderPane>
       <BorderPane fx:id="quitPane" prefHeight="200.0" prefWidth="200.0" visible="false">
-         <top>
-            <TextField fx:id="quitText" alignment="CENTER" editable="false" prefHeight="300.0" promptText="GAME OVER!" BorderPane.alignment="CENTER">
-               <font>
-                  <Font size="96.0" />
-               </font>
-            </TextField>
-         </top>
          <right>
             <VBox alignment="CENTER" prefHeight="600.0" prefWidth="540.0" spacing="8.0" BorderPane.alignment="CENTER_LEFT">
                <children>
@@ -219,12 +212,12 @@
                   </ListView>
                </children>
                <BorderPane.margin>
-                  <Insets top="10.0" />
+                  <Insets top="30.0" />
                </BorderPane.margin>
             </VBox>
          </right>
          <center>
-            <VBox alignment="CENTER" spacing="20.0" BorderPane.alignment="CENTER">
+            <VBox alignment="TOP_CENTER" spacing="20.0" BorderPane.alignment="TOP_CENTER">
                <children>
                   <Label text="Your score is:">
                      <font>
@@ -237,8 +230,21 @@
                      </font>
                   </Label>
                </children>
+               <BorderPane.margin>
+                  <Insets top="100.0" />
+               </BorderPane.margin>
             </VBox>
          </center>
+         <top>
+            <Label fx:id="quitText" text="GAME OVER!" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="Comic Sans MS Bold" size="90.0" />
+               </font>
+               <BorderPane.margin>
+                  <Insets top="75.0" />
+               </BorderPane.margin>
+            </Label>
+         </top>
       </BorderPane>
     </children>
 </StackPane>
