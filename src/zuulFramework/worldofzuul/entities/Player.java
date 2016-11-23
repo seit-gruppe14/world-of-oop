@@ -109,7 +109,8 @@ public class Player extends InventoryEntity{
      * items that has been bought
      */
     public void moveItemsToBoughtItems() {
-        this.boughtItems = this.items;
+        this.boughtItems.addAll(this.items);
+        this.items.clear();
         this.items = FXCollections.observableArrayList();
     }
 
@@ -117,7 +118,7 @@ public class Player extends InventoryEntity{
      * Gets a list of all the items the player has bough
      * @return
      */
-    public List<Item> getBoughtItems() {
+    public ObservableList<Item> getBoughtItems() {
         return this.boughtItems;
     }
 

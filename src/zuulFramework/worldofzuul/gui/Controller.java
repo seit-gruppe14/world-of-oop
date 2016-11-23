@@ -24,6 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Stream;
+import zuulFramework.worldofzuul.rooms.ICanPay;
 
 public class Controller implements Initializable {
     
@@ -179,6 +180,7 @@ public class Controller implements Initializable {
 	}
         updateRoomInventoryTabel();
 	updateHealthBar();
+        setPlayerInventoryTabel();
 	this.clock.setText(this.game.getTime().getNiceFormattedTime());
     }
 
@@ -208,10 +210,17 @@ public class Controller implements Initializable {
      * Call this method when updating the player items observable list.
      */
     private void setPlayerInventoryTabel() {
+        if (this.game.getPlayer().getCurrentRoom() instanceof ICanPay) {
+        this.tableColumnPlayerInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
+        this.tableColumnPlayerInventoryWeight.setCellValueFactory(new PropertyValueFactory<Item, Double>("weight"));
+        this.tableColumnPlayerInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
+        this.tableViewPlayerInventory.setItems(this.game.getPlayer().getBoughtItems());
+        }else{
         this.tableColumnPlayerInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
         this.tableColumnPlayerInventoryWeight.setCellValueFactory(new PropertyValueFactory<Item, Double>("weight"));
         this.tableColumnPlayerInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
         this.tableViewPlayerInventory.setItems(this.game.getPlayer().getItems());
+        }
     }
     
     /**
@@ -266,12 +275,7 @@ public class Controller implements Initializable {
             this.itemLastClick = new Date();
             this.itemLastSelect = selectedItem;
         // Second if statement handles the event of a "double click"
-        } else if (selectedItem
-                .getName()
-                .equalsIgnoreCase
-        (this
-                .itemLastSelect
-                .getName())) {
+        } else if (selectedItem.getName().equalsIgnoreCase(this.itemLastSelect.getName())) {
             // Sets a temporary click date to check wether the click was rapid.
             Date roomItemSecondClick = new Date();
             // Calculates the difference on click date to create a difference which is checkable for later use
@@ -299,6 +303,7 @@ public class Controller implements Initializable {
         updateWeightBar();
         this.clock.setText(this.game.getTime().getNiceFormattedTime());
         this.money.setText(this.game.getPlayer().getMoney());
+        setPlayerInventoryTabel();
     }
 
     @FXML
