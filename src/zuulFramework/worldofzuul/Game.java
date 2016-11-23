@@ -301,7 +301,7 @@ public class Game implements ITimeEventAble {
             ICanPay payRoom = (ICanPay) currentRoom;
             String paymentMessage = payRoom.buy(player, this);
             stringBuilder.append(paymentMessage).append("\n");
-            stringBuilder.append("Your score is saved and you can quit safely.").append("\n");
+//            stringBuilder.append("Your score is saved and you can quit safely.").append("\n");
             return stringBuilder.toString();
         } else {
             return "There is nowhere you can pay in this room.\n";

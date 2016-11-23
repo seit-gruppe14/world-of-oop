@@ -311,6 +311,7 @@ public class Controller implements Initializable {
     private void onPayButtonClick(ActionEvent event) {
         this.textArea.appendText(this.game.pay());
         updateWeightBar();
+        updateHealthBar();
         this.clock.setText(this.game.getTime().getNiceFormattedTime());
         this.money.setText(this.game.getPlayer().getMoney());
         updateRoomInventoryTabel();
