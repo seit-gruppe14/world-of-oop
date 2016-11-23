@@ -210,30 +210,28 @@ public class Controller implements Initializable {
      * Call this method when updating the player items observable list.
      */
     private void setPlayerInventoryTabel() {
-        if (this.game.getPlayer().getCurrentRoom() instanceof ICanPay) {
-        this.tableColumnPlayerInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
-        this.tableColumnPlayerInventoryWeight.setCellValueFactory(new PropertyValueFactory<Item, Double>("weight"));
-        this.tableColumnPlayerInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
-        this.tableViewPlayerInventory.setItems(this.game.getPlayer().getBoughtItems());
-        }else{
         this.tableColumnPlayerInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
         this.tableColumnPlayerInventoryWeight.setCellValueFactory(new PropertyValueFactory<Item, Double>("weight"));
         this.tableColumnPlayerInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
         this.tableViewPlayerInventory.setItems(this.game.getPlayer().getItems());
-        }
     }
     
     /**
      * Call this method when updating the room items observable list.
      */
     private void updateRoomInventoryTabel() {
-        if (this.game.getPlayer().getCurrentRoom().hasItems()) {
-            SalesRoom currentRoom = (SalesRoom) this.game.getPlayer().getCurrentRoom();
-            this.tableColumnRoomInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
-            this.tableColumnRoomInventoryWeight.setCellValueFactory(new PropertyValueFactory<Item, Double>("weight"));
-            this.tableColumnRoomInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
-            this.tableViewRoomInventory.setItems(currentRoom.getItems());
-        } else {
+        if(this.game.getPlayer().getCurrentRoom() instanceof ICanPay) {
+        this.tableColumnRoomInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
+        this.tableColumnRoomInventoryWeight.setCellValueFactory(new PropertyValueFactory<Item, Double>("weight"));
+        this.tableColumnRoomInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
+        this.tableViewRoomInventory.setItems(this.game.getPlayer().getBoughtItems());
+        }else if (this.game.getPlayer().getCurrentRoom().hasItems()) {
+        SalesRoom currentRoom = (SalesRoom) this.game.getPlayer().getCurrentRoom();
+        this.tableColumnRoomInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
+        this.tableColumnRoomInventoryWeight.setCellValueFactory(new PropertyValueFactory<Item, Double>("weight"));
+        this.tableColumnRoomInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
+        this.tableViewRoomInventory.setItems(currentRoom.getItems());
+        }else{
             //Sets a empty observable array list to handle an none-salesroom
             this.tableViewRoomInventory.setItems(FXCollections.observableArrayList());
         }
@@ -249,7 +247,7 @@ public class Controller implements Initializable {
          // Sets a current selected Item which is used for checking with last selected item.
         Item selectedItem = this.tableViewRoomInventory.getSelectionModel().getSelectedItem();
         
-        if(isDoubleClick(selectedItem)) {
+        if(isDoubleClick(selectedItem) && !this.game.getPlayer().getBoughtItems().contains(selectedItem)) {
             String responseMessage = this.game.pickUp(selectedItem.getName());
             this.textArea.appendText(responseMessage);
             updateWeightBar();
@@ -303,7 +301,7 @@ public class Controller implements Initializable {
         updateWeightBar();
         this.clock.setText(this.game.getTime().getNiceFormattedTime());
         this.money.setText(this.game.getPlayer().getMoney());
-        setPlayerInventoryTabel();
+        updateRoomInventoryTabel();
     }
 
     @FXML
