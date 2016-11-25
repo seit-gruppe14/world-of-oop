@@ -300,8 +300,7 @@ public class Controller implements Initializable {
         Item selectedItem = this.tableViewRoomInventory.getSelectionModel().getSelectedItem();
 
         if (isDoubleClick(selectedItem) && !this.game.getPlayer().getBoughtItems().contains(selectedItem)) {
-            String responseMessage = this.game.pickUp(selectedItem.getName());
-            this.textArea.appendText(responseMessage);
+            this.game.pickUp(selectedItem.getName());
             updateWeightBar();
         }
     }
@@ -349,7 +348,7 @@ public class Controller implements Initializable {
 
     @FXML
     private void onPayButtonClick(ActionEvent event) {
-        this.textArea.appendText(this.game.pay());
+        this.game.pay();
         if (this.game.getTime().getCurrentTime() >= this.game.getGameEndTime()) {
             gameOver();
         }
@@ -358,8 +357,6 @@ public class Controller implements Initializable {
         }
         updateWeightBar();
         updateHealthBar();
-
-        this.money.setText(this.game.getPlayer().getMoney());
         updateRoomInventoryTabel();
     }
 

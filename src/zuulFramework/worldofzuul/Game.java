@@ -190,17 +190,17 @@ public class Game implements ITimeEventAble {
     /**
      * The player is able to pick up items in the room
      */
-    public String pickUp(String selectedItem) throws Exception {
+    public void pickUp(String selectedItem) throws Exception {
         time.updateTime(5);
         if (player.getCurrentRoom() instanceof SalesRoom) {
             Item currentItem = this.player.pickUp(selectedItem, this);
             if (currentItem==null) {
-                return "Oh no something went horribly wrong\n";
+                addEventMessages("Oh no something went horribly wrong\n");
             }else{
                 if (currentItem.getWeight()+player.getCarryWeight()>player.getMaxCarryWeight()) {
-                    return "Max carry weight exceeded\n";
+                    addEventMessages("Max carry weight exceeded\n");
                 }else{
-                    return "Item was added to your inventory\n";
+                    addEventMessages("Item was added to your inventory\n");
                 }
             }
         } else {
@@ -213,21 +213,21 @@ public class Game implements ITimeEventAble {
      *
      * @param command the command
      */
-    public String drop(Item selectedItem) {
+    public void drop(Item selectedItem) {
         // Check if the player can drop an item off in this room.
         if (player.getCurrentRoom() instanceof SalesRoom) {
             time.updateTime(5);
             this.player.drop(selectedItem.getName());
-            return "You dropped an item: " + selectedItem.getType() + "\n";
+            addEventMessages("You dropped an item: " + selectedItem.getType() + "\n");
         } else {
-            return "You can't drop items in this room.\n";
+            addEventMessages("You can't drop items in this room.\n");
         }
     }
 
     /**
      * Handles the player payment, and score setting.
      */
-    public String pay() {
+    public void pay() {
         Room currentRoom = player.getCurrentRoom();
         if (currentRoom instanceof ICanPay) {
             StringBuilder stringBuilder = new StringBuilder();
@@ -235,9 +235,9 @@ public class Game implements ITimeEventAble {
             String paymentMessage = payRoom.buy(player, this);
             stringBuilder.append(paymentMessage).append("\n");
 //            stringBuilder.append("Your score is saved and you can quit safely.").append("\n");
-            return stringBuilder.toString();
+            addEventMessages(stringBuilder.toString());
         } else {
-            return "There is nowhere you can pay in this room.\n";
+            addEventMessages("There is nowhere you can pay in this room.\n");
         }
     }
 
