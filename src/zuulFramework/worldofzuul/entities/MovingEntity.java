@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Describes an entity that can move around between rooms
@@ -26,6 +25,7 @@ import java.util.stream.Collectors;
 public abstract class MovingEntity extends Entity implements IDrawable {
     private Circle drawed;
     private List<Transition> transitions = new ArrayList<>();
+    private MoveTransition moveTransition;
 
     public void move() {
         Set<Map.Entry<String, Room>> rooms;
@@ -95,25 +95,31 @@ public abstract class MovingEntity extends Entity implements IDrawable {
     @Override
     public void updateDraw() {
         if (drawed != null) {
-            List<Transition> transitionsBefore = transitions.stream().collect(Collectors.toList());
-            transitions.clear();
+            boolean hasMoveTransition = moveTransition != null;
+            if (hasMoveTransition) {
+                moveTransition.stop();
+                moveTransition.setOnFinished(null);
+                moveTransition = null;
+
+            }
+            List<Transition> transitionsBefore = transitions;
+            transitions = new ArrayList<>();
 
             Offset o = getCurrentRoom().getLocation().add(Offset.getRandomOffsetForRoom());
-            MoveTransition mt = new MoveTransition(drawed, o.X, o.Y);
-            mt.setOnFinished(event -> {
+            moveTransition = new MoveTransition(drawed, o.X, o.Y);
+            moveTransition.setOnFinished(event -> {
                 addWaitingAnimation();
+                moveTransition = null;
             });
+            moveTransition.setBeforeStartCallback(() -> transitionsBefore.forEach(Animation::stop));
 
-            PauseTransition pt = new PauseTransition(Duration.millis(moveStartDelay()));
-            pt.setOnFinished(event -> {
-                transitionsBefore.forEach(Animation::pause);
-                mt.beforeStart();
-            });
+            double startDelay = moveTransition == null ? moveStartDelay() : 0;
 
-            Transition fullTransition = new SequentialTransition(pt, mt);
-            fullTransition.play();
+            moveTransition.setDelay(Duration.millis(startDelay));
+            moveTransition.play();
 
-            transitions.add(fullTransition);
+            transitions.add(moveTransition);
+
         }
     }
 }

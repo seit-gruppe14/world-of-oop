@@ -16,6 +16,8 @@ public class MoveTransition extends BaseTransition {
     private double endX;
     private double endY;
     private EventHandler<ActionEvent> outerOnFinished;
+    private boolean isFirstInterpolate = true;
+    private IOnBeforeStart beforeStartCallback;
 
 
     public MoveTransition(Circle circle, double endX, double endY) {
@@ -28,6 +30,10 @@ public class MoveTransition extends BaseTransition {
 
     @Override
     protected void interpolate(double frac) {
+        if (isFirstInterpolate) {
+            isFirstInterpolate = false;
+            beforeStart();
+        }
         toAnimate.setTranslateX(lerp(0, endX, frac));
         toAnimate.setTranslateY(lerp(0, endY, frac));
     }
@@ -36,6 +42,10 @@ public class MoveTransition extends BaseTransition {
         this.outerOnFinished = getOnFinished();
 
         resetExistingAnimations();
+
+        if (this.beforeStartCallback != null) {
+            this.beforeStartCallback.handle();
+        }
 
         startX = toAnimate.getCenterX();
         startY = toAnimate.getCenterY();
@@ -47,15 +57,37 @@ public class MoveTransition extends BaseTransition {
             resetExistingAnimations();
 
             // Call parent
-            this.outerOnFinished.handle(event);
+            if (this.outerOnFinished != null) {
+                this.outerOnFinished.handle(event);
+            }
         });
     }
 
 
-    private void resetExistingAnimations() {
+    public void resetExistingAnimations() {
+
         toAnimate.setCenterX(toAnimate.getCenterX() + toAnimate.getTranslateX());
         toAnimate.setCenterY(toAnimate.getCenterY() + toAnimate.getTranslateY());
+
         toAnimate.setTranslateX(0);
         toAnimate.setTranslateY(0);
+    }
+
+    public IOnBeforeStart getBeforeStartCallback() {
+        return beforeStartCallback;
+    }
+
+    public void setBeforeStartCallback(IOnBeforeStart beforeStartCallback) {
+        this.beforeStartCallback = beforeStartCallback;
+    }
+
+    @Override
+    public void stop() {
+        resetExistingAnimations();
+        super.stop();
+    }
+
+    public interface IOnBeforeStart {
+        void handle();
     }
 }
