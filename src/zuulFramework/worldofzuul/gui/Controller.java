@@ -302,7 +302,6 @@ public class Controller implements Initializable {
         if (isDoubleClick(selectedItem) && !this.game.getPlayer().getBoughtItems().contains(selectedItem)) {
             String responseMessage = this.game.pickUp(selectedItem.getName());
             this.textArea.appendText(responseMessage);
-            this.clock.setText(this.game.getTime().getNiceFormattedTime());
             updateWeightBar();
         }
     }
