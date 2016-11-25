@@ -141,7 +141,7 @@ public class Controller implements Initializable {
         setPlayerInventoryTabel();
         updateRoomInventoryTabel();
         setAskCombBox();
-        textArea.setText(this.game.getWelcomeMessage());
+
         drawInitialRoom();
 
         this.game.addMessageListener(message -> {
@@ -360,13 +360,12 @@ public class Controller implements Initializable {
     @FXML
     private void onAskComboBoxSelect(ActionEvent event) {
         String itemType = this.comboBoxAsk.getSelectionModel().getSelectedItem().toString();
-        String helpAnswer = this.game.askForHelp(itemType);
-        this.textArea.appendText(helpAnswer);
+        this.game.askForHelp(itemType);
     }
 
     @FXML
     private void onHelpButtonClick(ActionEvent event) {
-        this.textArea.appendText(this.game.printHelp());
+        this.game.printHelp();
     }
 
     @FXML
@@ -383,6 +382,7 @@ public class Controller implements Initializable {
         initializeGame(mapToLoad);
         startPane.setVisible(false);
         gamePane.setVisible(true);
+        this.game.getWelcomeMessage();
         quitPane.setVisible(false);
         setOtherDirectionsValues();
 
