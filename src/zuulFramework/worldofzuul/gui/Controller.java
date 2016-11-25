@@ -147,6 +147,9 @@ public class Controller implements Initializable {
         this.game.addMessageListener(message -> {
             this.textArea.appendText(message);
         });
+        this.game.getTime().addListener((observable, oldValue, newValue) -> {
+            this.clock.setText(newValue);
+        });
     }
 
 
@@ -179,7 +182,6 @@ public class Controller implements Initializable {
             entry.addToScene(this.mapPane.getChildren(), startRoom.calculateOffsetToRoom(entry));
             drawRooms(drawnRooms, entry.getExits().values(), startRoom);
         }
-        this.clock.setText(this.game.getTime().getNiceFormattedTime());
         this.money.setText(this.game.getPlayer().getMoney());
     }
 
@@ -210,7 +212,6 @@ public class Controller implements Initializable {
         updateRoomInventoryTabel();
         updateHealthBar();
         setPlayerInventoryTabel();
-        this.clock.setText(this.game.getTime().getNiceFormattedTime());
     }
 
     private void setOtherDirectionsValues() {
@@ -352,7 +353,6 @@ public class Controller implements Initializable {
         updateWeightBar();
         updateHealthBar();
 
-        this.clock.setText(this.game.getTime().getNiceFormattedTime());
         this.money.setText(this.game.getPlayer().getMoney());
         updateRoomInventoryTabel();
     }
