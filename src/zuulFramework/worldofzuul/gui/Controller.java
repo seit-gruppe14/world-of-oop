@@ -424,7 +424,7 @@ public class Controller implements Initializable {
     }
 
     private void changeRoom(String direction) {
-        textArea.appendText(this.game.handleRoomMovement(direction));
+        this.game.handleRoomMovement(direction);
         setOtherDirectionsValues();
     }
 

@@ -167,23 +167,23 @@ public class Game implements ITimeEventAble {
      * @param direction
      * @return String
      */
-    public String handleRoomMovement(String direction) {
+    public void handleRoomMovement(String direction) {
         Room nextRoom = this.player.goRoom(direction);
         StringBuilder stringBuilder = new StringBuilder();
         if (nextRoom != null) {
             
             if(nextRoom.isLocked()) {
-                return "The room is locked!\n";
+                addEventMessages("The room is locked!\n");
             }
             stringBuilder.append("You went " + direction + ".").append("\n");
             stringBuilder.append(nextRoom.getLongDescription()).append("\n");
             time.updateTime(15);
             if (nextRoom instanceof IHaveSpecialEvent) {
                 stringBuilder.append(((IHaveSpecialEvent) nextRoom).doSpecialEvent(this));
-            }
-            return stringBuilder.toString();
-        }
-        return "There is no room in that direction!\n";
+            } else
+            addEventMessages(stringBuilder.toString());
+        } else
+        addEventMessages("There is no room in that direction!\n");
     }
     
     //TODO integrate this into JavaFX
