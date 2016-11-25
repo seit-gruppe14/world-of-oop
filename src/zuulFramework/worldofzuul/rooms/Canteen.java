@@ -25,7 +25,11 @@ public class Canteen extends Room implements ICanPay {
      */
     @Override
     public String buy(Player player, Game game) {
-        return "/n";
+        
+        player.removeMoney(((100-player.getLife())));
+        player.setLife(100);
+        
+        return "Your life has been restored";
         /*
         if (command.hasSecondWord()) {
             // Use command to define how much life a player wishes for, depends on 

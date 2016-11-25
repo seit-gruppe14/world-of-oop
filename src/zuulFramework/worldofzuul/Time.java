@@ -54,6 +54,7 @@ public class Time {
         if (minutes.length() != 2) {
             minutes = "0" + minutes;
         }
+	
 
         return String.format("%2s:%2s", hours, minutes);
     }
@@ -76,7 +77,7 @@ public class Time {
             // and player and then set the timeSinceLastCallback to 0
             if (callback.getTimeSinceLastCallback() >= event.getTimeBetweenEvents()) {
                 callback.setTimeSinceLastCallback(0);
-                event.timeCallback(this.time, game.getPlayer());
+                event.timeCallback(this.time, game);
             }
         }
     }
@@ -176,6 +177,9 @@ public class Time {
             return callback;
         }
 
+    }
+    public int getCurrentTime(){
+	return time;
     }
 }
 

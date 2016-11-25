@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import zuulFramework.worldofzuul.entities.Monster;
 
 /**
  * The "main" in the game
@@ -31,9 +32,8 @@ public class Game implements ITimeEventAble {
      * The player instance
      */
     private Player player;
-
+    
     private HighScore highScore;
-
 
     private String gameOverMessage = null;
 
@@ -47,6 +47,7 @@ public class Game implements ITimeEventAble {
         ItemType.COMPUTER,
         ItemType.SOFA
     );
+    private IEventMessages eventMessagesCallback;
 
     /**
      * Creates a new game, with default values
@@ -66,7 +67,7 @@ public class Game implements ITimeEventAble {
 
         // Initialize a new player
         player = new Player();
-
+        
         // Create all the rooms in the game
         createRooms(mapLocation);
 
@@ -220,6 +221,7 @@ public class Game implements ITimeEventAble {
         Room nextRoom = this.player.goRoom(direction);
         StringBuilder stringBuilder = new StringBuilder();
         if (nextRoom != null) {
+            
             if(nextRoom.isLocked()) {
                 return "The room is locked!\n";
             }
@@ -234,7 +236,7 @@ public class Game implements ITimeEventAble {
         return "There is no room in that direction!\n";
     }
 
-    //TODO integrate this into JavaFX
+    //TODO integrate this into JavaFX (remove)
     /**
      * Checks if the command QUIT has been used
      * @param command the command to check
@@ -300,7 +302,7 @@ public class Game implements ITimeEventAble {
             ICanPay payRoom = (ICanPay) currentRoom;
             String paymentMessage = payRoom.buy(player, this);
             stringBuilder.append(paymentMessage).append("\n");
-            stringBuilder.append("Your score is saved and you can quit safely.").append("\n");
+//            stringBuilder.append("Your score is saved and you can quit safely.").append("\n");
             return stringBuilder.toString();
         } else {
             return "There is nowhere you can pay in this room.\n";
@@ -323,7 +325,7 @@ public class Game implements ITimeEventAble {
      * @param player 
      */
     @Override
-    public void timeCallback(int timeAt, Player player) {
+    public void timeCallback(int timeAt, Game game) {
         // If the current time is more than 22 o'clock
         if (timeAt >= gameEndTime) {
             // If the time is up, and the player is in an exit room, then they should end the game
@@ -344,8 +346,8 @@ public class Game implements ITimeEventAble {
      * Marks the game for gameover
      * @param description String
      */
-    private void gameOver(String description) {
-        this.gameOverMessage = description;
+    public String gameOver(String description) {
+        return this.gameOverMessage = description;
     }
 
     /**
@@ -387,6 +389,10 @@ public class Game implements ITimeEventAble {
     public Time getTime() {
         return this.time;
     }
+    
+    public HighScore getHighScore() {
+	return this.highScore;
+    }
 
     /**
      * Get the player start room
@@ -394,5 +400,17 @@ public class Game implements ITimeEventAble {
      */
     public Room getStartRoom() {
         return startRoom;
+    }
+    
+    public void addEventMessages(String eventMessage) {
+        this.eventMessagesCallback.handle(eventMessage);
+    }
+    
+    public void addMessageListener(IEventMessages i) {
+        this.eventMessagesCallback = i;
+    }
+
+    public int getGameEndTime(){
+	return gameEndTime;
     }
 }

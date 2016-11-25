@@ -16,6 +16,7 @@ import zuulFramework.worldofzuul.entities.Item;
 import zuulFramework.worldofzuul.entities.ItemType;
 import zuulFramework.worldofzuul.rooms.Room;
 import zuulFramework.worldofzuul.rooms.SalesRoom;
+import zuulFramework.worldofzuul.helpers.SillyMessages;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,7 +25,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Stream;
-import zuulFramework.worldofzuul.rooms.ICanPay;
+import zuulFramework.worldofzuul.rooms.Exit;
 
 public class Controller implements Initializable {
     
@@ -32,6 +33,7 @@ public class Controller implements Initializable {
     public ListView<String> mapsList;
     public BorderPane startPane;
     public SplitPane gamePane;
+    public BorderPane quitPane;
     
     private Game game;
 
@@ -82,6 +84,14 @@ public class Controller implements Initializable {
     private TableColumn<Item, Double> tableColumnRoomInventoryWeight;
     @FXML
     private TableColumn<Item, Integer> tableColumnRoomInventoryPrice;
+    @FXML
+    private Button actionButtonQuit;
+    @FXML
+    private Label quitText;
+    @FXML
+    private Label scoreLabel;
+    @FXML
+    private Label gameOverMessage;
 
     /**
      * The controller initialization, sets the new game.
@@ -129,7 +139,12 @@ public class Controller implements Initializable {
         setAskCombBox();
         textArea.setText(this.game.getWelcomeMessage());
         drawInitialRoom();
+        
+        this.game.addMessageListener(message -> {
+            this.textArea.appendText(message);
+        });
     }
+    
 
     // TODO finish comment
     /**
@@ -178,6 +193,14 @@ public class Controller implements Initializable {
         }else if(event.getSource() == East){
             this.textArea.appendText(this.game.handleRoomMovement("east"));
 	}
+	if (this.game.getTime().getCurrentTime() >= this.game.getGameEndTime()){
+	    gameOver();
+	}
+	if (this.game.getPlayer().isPlayerDead()){
+	    gameOver();
+	}
+	
+	
         updateRoomInventoryTabel();
 	updateHealthBar();
         setPlayerInventoryTabel();
@@ -190,7 +213,7 @@ public class Controller implements Initializable {
     private void updateHealthBar() {
         this.healthBar.setProgress(((double)(this.game.getPlayer().getLife()))/100);
     }
-
+    
     /**
      * Call this method to update the weight bar
      */
@@ -210,30 +233,28 @@ public class Controller implements Initializable {
      * Call this method when updating the player items observable list.
      */
     private void setPlayerInventoryTabel() {
-        if (this.game.getPlayer().getCurrentRoom() instanceof ICanPay) {
-        this.tableColumnPlayerInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
-        this.tableColumnPlayerInventoryWeight.setCellValueFactory(new PropertyValueFactory<Item, Double>("weight"));
-        this.tableColumnPlayerInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
-        this.tableViewPlayerInventory.setItems(this.game.getPlayer().getBoughtItems());
-        }else{
         this.tableColumnPlayerInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
         this.tableColumnPlayerInventoryWeight.setCellValueFactory(new PropertyValueFactory<Item, Double>("weight"));
         this.tableColumnPlayerInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
         this.tableViewPlayerInventory.setItems(this.game.getPlayer().getItems());
-        }
     }
     
     /**
      * Call this method when updating the room items observable list.
      */
     private void updateRoomInventoryTabel() {
-        if (this.game.getPlayer().getCurrentRoom().hasItems()) {
-            SalesRoom currentRoom = (SalesRoom) this.game.getPlayer().getCurrentRoom();
-            this.tableColumnRoomInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
-            this.tableColumnRoomInventoryWeight.setCellValueFactory(new PropertyValueFactory<Item, Double>("weight"));
-            this.tableColumnRoomInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
-            this.tableViewRoomInventory.setItems(currentRoom.getItems());
-        } else {
+        if(this.game.getPlayer().getCurrentRoom() instanceof Exit) {
+        this.tableColumnRoomInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
+        this.tableColumnRoomInventoryWeight.setCellValueFactory(new PropertyValueFactory<Item, Double>("weight"));
+        this.tableColumnRoomInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
+        this.tableViewRoomInventory.setItems(this.game.getPlayer().getBoughtItems());
+        }else if (this.game.getPlayer().getCurrentRoom().hasItems()) {
+        SalesRoom currentRoom = (SalesRoom) this.game.getPlayer().getCurrentRoom();
+        this.tableColumnRoomInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
+        this.tableColumnRoomInventoryWeight.setCellValueFactory(new PropertyValueFactory<Item, Double>("weight"));
+        this.tableColumnRoomInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
+        this.tableViewRoomInventory.setItems(currentRoom.getItems());
+        }else{
             //Sets a empty observable array list to handle an none-salesroom
             this.tableViewRoomInventory.setItems(FXCollections.observableArrayList());
         }
@@ -249,7 +270,7 @@ public class Controller implements Initializable {
          // Sets a current selected Item which is used for checking with last selected item.
         Item selectedItem = this.tableViewRoomInventory.getSelectionModel().getSelectedItem();
         
-        if(isDoubleClick(selectedItem)) {
+        if(isDoubleClick(selectedItem) && !this.game.getPlayer().getBoughtItems().contains(selectedItem)) {
             String responseMessage = this.game.pickUp(selectedItem.getName());
             this.textArea.appendText(responseMessage);
             updateWeightBar();
@@ -300,10 +321,18 @@ public class Controller implements Initializable {
     @FXML
     private void onPayButtonClick(ActionEvent event) {
         this.textArea.appendText(this.game.pay());
+	if (this.game.getTime().getCurrentTime() >= this.game.getGameEndTime()){
+	    gameOver();
+	}
+	if (this.game.getPlayer().isPlayerDead()){
+	    gameOver();
+	}
         updateWeightBar();
+        updateHealthBar();
+
         this.clock.setText(this.game.getTime().getNiceFormattedTime());
         this.money.setText(this.game.getPlayer().getMoney());
-        setPlayerInventoryTabel();
+        updateRoomInventoryTabel();
     }
 
     @FXML
@@ -332,6 +361,7 @@ public class Controller implements Initializable {
         initializeGame(mapToLoad);
         startPane.setVisible(false);
         gamePane.setVisible(true);
+	quitPane.setVisible(false);
 
     }
 
@@ -339,4 +369,30 @@ public class Controller implements Initializable {
     private void onExitClicked(ActionEvent event) {
         Platform.exit();
     }
+
+    @FXML
+    private void onQuitButtonClick(ActionEvent event) {
+	quitText.setText("You sucessfully quitted!");
+	quitGame();
+    }
+    
+    public void quitGame(){
+	scoreLabel.setText(this.game.getHighScore().getScore());
+	startPane.setVisible(false);
+        gamePane.setVisible(false);
+	quitPane.setVisible(true);
+    }
+    
+    public void gameOver(){
+	quitText.setText("GAME OVER!");
+	if (this.game.getPlayer().isPlayerDead()){
+	    gameOverMessage.setText(SillyMessages.getDeathMessage());
+	}
+	else {
+	gameOverMessage.setText(this.game.gameOver("You did not manage to get to the exit before IKEA closed. \n"
+                        + "The security guards threw you out, and destroyed all the things you bought.\n"));
+	}
+	quitGame();
+    }
+    
 }
