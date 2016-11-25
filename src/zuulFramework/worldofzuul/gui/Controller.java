@@ -25,7 +25,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Stream;
-import zuulFramework.worldofzuul.rooms.ICanPay;
+import zuulFramework.worldofzuul.rooms.Exit;
 
 public class Controller implements Initializable {
     
@@ -243,7 +243,7 @@ public class Controller implements Initializable {
      * Call this method when updating the room items observable list.
      */
     private void updateRoomInventoryTabel() {
-        if(this.game.getPlayer().getCurrentRoom() instanceof ICanPay) {
+        if(this.game.getPlayer().getCurrentRoom() instanceof Exit) {
         this.tableColumnRoomInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
         this.tableColumnRoomInventoryWeight.setCellValueFactory(new PropertyValueFactory<Item, Double>("weight"));
         this.tableColumnRoomInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));

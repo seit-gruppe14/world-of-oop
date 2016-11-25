@@ -221,6 +221,7 @@ public class Game implements ITimeEventAble {
         Room nextRoom = this.player.goRoom(direction);
         StringBuilder stringBuilder = new StringBuilder();
         if (nextRoom != null) {
+            
             if(nextRoom.isLocked()) {
                 return "The room is locked!\n";
             }
