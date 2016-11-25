@@ -100,35 +100,9 @@ public class Game implements ITimeEventAble {
     }
 
     /**
-     * Starts the actual game
-     */
-    public void play() {
-        highScore.showScore();
-        // The user hasn't finished the game when they start
-        boolean finished;
-        System.out.printf("You have %d life.\n", player.getLife());
-        // Ask the user for commands, and do whatever the user told us
-        do {
-            if (gameOverMessage != null) {
-                System.out.println(gameOverMessage);
-                break;
-            }
-            // Write the current time
-            System.out.printf("The time is now %s\n", time.getNiceFormattedTime());
-            Command command = parser.getCommand();
-            finished = processCommand(command);
-            if (player.isPlayerDead()) {
-                gameOver(SillyMessages.getDeathMessage());
-            }
-        } while (!finished);
-        highScore.printScore(itemList);
-        System.out.println("Thank you for playing.  Good bye.");
-    }
-
-    /**
      * Prints the welcome message and a description of the current room
      */
-    public String getWelcomeMessage() {
+    public void getWelcomeMessage() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Welcöme möney spender.").append("\n");
         stringBuilder.append("Tensiön is high at IKEA Ödense as yöu are waiting tö shöp-amök.").append("\n");
@@ -138,41 +112,16 @@ public class Game implements ITimeEventAble {
         stringBuilder.append("\n");
         stringBuilder.append(String.format("If you need assistance type '%s' tö ask öne öf the blönde IKEA emplöyees.%n", CommandWord.HELP)).append("\n");
         stringBuilder.append(player.getCurrentRoom().getLongDescription()).append("\n");
-        return stringBuilder.toString();
+        addEventMessages(stringBuilder.toString());
     }
     
-    //TODO remove processCommand method when all the following commands are integrated into JavaFX
-    /**
-     * Process the provided command, and acts upon it
-     *
-     * @param command The command to process
-     * @return true if the game has finished, false otherwise
-     */
-    private boolean processCommand(Command command) {
-        boolean wantToQuit = false;
-        CommandWord commandWord = command.getCommandWord();
-        // If we don't know the command, then tell the user
-        if (commandWord == CommandWord.UNKNOWN) {
-            System.out.println("I don't know what you mean...");
-            return false;
-        }
-        // If the user asked for help, print that
-        switch (commandWord) {
-            // If the user asked to quit the game, quit
-            case QUIT:
-                wantToQuit = quit(command);
-                break;
-        }
-        return wantToQuit;
-    }
-
     /**
      * Returns the item help discription, which tells the player what items is
      * needed to fully complete the game, the string is formatted to be handled
      * be JavaFX.
      * @return String
      */
-    public String printHelp() {
+    public void printHelp() {
         List<ItemType> itemsToBuy = new ArrayList<ItemType>();
         for (ItemType itemType : getItemsTypeList()) {
             itemsToBuy.add(itemType);
@@ -193,7 +142,7 @@ public class Game implements ITimeEventAble {
         } else {
             stringBuilder.append("You have bought everything you need.");
         }
-        return stringBuilder.toString();
+        addEventMessages(stringBuilder.toString());
     }
 
     /**
@@ -202,13 +151,14 @@ public class Game implements ITimeEventAble {
      * @param itemType
      * @return String direction
      */
-    public String askForHelp(String itemType) {
+    public void askForHelp(String itemType) {
         if (this.player.getCurrentRoom().hasEmployee()) {
             this.time.updateTime(5);
             String helpAnswer = this.player.getCurrentRoom().askForHelp(ItemType.get(itemType));
-            return helpAnswer;
+            addEventMessages(helpAnswer);
+        } else {
+        addEventMessages("There is no employees in this room you can ask.\n");
         }
-        return "There is no employees in this room you can ask.\n";
     }
     
     /**
@@ -234,24 +184,6 @@ public class Game implements ITimeEventAble {
             return stringBuilder.toString();
         }
         return "There is no room in that direction!\n";
-    }
-
-    //TODO integrate this into JavaFX (remove)
-    /**
-     * Checks if the command QUIT has been used
-     * @param command the command to check
-     * @return a boolean expression
-     */
-    private boolean quit(Command command) {
-        // There is only one thing to quit, so the user shouldn't specify anything after
-        // the command
-        if (command.hasSecondWord()) {
-            System.out.println("Quit what?");
-            return false;
-        } //If there is only the word QUIT it will return a true
-        else {
-            return true;
-        }
     }
     
     //TODO integrate this into JavaFX
