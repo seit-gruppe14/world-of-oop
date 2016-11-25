@@ -24,4 +24,11 @@ public final class Direction {
      * Defines a direction to the south
      */
     public final static String SOUTH = "south";
+
+    public static boolean isDirection(String d) {
+        return d.equalsIgnoreCase(EAST) ||
+                d.equalsIgnoreCase(WEST) ||
+                d.equalsIgnoreCase(NORTH) ||
+                d.equalsIgnoreCase(SOUTH);
+    }
 }

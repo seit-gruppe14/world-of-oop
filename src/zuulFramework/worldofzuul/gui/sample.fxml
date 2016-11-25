@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.scene.image.*?>
-<?import java.lang.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.effect.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.ColorAdjust?>
@@ -13,8 +8,9 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-
-<StackPane alignment="center" prefHeight="845.0" prefWidth="1393.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zuulFramework.worldofzuul.gui.Controller">
+<?import javafx.scene.text.*?>
+<StackPane xmlns:fx="http://javafx.com/fxml/1" alignment="center" prefHeight="845.0" prefWidth="1393.0"
+           xmlns="http://javafx.com/javafx/8.0.102" fx:controller="zuulFramework.worldofzuul.gui.Controller">
     <children>
         <SplitPane fx:id="gamePane" dividerPositions="0.6878453038674033" prefHeight="160.0" prefWidth="200.0" visible="false">
             <items>
@@ -136,6 +132,9 @@
                                                 <Button fx:id="West" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonMoveEvent" text="West" GridPane.rowIndex="1" />
                                                 <Button fx:id="South" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonMoveEvent" text="South" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                                 <Button fx:id="East" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonMoveEvent" text="East" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                <ComboBox fx:id="otherDirectionsDropdown"
+                                                          onAction="#goToOtherDirectionsSelected" prefWidth="150.0"
+                                                          GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                                             </children>
                                         </GridPane>
                                     </right>

@@ -1,7 +1,9 @@
 package zuulFramework.worldofzuul.rooms;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import zuulFramework.worldofzuul.Direction;
 import zuulFramework.worldofzuul.entities.Employee;
@@ -12,25 +14,19 @@ import zuulFramework.worldofzuul.gui.IDrawable;
 import zuulFramework.worldofzuul.gui.Offset;
 
 import java.util.*;
-import javafx.scene.paint.Paint;
-import javafx.collections.FXCollections;
 
 public class Room implements IDrawable {
     /**
      * Describes the current room.
      */   
     protected String description;
-
-    private ArrayList<Line> lines = new ArrayList<>();
-
     protected ObservableList<ItemType> itemTypes = FXCollections.observableArrayList();
-    
     /**
      * The entities currently in the room
      */
     // Use a set, as it can't contain duplicates, which we don't want
     protected Set<Entity> entities = new HashSet<>();
-    
+    private ArrayList<Line> lines = new ArrayList<>();
     private int id;
     private boolean isLocked;
     private String key;
@@ -258,10 +254,7 @@ public class Room implements IDrawable {
      */
     public boolean hasItems() {
         if (this instanceof SalesRoom) {
-            if(this.itemTypes.size() > 0) {
-                return true;
-            }
-            return false;    
+            return this.itemTypes.size() > 0;
         }
         return false;
     }
@@ -453,6 +446,17 @@ public class Room implements IDrawable {
      */
     public Offset getLocation() {
         return this.location;
+    }
+
+    public Set<String> getOtherDirections() {
+        Set<String> directions = new HashSet<>();
+        getExits().entrySet().forEach(stringRoomEntry -> {
+            if (!Direction.isDirection(stringRoomEntry.getKey())) {
+                directions.add(stringRoomEntry.getKey());
+            }
+        });
+
+        return directions;
     }
 
 }

@@ -14,9 +14,10 @@ import javafx.scene.layout.Pane;
 import zuulFramework.worldofzuul.Game;
 import zuulFramework.worldofzuul.entities.Item;
 import zuulFramework.worldofzuul.entities.ItemType;
+import zuulFramework.worldofzuul.helpers.SillyMessages;
+import zuulFramework.worldofzuul.rooms.Exit;
 import zuulFramework.worldofzuul.rooms.Room;
 import zuulFramework.worldofzuul.rooms.SalesRoom;
-import zuulFramework.worldofzuul.helpers.SillyMessages;
 
 import java.io.IOException;
 import java.net.URL;
@@ -25,23 +26,19 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Stream;
-import zuulFramework.worldofzuul.rooms.Exit;
 
 public class Controller implements Initializable {
-    
+
     public ListView<String> highscoresList;
     public ListView<String> mapsList;
     public BorderPane startPane;
     public SplitPane gamePane;
     public BorderPane quitPane;
-    
-    private Game game;
-
     // This date is needed to handle a double click event on the room items table
     Date itemLastClick;
     // This item is needded to handle a dobule click event on the room items table
     Item itemLastSelect;
-
+    private Game game;
     @FXML
     private ProgressBar healthBar;
     @FXML
@@ -93,14 +90,21 @@ public class Controller implements Initializable {
     @FXML
     private Label gameOverMessage;
 
+    @FXML
+    private ComboBox<String> otherDirectionsDropdown;
+
+    private ObservableList<String> otherDirections;
+
     /**
      * The controller initialization, sets the new game.
+     *
      * @param location
-     * @param resources 
+     * @param resources
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        otherDirections = FXCollections.observableArrayList();
+        otherDirectionsDropdown.setItems(otherDirections);
         // Display possible maps that can be played
         try (Stream<Path> paths = Files.walk(Paths.get(""))) {
             ObservableList<String> mapFiles = FXCollections.observableArrayList();
@@ -139,16 +143,17 @@ public class Controller implements Initializable {
         setAskCombBox();
         textArea.setText(this.game.getWelcomeMessage());
         drawInitialRoom();
-        
+
         this.game.addMessageListener(message -> {
             this.textArea.appendText(message);
         });
     }
-    
+
 
     // TODO finish comment
+
     /**
-     * 
+     *
      */
     private void drawInitialRoom() {
         Room startRoom = game.getPlayer().getCurrentRoom();
@@ -161,11 +166,11 @@ public class Controller implements Initializable {
     }
 
     // TODO finish comment
+
     /**
-     * 
      * @param drawnRooms
      * @param entries
-     * @param startRoom 
+     * @param startRoom
      */
     private void drawRooms(List<Room> drawnRooms, Collection<Room> entries, Room startRoom) {
         for (Room entry : entries) {
@@ -180,47 +185,62 @@ public class Controller implements Initializable {
 
     /**
      * This method handles the move buttons, the event types are north, west, south, east.
-     * @param event 
+     *
+     * @param event
      */
     @FXML
-    private void handleButtonMoveEvent(ActionEvent event){
+    private void handleButtonMoveEvent(ActionEvent event) {
         if (event.getSource() == North) {
-            this.textArea.appendText(this.game.handleRoomMovement("north"));
-        } else if(event.getSource() == West) {
-            this.textArea.appendText(this.game.handleRoomMovement("west"));
-        } else if(event.getSource() == South) {
-            this.textArea.appendText(this.game.handleRoomMovement("south"));
-        }else if(event.getSource() == East){
-            this.textArea.appendText(this.game.handleRoomMovement("east"));
-	}
-	if (this.game.getTime().getCurrentTime() >= this.game.getGameEndTime()){
-	    gameOver();
-	}
-	if (this.game.getPlayer().isPlayerDead()){
-	    gameOver();
-	}
-	
-	
+            changeRoom("north");
+        } else if (event.getSource() == West) {
+            changeRoom("west");
+        } else if (event.getSource() == South) {
+            changeRoom("south");
+        } else if (event.getSource() == East) {
+            changeRoom("east");
+        }
+        if (this.game.getTime().getCurrentTime() >= this.game.getGameEndTime()) {
+            gameOver();
+        }
+        if (this.game.getPlayer().isPlayerDead()) {
+            gameOver();
+        }
+
+
         updateRoomInventoryTabel();
-	updateHealthBar();
+        updateHealthBar();
         setPlayerInventoryTabel();
-	this.clock.setText(this.game.getTime().getNiceFormattedTime());
+        this.clock.setText(this.game.getTime().getNiceFormattedTime());
+    }
+
+    private void setOtherDirectionsValues() {
+        // Due to this method being called from a selected callback, it needs to defer the actual thing
+        // it needs to do, to avoid causing a crash with modifying the observable (otherDirections) at
+        // the same time as the selection callback is going on.
+        Platform.runLater(() -> {
+            Set<String> directions = game.getPlayer().getCurrentRoom().getOtherDirections();
+
+            otherDirections.clear();
+            otherDirections.addAll(directions);
+
+            otherDirectionsDropdown.setVisible(otherDirections.size() > 0);
+        });
     }
 
     /**
      * Call this method to update the health bar
      */
     private void updateHealthBar() {
-        this.healthBar.setProgress(((double)(this.game.getPlayer().getLife()))/100);
+        this.healthBar.setProgress(((double) (this.game.getPlayer().getLife())) / 100);
     }
-    
+
     /**
      * Call this method to update the weight bar
      */
     private void updateWeightBar() {
-        this.weightBar.setProgress(this.game.getPlayer().getCarryWeight()/100);
+        this.weightBar.setProgress(this.game.getPlayer().getCarryWeight() / 100);
     }
-    
+
     /**
      * Sets the items of the combo box used for the ask method.
      */
@@ -229,6 +249,7 @@ public class Controller implements Initializable {
     }
 
     //TODO Observable list into player and room
+
     /**
      * Call this method when updating the player items observable list.
      */
@@ -238,39 +259,40 @@ public class Controller implements Initializable {
         this.tableColumnPlayerInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
         this.tableViewPlayerInventory.setItems(this.game.getPlayer().getItems());
     }
-    
+
     /**
      * Call this method when updating the room items observable list.
      */
     private void updateRoomInventoryTabel() {
-        if(this.game.getPlayer().getCurrentRoom() instanceof Exit) {
-        this.tableColumnRoomInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
-        this.tableColumnRoomInventoryWeight.setCellValueFactory(new PropertyValueFactory<Item, Double>("weight"));
-        this.tableColumnRoomInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
-        this.tableViewRoomInventory.setItems(this.game.getPlayer().getBoughtItems());
-        }else if (this.game.getPlayer().getCurrentRoom().hasItems()) {
-        SalesRoom currentRoom = (SalesRoom) this.game.getPlayer().getCurrentRoom();
-        this.tableColumnRoomInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
-        this.tableColumnRoomInventoryWeight.setCellValueFactory(new PropertyValueFactory<Item, Double>("weight"));
-        this.tableColumnRoomInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
-        this.tableViewRoomInventory.setItems(currentRoom.getItems());
-        }else{
+        if (this.game.getPlayer().getCurrentRoom() instanceof Exit) {
+            this.tableColumnRoomInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
+            this.tableColumnRoomInventoryWeight.setCellValueFactory(new PropertyValueFactory<Item, Double>("weight"));
+            this.tableColumnRoomInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
+            this.tableViewRoomInventory.setItems(this.game.getPlayer().getBoughtItems());
+        } else if (this.game.getPlayer().getCurrentRoom().hasItems()) {
+            SalesRoom currentRoom = (SalesRoom) this.game.getPlayer().getCurrentRoom();
+            this.tableColumnRoomInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
+            this.tableColumnRoomInventoryWeight.setCellValueFactory(new PropertyValueFactory<Item, Double>("weight"));
+            this.tableColumnRoomInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
+            this.tableViewRoomInventory.setItems(currentRoom.getItems());
+        } else {
             //Sets a empty observable array list to handle an none-salesroom
             this.tableViewRoomInventory.setItems(FXCollections.observableArrayList());
         }
     }
-    
+
     /**
      * Handles the item selection on room inventory, and adds the selected item
      * to the player when double clicking.
+     *
      * @param event MouseClickEvent transformed to a double click event.
      */
     @FXML
     private void onRoomItemPickup(MouseEvent event) throws Exception {
-         // Sets a current selected Item which is used for checking with last selected item.
+        // Sets a current selected Item which is used for checking with last selected item.
         Item selectedItem = this.tableViewRoomInventory.getSelectionModel().getSelectedItem();
-        
-        if(isDoubleClick(selectedItem) && !this.game.getPlayer().getBoughtItems().contains(selectedItem)) {
+
+        if (isDoubleClick(selectedItem) && !this.game.getPlayer().getBoughtItems().contains(selectedItem)) {
             String responseMessage = this.game.pickUp(selectedItem.getName());
             this.textArea.appendText(responseMessage);
             updateWeightBar();
@@ -282,20 +304,20 @@ public class Controller implements Initializable {
         // Sets a current selected Item which is used for checking with last selected item.
         if (!this.tableViewPlayerInventory.getSelectionModel().isEmpty()) {
             Item selectedItem = this.tableViewPlayerInventory.getSelectionModel().getSelectedItem();
-            if(isDoubleClick(selectedItem)) {
+            if (isDoubleClick(selectedItem)) {
                 //this.game.pickUp(selectedItem.getName());
                 this.game.drop(selectedItem);
                 updateWeightBar();
             }
         }
     }
-    
+
     private boolean isDoubleClick(Item selectedItem) {
         // First if statement handles an error event if no item has been selected before.
         if (this.itemLastSelect == null) {
             this.itemLastClick = new Date();
             this.itemLastSelect = selectedItem;
-        // Second if statement handles the event of a "double click"
+            // Second if statement handles the event of a "double click"
         } else if (selectedItem.getName().equalsIgnoreCase(this.itemLastSelect.getName())) {
             // Sets a temporary click date to check wether the click was rapid.
             Date roomItemSecondClick = new Date();
@@ -309,8 +331,8 @@ public class Controller implements Initializable {
             } else {
                 this.itemLastClick = roomItemSecondClick;
             }
-        // If the click is not a double click then store the clicked item and
-        // click date.
+            // If the click is not a double click then store the clicked item and
+            // click date.
         } else {
             this.itemLastClick = new Date();
             this.itemLastSelect = selectedItem;
@@ -321,12 +343,12 @@ public class Controller implements Initializable {
     @FXML
     private void onPayButtonClick(ActionEvent event) {
         this.textArea.appendText(this.game.pay());
-	if (this.game.getTime().getCurrentTime() >= this.game.getGameEndTime()){
-	    gameOver();
-	}
-	if (this.game.getPlayer().isPlayerDead()){
-	    gameOver();
-	}
+        if (this.game.getTime().getCurrentTime() >= this.game.getGameEndTime()) {
+            gameOver();
+        }
+        if (this.game.getPlayer().isPlayerDead()) {
+            gameOver();
+        }
         updateWeightBar();
         updateHealthBar();
 
@@ -341,12 +363,12 @@ public class Controller implements Initializable {
         String helpAnswer = this.game.askForHelp(itemType);
         this.textArea.appendText(helpAnswer);
     }
-    
+
     @FXML
     private void onHelpButtonClick(ActionEvent event) {
         this.textArea.appendText(this.game.printHelp());
     }
-    
+
     @FXML
     private void onStartNewGameClicked(ActionEvent event) {
         // If nothing is selected, then we can't start the game
@@ -361,7 +383,8 @@ public class Controller implements Initializable {
         initializeGame(mapToLoad);
         startPane.setVisible(false);
         gamePane.setVisible(true);
-	quitPane.setVisible(false);
+        quitPane.setVisible(false);
+        setOtherDirectionsValues();
 
     }
 
@@ -372,27 +395,36 @@ public class Controller implements Initializable {
 
     @FXML
     private void onQuitButtonClick(ActionEvent event) {
-	quitText.setText("You sucessfully quitted!");
-	quitGame();
+        quitText.setText("You sucessfully quitted!");
+        quitGame();
     }
-    
-    public void quitGame(){
-	scoreLabel.setText(this.game.getHighScore().getScore());
-	startPane.setVisible(false);
+
+    public void quitGame() {
+        scoreLabel.setText(this.game.getHighScore().getScore());
+        startPane.setVisible(false);
         gamePane.setVisible(false);
-	quitPane.setVisible(true);
+        quitPane.setVisible(true);
     }
-    
-    public void gameOver(){
-	quitText.setText("GAME OVER!");
-	if (this.game.getPlayer().isPlayerDead()){
-	    gameOverMessage.setText(SillyMessages.getDeathMessage());
-	}
-	else {
-	gameOverMessage.setText(this.game.gameOver("You did not manage to get to the exit before IKEA closed. \n"
-                        + "The security guards threw you out, and destroyed all the things you bought.\n"));
-	}
-	quitGame();
+
+    public void gameOver() {
+        quitText.setText("GAME OVER!");
+        if (this.game.getPlayer().isPlayerDead()) {
+            gameOverMessage.setText(SillyMessages.getDeathMessage());
+        } else {
+            gameOverMessage.setText(this.game.gameOver("You did not manage to get to the exit before IKEA closed. \n"
+                    + "The security guards threw you out, and destroyed all the things you bought.\n"));
+        }
+        quitGame();
     }
-    
+
+    private void changeRoom(String direction) {
+        textArea.appendText(this.game.handleRoomMovement(direction));
+        setOtherDirectionsValues();
+    }
+
+    public void goToOtherDirectionsSelected(ActionEvent e) {
+        String directionToMove = otherDirectionsDropdown.getValue();
+        changeRoom(directionToMove);
+
+    }
 }
