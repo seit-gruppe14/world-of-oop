@@ -94,6 +94,10 @@ public class Controller implements Initializable {
     private ComboBox<String> otherDirectionsDropdown;
 
     private ObservableList<String> otherDirections;
+    @FXML
+    private Label labelInventory;
+    @FXML
+    private ListView<?> quitHighScoreList;
 
     /**
      * The controller initialization, sets the new game.
@@ -266,11 +270,13 @@ public class Controller implements Initializable {
      */
     private void updateRoomInventoryTabel() {
         if (this.game.getPlayer().getCurrentRoom() instanceof Exit) {
+            labelInventory.setText("Bought items inventory");
             this.tableColumnRoomInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
             this.tableColumnRoomInventoryWeight.setCellValueFactory(new PropertyValueFactory<Item, Double>("weight"));
             this.tableColumnRoomInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
             this.tableViewRoomInventory.setItems(this.game.getPlayer().getBoughtItems());
         } else if (this.game.getPlayer().getCurrentRoom().hasItems()) {
+            labelInventory.setText("Room inventory");
             SalesRoom currentRoom = (SalesRoom) this.game.getPlayer().getCurrentRoom();
             this.tableColumnRoomInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
             this.tableColumnRoomInventoryWeight.setCellValueFactory(new PropertyValueFactory<Item, Double>("weight"));
@@ -296,6 +302,7 @@ public class Controller implements Initializable {
         if (isDoubleClick(selectedItem) && !this.game.getPlayer().getBoughtItems().contains(selectedItem)) {
             String responseMessage = this.game.pickUp(selectedItem.getName());
             this.textArea.appendText(responseMessage);
+            this.clock.setText(this.game.getTime().getNiceFormattedTime());
             updateWeightBar();
         }
     }
@@ -422,6 +429,7 @@ public class Controller implements Initializable {
         setOtherDirectionsValues();
     }
 
+    @FXML
     public void goToOtherDirectionsSelected(ActionEvent e) {
         String directionToMove = otherDirectionsDropdown.getValue();
         changeRoom(directionToMove);
