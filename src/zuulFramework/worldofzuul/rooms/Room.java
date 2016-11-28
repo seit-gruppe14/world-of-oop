@@ -191,6 +191,7 @@ public class Room implements IDrawable {
      */
     private String findRoomWithItems(ItemType itemType, Set<Map.Entry<String, Room>> rooms, String direction, List<Room> checkedRooms) {
         for (Map.Entry<String, Room> subRoomEntry : rooms) {
+            if (!Direction.isDirection(subRoomEntry.getKey())) continue;
             String subDirection = direction + "-" + subRoomEntry.getKey();
             Room subRoom = subRoomEntry.getValue();
 
