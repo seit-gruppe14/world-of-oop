@@ -1,5 +1,7 @@
 package zuulFramework.worldofzuul.gui;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,11 +27,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
+import zuulFramework.worldofzuul.HighScore;
 
 public class Controller implements Initializable {
 
-    public ListView<String> highscoresList;
+
     public ListView<String> mapsList;
     public BorderPane startPane;
     public SplitPane gamePane;
@@ -39,6 +44,11 @@ public class Controller implements Initializable {
     // This item is needded to handle a dobule click event on the room items table
     Item itemLastSelect;
     private Game game;
+    
+    @FXML
+    private ListView<Integer> highScoreList;
+    @FXML
+    private ListView<Integer> quitHighScoreList;
     @FXML
     private ProgressBar healthBar;
     @FXML
@@ -105,13 +115,17 @@ public class Controller implements Initializable {
      * @param location
      * @param resources
      */
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         otherDirections = FXCollections.observableArrayList();
         otherDirectionsDropdown.setItems(otherDirections);
+	highScoreList.itemsProperty().set(HighScore.showScore());
+	
         // Display possible maps that can be played
         try (Stream<Path> paths = Files.walk(Paths.get(""))) {
             ObservableList<String> mapFiles = FXCollections.observableArrayList();
+
 
             paths
                     // Filter for files only, remove all folders
@@ -130,6 +144,8 @@ public class Controller implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+	
+
     }
 
     /**
@@ -400,10 +416,17 @@ public class Controller implements Initializable {
     private void onQuitButtonClick(ActionEvent event) {
         quitText.setText("You sucessfully quitted!");
         quitGame();
+	
     }
 
     public void quitGame() {
-        scoreLabel.setText(this.game.getHighScore().getScore());
+	try {
+	    game.getHighScore().printScoreToFile(this.game.getHighScore().calcScore(game.getItemList()));
+	} catch (IOException ex) {
+	    
+	}
+	scoreLabel.setText(this.game.getHighScore().calcScore(game.getItemList()) + "");
+	quitHighScoreList.itemsProperty().set(HighScore.showScore());
         startPane.setVisible(false);
         gamePane.setVisible(false);
         quitPane.setVisible(true);

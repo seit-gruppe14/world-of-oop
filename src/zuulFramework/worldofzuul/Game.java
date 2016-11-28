@@ -345,4 +345,7 @@ public class Game implements ITimeEventAble {
     public int getGameEndTime(){
 	return gameEndTime;
     }
+    public ObservableList<ItemType> getItemList(){
+	return itemList;
+    }
 }
