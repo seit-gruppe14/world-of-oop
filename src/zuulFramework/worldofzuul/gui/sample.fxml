@@ -189,7 +189,7 @@
                         <Label text="Highscores" BorderPane.alignment="CENTER" />
                     </top>
                     <center>
-                        <ListView fx:id="highscoresList" BorderPane.alignment="CENTER" />
+                        <ListView fx:id="highScoreList" BorderPane.alignment="CENTER" />
                     </center>
                 </BorderPane>
             </right>

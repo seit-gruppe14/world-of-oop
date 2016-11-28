@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
@@ -21,10 +22,9 @@ import javafx.collections.ObservableList;
  */
 public class HighScore {
     private Game game;
-    private int scoreToPrint;
     
     public HighScore (Game game){
-        this.game = game;
+    this.game=game;
         
     }
     
@@ -34,7 +34,6 @@ public class HighScore {
      * @return Gives the calculated score. 
      */
     public int calcScore(ObservableList<ItemType> listOfItems) {
-        
         int score = 0;
         // The HashSet prevent cases of duplicate item types being bought.
         Set<ItemType> s = new HashSet<ItemType>();
@@ -53,7 +52,6 @@ public class HighScore {
         for (int i = 12; i > 0; i--) {
             score = (int) (score * ((0.083 * i) + 1));
         }
-	scoreToPrint = score;
         return score;
     }
 /**
@@ -79,9 +77,10 @@ public class HighScore {
 
     /**
      * Reads from a .txt file and prints the first five lines
+     * @return 
      */
-    public void showScore() {
-        ArrayList<Integer> score = new ArrayList<>();
+    public static ObservableList<Integer> showScore() {
+        ObservableList<Integer> scoreList = FXCollections.observableArrayList();
         //Tries to run the code below, if the code cannot be run, 
         //then the catch line is run instead.  
         try {
@@ -91,18 +90,18 @@ public class HighScore {
             //the next line from the .txt file and converts the string to an
             //int and puts it in an ArrayList. 
             while (scanner.hasNextLine()) {
-                score.add(Integer.parseInt(scanner.nextLine()));
+                scoreList.add(Integer.parseInt(scanner.nextLine()));
             }
-            for (int iteration = 0; iteration < score.size(); iteration++) {
-                int endOfArray = score.size() - iteration;
+            for (int iteration = 0; iteration < scoreList.size(); iteration++) {
+                int endOfArray = scoreList.size() - iteration;
                 boolean swapped = false;
                 //compares element indeks and index+1 in the array, if index+1 >index swap them.
                 //This will sort the highest numbers in to the lowest indexes.
                 for (int index = 0; index < endOfArray - 1; index++) {
-                    if (score.get(index) < score.get(index + 1)) {
-                        Integer temp = score.get(index);
-                        score.set(index, score.get(index + 1));
-                        score.set(index + 1, temp);
+                    if (scoreList.get(index) < scoreList.get(index + 1)) {
+                        Integer temp = scoreList.get(index);
+                        scoreList.set(index, scoreList.get(index + 1));
+                        scoreList.set(index + 1, temp);
                         swapped = true;
                     }
                 }
@@ -112,29 +111,10 @@ public class HighScore {
                     break;
                 }
             }
-            //Then it loops over the first 5 index numbers and prints them. 
-            for (int count = 0; count < 5 && count < score.size(); count++) {
-                System.out.println(score.get(count));
-            }
         } catch (FileNotFoundException ex) {
-
+	    
         }
-    }
-    
-    public void printScore(ObservableList<ItemType> itemList) {
-            try {
-            int score = calcScore(itemList);
-            System.out.println("Your score was " + score);
-            printScoreToFile(score);
-            System.out.println("Top 5 scores were");
-            showScore();
-        } catch (IOException ex) {
-            System.out.println("IOException caught");
-        }
-    }
-    
-    public String getScore(){
-	return scoreToPrint + "";
+	return scoreList;
     }
 
 }
