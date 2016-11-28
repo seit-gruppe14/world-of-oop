@@ -106,8 +106,7 @@ public class Controller implements Initializable {
     private ObservableList<String> otherDirections;
     @FXML
     private Label labelInventory;
-    @FXML
-    private ListView<?> quitHighScoreList;
+
 
     /**
      * The controller initialization, sets the new game.
