@@ -115,7 +115,7 @@ public class Controller implements Initializable {
 		otherDirections = FXCollections.observableArrayList();
 		otherDirectionsDropdown.setItems(otherDirections);
 		highScoreList.itemsProperty().set(HighScore.showScore());
-
+                
 		// Display possible maps that can be played
 		try (Stream<Path> paths = Files.walk(Paths.get(""))) {
 			ObservableList<String> mapFiles = FXCollections.observableArrayList();
@@ -138,7 +138,7 @@ public class Controller implements Initializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+                
 
 	}
 
@@ -149,7 +149,8 @@ public class Controller implements Initializable {
 	 */
 	private void initializeGame(String mapLocation) {
 		this.game = new Game(mapLocation);
-
+                
+                clock.setText(game.getTime().getNiceFormattedTime());
 		updateHealthBar();
 		updateWeightBar();
 		setPlayerInventoryTabel();
