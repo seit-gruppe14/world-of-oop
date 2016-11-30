@@ -8,15 +8,15 @@ import javafx.stage.Stage;
 
 public class GameGUI extends Application {
 
-    public static void startGUI(String[] args) {
-        launch(args);
-    }
+	public static void startGUI(String[] args) {
+		launch(args);
+	}
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Shop-a-Holic in IKEA - Black Friday Edition!");
-        primaryStage.setScene(new Scene(root));
-        primaryStage.show();
-    }
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+		primaryStage.setTitle("Shop-a-Holic in IKEA - Black Friday Edition!");
+		primaryStage.setScene(new Scene(root));
+		primaryStage.show();
+	}
 }

@@ -1,7 +1,6 @@
 package zuulFramework.worldofzuul.rooms;
 
 import zuulFramework.worldofzuul.Game;
-import zuulFramework.worldofzuul.commands.Command;
 import zuulFramework.worldofzuul.entities.Player;
 
 /**
@@ -9,39 +8,38 @@ import zuulFramework.worldofzuul.entities.Player;
  */
 public class Canteen extends Room implements ICanPay {
 
-    /**
-     * @param description
-     */
-    public Canteen(String description, int id) {
-        super(description, id);
-    }
+	/**
+	 * @param description
+	 */
+	public Canteen(String description, int id) {
+		super(description, id);
+	}
 
-    /**
-     * Buys food, depends on how much life the player wants to heal himself with
-     *
-     * @param player the player that wants to buy food
-     * @param command the command that the player has inserted
-     * @return always returns true when a player buys food
-     */
-    @Override
-    public String buy(Player player, Game game) {
-        
-        player.removeMoney(((100-player.getLife())));
-        player.setLife(100);
-        
-        return "Your life has been restored";
-        /*
-        if (command.hasSecondWord()) {
-            // Use command to define how much life a player wishes for, depends on 
+	/**
+	 * Buys food, depends on how much life the player wants to heal himself with
+	 *
+	 * @param player the player that wants to buy food
+	 * @return always returns true when a player buys food
+	 */
+	@Override
+	public String buy(Player player, Game game) {
+
+		player.removeMoney(((100 - player.getLife())));
+		player.setLife(100);
+
+		return "Your life has been restored";
+		/*
+		if (command.hasSecondWord()) {
+            // Use command to define how much life a player wishes for, depends on
             // how much food they buy
 
             String secondWord = command.getSecondWord();
             try {
                 // Convert secondWord from string to int
                 int toBuyFor = Integer.parseInt(secondWord);
-                // The player gets life depends on how much food he bought 
+                // The player gets life depends on how much food he bought
                 player.addLife(toBuyFor);
-                // Use setter and getter method to calculate how much money a player has 
+                // Use setter and getter method to calculate how much money a player has
                 // used
                 player.removeMoney(toBuyFor);
 
@@ -58,6 +56,6 @@ public class Canteen extends Room implements ICanPay {
         }
         return false;
         */
-    }
+	}
 
 }

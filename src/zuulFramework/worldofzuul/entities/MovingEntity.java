@@ -23,103 +23,103 @@ import java.util.Set;
  * Describes an entity that can move around between rooms
  */
 public abstract class MovingEntity extends Entity implements IDrawable {
-    private Circle drawed;
-    private List<Transition> transitions = new ArrayList<>();
-    private MoveTransition moveTransition;
+	private Circle drawed;
+	private List<Transition> transitions = new ArrayList<>();
+	private MoveTransition moveTransition;
 
-    public void move() {
-        Set<Map.Entry<String, Room>> rooms;
-        rooms = currentRoom.getExits().entrySet();
-        // We are using the amount of rooms in the array rooms to random
-        // generate a number which we can use to select a random room.
-        int randomNumber = (int) (Math.random() * rooms.size());
-        int iterator = 0;
-        // Get rooms randomly
-        for (Map.Entry<String, Room> room : rooms) {
-            // if the iterator is a random number, set the currentRoom
-            if (iterator == randomNumber) {
-                this.setCurrentRoom(room.getValue());
-                return;
-            }
-            iterator++;
-        }
-    }
+	public void move() {
+		Set<Map.Entry<String, Room>> rooms;
+		rooms = currentRoom.getExits().entrySet();
+		// We are using the amount of rooms in the array rooms to random
+		// generate a number which we can use to select a random room.
+		int randomNumber = (int) (Math.random() * rooms.size());
+		int iterator = 0;
+		// Get rooms randomly
+		for (Map.Entry<String, Room> room : rooms) {
+			// if the iterator is a random number, set the currentRoom
+			if (iterator == randomNumber) {
+				this.setCurrentRoom(room.getValue());
+				return;
+			}
+			iterator++;
+		}
+	}
 
-    @Override
-    public void setCurrentRoom(Room targetRoom) {
-        super.setCurrentRoom(targetRoom);
-        updateDraw();
-    }
+	@Override
+	public void setCurrentRoom(Room targetRoom) {
+		super.setCurrentRoom(targetRoom);
+		updateDraw();
+	}
 
-    void addToScene(ObservableList<Node> drawAt, Offset offset, Paint color) {
-        offset = offset.add(Offset.getRandomOffsetForRoom());
-        Circle circle = new Circle(offset.X, offset.Y, 5, color);
-        drawAt.add(circle);
+	void addToScene(ObservableList<Node> drawAt, Offset offset, Paint color) {
+		offset = offset.add(Offset.getRandomOffsetForRoom());
+		Circle circle = new Circle(offset.X, offset.Y, 5, color);
+		drawAt.add(circle);
 
-        this.drawed = circle;
-        addWaitingAnimation();
-    }
+		this.drawed = circle;
+		addWaitingAnimation();
+	}
 
-    private void addWaitingAnimation() {
-        Path path = new Path();
-        path.getElements().add(new MoveTo(drawed.getCenterX(), drawed.getCenterY()));
+	private void addWaitingAnimation() {
+		Path path = new Path();
+		path.getElements().add(new MoveTo(drawed.getCenterX(), drawed.getCenterY()));
 
-        Offset o = getCurrentRoom().getLocation().add(Offset.getRandomOffsetForRoom());
-        path.getElements().add(new LineTo(o.X, o.Y));
+		Offset o = getCurrentRoom().getLocation().add(Offset.getRandomOffsetForRoom());
+		path.getElements().add(new LineTo(o.X, o.Y));
 
-        o = getCurrentRoom().getLocation().add(Offset.getRandomOffsetForRoom());
-        path.getElements().add(new LineTo(o.X, o.Y));
+		o = getCurrentRoom().getLocation().add(Offset.getRandomOffsetForRoom());
+		path.getElements().add(new LineTo(o.X, o.Y));
 
-        o = getCurrentRoom().getLocation().add(Offset.getRandomOffsetForRoom());
-        path.getElements().add(new LineTo(o.X, o.Y));
+		o = getCurrentRoom().getLocation().add(Offset.getRandomOffsetForRoom());
+		path.getElements().add(new LineTo(o.X, o.Y));
 
-        path.getElements().add(new LineTo(drawed.getCenterX(), drawed.getCenterY()));
+		path.getElements().add(new LineTo(drawed.getCenterX(), drawed.getCenterY()));
 
-        PathTransition pathTransition = new PathTransition();
-        pathTransition.setDuration(Duration.millis(10000 + ((int) (Math.random() * 3000))));
-        pathTransition.setPath(path);
-        pathTransition.setNode(this.drawed);
-        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-        pathTransition.setCycleCount(Timeline.INDEFINITE);
-        pathTransition.setAutoReverse(false);
-        pathTransition.setInterpolator(Interpolator.LINEAR);
-        pathTransition.play();
+		PathTransition pathTransition = new PathTransition();
+		pathTransition.setDuration(Duration.millis(10000 + ((int) (Math.random() * 3000))));
+		pathTransition.setPath(path);
+		pathTransition.setNode(this.drawed);
+		pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+		pathTransition.setCycleCount(Timeline.INDEFINITE);
+		pathTransition.setAutoReverse(false);
+		pathTransition.setInterpolator(Interpolator.LINEAR);
+		pathTransition.play();
 
-        transitions.add(pathTransition);
-    }
+		transitions.add(pathTransition);
+	}
 
-    protected double moveStartDelay() {
-        return Math.random() * 3000;
-    }
+	protected double moveStartDelay() {
+		return Math.random() * 3000;
+	}
 
-    @Override
-    public void updateDraw() {
-        if (drawed != null) {
-            boolean hasMoveTransition = moveTransition != null;
-            if (hasMoveTransition) {
-                moveTransition.stop();
-                moveTransition.setOnFinished(null);
-                moveTransition = null;
+	@Override
+	public void updateDraw() {
+		if (drawed != null) {
+			boolean hasMoveTransition = moveTransition != null;
+			if (hasMoveTransition) {
+				moveTransition.stop();
+				moveTransition.setOnFinished(null);
+				moveTransition = null;
 
-            }
-            List<Transition> transitionsBefore = transitions;
-            transitions = new ArrayList<>();
+			}
+			List<Transition> transitionsBefore = transitions;
+			transitions = new ArrayList<>();
 
-            Offset o = getCurrentRoom().getLocation().add(Offset.getRandomOffsetForRoom());
-            moveTransition = new MoveTransition(drawed, o.X, o.Y);
-            moveTransition.setOnFinished(event -> {
-                addWaitingAnimation();
-                moveTransition = null;
-            });
-            moveTransition.setBeforeStartCallback(() -> transitionsBefore.forEach(Animation::stop));
+			Offset o = getCurrentRoom().getLocation().add(Offset.getRandomOffsetForRoom());
+			moveTransition = new MoveTransition(drawed, o.X, o.Y);
+			moveTransition.setOnFinished(event -> {
+				addWaitingAnimation();
+				moveTransition = null;
+			});
+			moveTransition.setBeforeStartCallback(() -> transitionsBefore.forEach(Animation::stop));
 
-            double startDelay = moveTransition == null ? moveStartDelay() : 0;
+			double startDelay = moveTransition == null ? moveStartDelay() : 0;
 
-            moveTransition.setDelay(Duration.millis(startDelay));
-            moveTransition.play();
+			moveTransition.setDelay(Duration.millis(startDelay));
+			moveTransition.play();
 
-            transitions.add(moveTransition);
+			transitions.add(moveTransition);
 
-        }
-    }
+		}
+	}
 }

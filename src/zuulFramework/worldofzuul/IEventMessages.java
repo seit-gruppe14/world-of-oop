@@ -6,12 +6,11 @@
 package zuulFramework.worldofzuul;
 
 /**
- *
  * @author Christian
  */
 public interface IEventMessages {
-    public void handle (String s);
-    
+	void handle(String s);
+
 }
-    
+
 

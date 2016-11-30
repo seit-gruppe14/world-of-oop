@@ -1,7 +1,6 @@
 package zuulFramework.worldofzuul.rooms;
 
 import zuulFramework.worldofzuul.Game;
-import zuulFramework.worldofzuul.commands.Command;
 import zuulFramework.worldofzuul.entities.Player;
 
 /**
@@ -9,13 +8,12 @@ import zuulFramework.worldofzuul.entities.Player;
  * This is mainly thought to be used in Room subclasses.
  */
 public interface ICanPay {
-    /**
-     * Pays something in the room
-     *
-     * @param player  The player who buys something
-     * @param command The buy command to execute
-     * @param game    The game instance running
-     * @return A boolean indicating if the purchase was successful
-     */
-    String buy(Player player, Game game);
+	/**
+	 * Pays something in the room
+	 *
+	 * @param player The player who buys something
+	 * @param game   The game instance running
+	 * @return A boolean indicating if the purchase was successful
+	 */
+	String buy(Player player, Game game);
 }

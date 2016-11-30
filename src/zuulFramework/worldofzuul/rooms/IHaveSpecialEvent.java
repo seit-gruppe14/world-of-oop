@@ -8,11 +8,10 @@ package zuulFramework.worldofzuul.rooms;
 import zuulFramework.worldofzuul.Game;
 
 /**
- *
  * @author thananya
  */
 public interface IHaveSpecialEvent {
-    
-    String doSpecialEvent(Game game);
-    
+
+	String doSpecialEvent(Game game);
+
 }

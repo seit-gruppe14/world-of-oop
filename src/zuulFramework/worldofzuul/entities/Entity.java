@@ -3,21 +3,22 @@ package zuulFramework.worldofzuul.entities;
 import zuulFramework.worldofzuul.rooms.Room;
 
 public abstract class Entity {
-    protected Room currentRoom;
-    protected void changeRoom(Room targetRoom) {
-        // Remove the entity from one room, and add it to the other room
-        if(currentRoom != null) currentRoom.removeEntity(this);
-        targetRoom.addEntity(this);
+	protected Room currentRoom;
 
-        // Have the entity itself remember where it is.
-        this.currentRoom = targetRoom;
-    }
+	protected void changeRoom(Room targetRoom) {
+		// Remove the entity from one room, and add it to the other room
+		if (currentRoom != null) currentRoom.removeEntity(this);
+		targetRoom.addEntity(this);
 
-    public Room getCurrentRoom() {
-        return currentRoom;
-    }
+		// Have the entity itself remember where it is.
+		this.currentRoom = targetRoom;
+	}
 
-    public void setCurrentRoom(Room targetRoom) {
-        changeRoom(targetRoom);
-    }
+	public Room getCurrentRoom() {
+		return currentRoom;
+	}
+
+	public void setCurrentRoom(Room targetRoom) {
+		changeRoom(targetRoom);
+	}
 }
