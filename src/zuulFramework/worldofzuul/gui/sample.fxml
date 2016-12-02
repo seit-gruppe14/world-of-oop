@@ -249,6 +249,14 @@
                         <Font size="17.0" />
                      </font>
                   </Label>
+                  <Button fx:id="playAgainButton" mnemonicParsing="false" onAction="#onPlayAgainButtonClicked" text="Play again!">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                  </Button>
                     </children>
                     <BorderPane.margin>
                         <Insets top="120.0" />

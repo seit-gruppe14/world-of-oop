@@ -108,6 +108,8 @@ public class Controller implements Initializable {
 	private Button saveButton;
 	@FXML
 	private Label saveMessageLabel;
+	@FXML
+	private Button playAgainButton;
 
 	/**
 	 * The controller initialization, sets the new game.
@@ -464,6 +466,33 @@ public class Controller implements Initializable {
 	saveButton.setDisable(true);
 	saveMessageLabel.setVisible(true);
 	quitHighScoreList.itemsProperty().set(HighScore.showScore());
+    }
+
+    @FXML
+    private void onPlayAgainButtonClicked(ActionEvent event) {
+	highScoreList.itemsProperty().set(HighScore.showScore());
+	textArea.clear();
+	mapPane.getChildren().clear();
+	clock.setText(game.getTime().getNiceFormattedTime());
+	updateHealthBar();
+	updateWeightBar();
+	setPlayerInventoryTabel();
+	updateRoomInventoryTabel();
+	setAskCombBox();
+
+	drawInitialRoom();
+		
+
+	this.game.addMessageListener(message -> {
+	    this.textArea.appendText(message);
+	});
+	this.game.getTime().addListener((observable, oldValue, newValue) -> {
+	    this.clock.setText(newValue);
+	});
+	
+	startPane.setVisible(true);
+	gamePane.setVisible(false);
+	quitPane.setVisible(false);
     }
 }
 
