@@ -42,9 +42,9 @@ public class Controller implements Initializable {
 	private Game game;
 
 	@FXML
-	private ListView<Integer> highScoreList;
+	private ListView<String> highScoreList;
 	@FXML
-	private ListView<Integer> quitHighScoreList;
+	private ListView<String> quitHighScoreList;
 	@FXML
 	private ProgressBar healthBar;
 	@FXML
@@ -102,6 +102,12 @@ public class Controller implements Initializable {
 	private ObservableList<String> otherDirections;
 	@FXML
 	private Label labelInventory;
+	@FXML
+	private TextField nameField;
+	@FXML
+	private Button saveButton;
+	@FXML
+	private Label saveMessageLabel;
 
 	/**
 	 * The controller initialization, sets the new game.
@@ -415,16 +421,13 @@ public class Controller implements Initializable {
 	}
 
 	public void quitGame() {
-		try {
-			game.getHighScore().printScoreToFile(this.game.getHighScore().calcScore(game.getItemList()));
-		} catch (IOException ex) {
-
-		}
+		
 		scoreLabel.setText(this.game.getHighScore().calcScore(game.getItemList()) + "");
 		quitHighScoreList.itemsProperty().set(HighScore.showScore());
 		startPane.setVisible(false);
 		gamePane.setVisible(false);
 		quitPane.setVisible(true);
+		saveMessageLabel.setVisible(false);
 	}
 
 	public void gameOver() {
@@ -449,5 +452,16 @@ public class Controller implements Initializable {
 		changeRoom(directionToMove);
 
 	}
+
+    @FXML
+    private void onSaveButtonClicked(ActionEvent event) {
+	try {
+	    game.getHighScore().printScoreToFile(nameField.getText(), this.game.getHighScore().calcScore(game.getItemList()));
+	} catch (IOException ex) {
+
+	}
+	saveMessageLabel.setVisible(true);
+	quitHighScoreList.itemsProperty().set(HighScore.showScore());
+    }
 }
 
