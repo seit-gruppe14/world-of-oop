@@ -428,6 +428,7 @@ public class Controller implements Initializable {
 		gamePane.setVisible(false);
 		quitPane.setVisible(true);
 		saveMessageLabel.setVisible(false);
+		saveButton.setDisable(false);
 	}
 
 	public void gameOver() {
@@ -460,6 +461,7 @@ public class Controller implements Initializable {
 	} catch (IOException ex) {
 
 	}
+	saveButton.setDisable(true);
 	saveMessageLabel.setVisible(true);
 	quitHighScoreList.itemsProperty().set(HighScore.showScore());
     }
