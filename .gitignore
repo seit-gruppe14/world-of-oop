@@ -73,3 +73,5 @@ fabric.properties
 production/
 /output/
 /score.txt
+.idea/inspectionProfiles/Project_Default.xml
+.idea/inspectionProfiles/profiles_settings.xml
