@@ -183,11 +183,11 @@ public class Player extends InventoryEntity {
 		if (item instanceof IHaveSpecialEvent) {
 			((IHaveSpecialEvent) item).doSpecialEvent(game);
 			sr.removeItem(itemName);
+                        return item;
 
 		} else {
 			return super.pickUp(itemName, game);
 		}
-		return null;
 	}
 
 	@Override
