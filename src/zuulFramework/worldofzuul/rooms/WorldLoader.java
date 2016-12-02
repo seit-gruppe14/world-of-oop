@@ -24,78 +24,75 @@ public class WorldLoader {
 	 * @return a list of RoomContainers
 	 * @throws Exception on illegal file content.
 	 */
-	private static List<RoomContainer> readWorld(String path) throws Exception {
+	private static List<RoomContainer> readWorld(String path) throws IllegalArgumentException, IOException {
 		List<RoomContainer> rooms = new ArrayList<>();
 		//Uses try to make sure it reads the file.
-		try (FileReader reader = new FileReader(path)) {
-			ParserState ps = ParserState.AWAITING_OBJECT_TYPE;
-			RoomContainer rc = new RoomContainer();
+		FileReader reader = new FileReader(path);
 
-			Scanner scanner = new Scanner(reader);
-			while (scanner.hasNextLine()) {
-				String line = scanner.nextLine();
+		ParserState ps = ParserState.AWAITING_OBJECT_TYPE;
+		RoomContainer rc = new RoomContainer();
 
-				// Avoid empty lines and additional whitespace
-				line = line.trim();
-				if (line.equals("")) continue;
-				//System.out.println(line);
-				//Checks the parser state to enable state changes.
-				switch (ps) {
-					case AWAITING_OBJECT_TYPE:
-						//if the read line itemStrings start of a new room object then
-						//then set the parser state, else throws error.
-						if (line.equals("[room]")) {
-							ps = ParserState.PARSING_ROOM;
-						} else {
-							System.out.printf("Unexpected token, %s", line);
-						}
+		Scanner scanner = new Scanner(reader);
+		while (scanner.hasNextLine()) {
+			String line = scanner.nextLine();
 
-						break;
-					//if parser state itemStrings passing room then split the read line
-					//and extract the attribute and value for use in the switch statement
-					//where the attributes are used to set a value for a roomContainer object.
-					//When the object itemStrings fully defined then it's added to the list of roomContainer.
-					//Then the parser state goes back to AWAITING_OBJECT_TYPE and a new roomContainer object itemStrings created.
-					case PARSING_ROOM:
-						// Check for getting new parts for creating new objects, such as [room]
-						if (line.startsWith("[")) {
-							if (line.endsWith("]")) {
-								if (rc.hasAllData()) {
-									rooms.add(rc);
-									rc = new RoomContainer();
-									continue;
-								} else {
-									throw new Exception("Got new room. Last room not yet in a state where it can be build. ");
-								}
+			// Avoid empty lines and additional whitespace
+			line = line.trim();
+			if (line.equals("")) continue;
+			//System.out.println(line);
+			//Checks the parser state to enable state changes.
+			switch (ps) {
+				case AWAITING_OBJECT_TYPE:
+					//if the read line itemStrings start of a new room object then
+					//then set the parser state, else throws error.
+					if (line.equals("[room]")) {
+						ps = ParserState.PARSING_ROOM;
+					} else {
+						System.out.printf("Unexpected token, %s", line);
+					}
+
+					break;
+				//if parser state itemStrings passing room then split the read line
+				//and extract the attribute and value for use in the switch statement
+				//where the attributes are used to set a value for a roomContainer object.
+				//When the object itemStrings fully defined then it's added to the list of roomContainer.
+				//Then the parser state goes back to AWAITING_OBJECT_TYPE and a new roomContainer object itemStrings created.
+				case PARSING_ROOM:
+					// Check for getting new parts for creating new objects, such as [room]
+					if (line.startsWith("[")) {
+						if (line.endsWith("]")) {
+							if (rc.hasAllData()) {
+								rooms.add(rc);
+								rc = new RoomContainer();
+								continue;
 							} else {
-								throw new Exception("Invalid string, expected ']' got '" + line.charAt(line.length() - 1) + "'");
+								throw new IllegalArgumentException("Got new room. Last room not yet in a state where it can be build. ");
 							}
-						}
-
-						String[] parts = line.split("=");
-						String attribute, value;
-						if (parts.length == 2) {
-							attribute = parts[0];
-							value = parts[1];
-						} else if (parts.length == 1) {
-							attribute = parts[0];
-							value = "";
 						} else {
-							throw new Exception("Unexpected result of split " + line);
+							throw new IllegalArgumentException("Invalid string, expected ']' got '" + line.charAt(line.length() - 1) + "'");
 						}
-						rc.setAttribute(attribute, value);
-						break;
-				}
-			}
+					}
 
-			if (rc.hasAllData()) {
-				rooms.add(rc);
-			} else {
-				throw new Exception("Last room was not finished. ");
+					String[] parts = line.split("=");
+					String attribute, value;
+					if (parts.length == 2) {
+						attribute = parts[0];
+						value = parts[1];
+					} else if (parts.length == 1) {
+						attribute = parts[0];
+						value = "";
+					} else {
+						throw new IllegalArgumentException("Unexpected result of split " + line);
+					}
+					rc.setAttribute(attribute, value);
+					break;
 			}
+		}
 
-		} catch (IOException e) {
-			System.out.println(e);
+		if (rc.hasAllData()) {
+			rooms.add(rc);
+		} else {
+			throw new IllegalArgumentException("Last room was not finished. ");
 		}
 
 		return rooms;
@@ -107,7 +104,7 @@ public class WorldLoader {
 	 * @return a list of rooms in the world.
 	 * @throws Exception if the RoomContainer doesn't have an id attached.
 	 */
-	private static List<Room> rebuildWorld(List<RoomContainer> roomContainers, Time time) throws Exception {
+	private static List<Room> rebuildWorld(List<RoomContainer> roomContainers, Time time) throws IllegalArgumentException {
 		List<Room> rooms = new ArrayList<>();
 		//Adds a room to the rooms List for each roomContainer in the roomContainers list.
 		for (RoomContainer roomContainer : roomContainers) {
@@ -116,7 +113,6 @@ public class WorldLoader {
 			room.setKey(roomContainer.key);
 			rooms.add(room);
 		}
-		//Ensure more descriptive error instead of null pointer.
 		for (int i = 0; i < rooms.size(); i++) {
 			Room room = rooms.get(i);
 			RoomContainer rc = null;
@@ -126,8 +122,10 @@ public class WorldLoader {
 					break;
 				}
 			}
+
+			//Ensure more descriptive error instead of null pointer.
 			if (rc == null) {
-				throw new Exception("Error when searching for room id");
+				throw new IllegalArgumentException("Error when searching for room id ");
 			}
 
 			//Sets an exit for the room based on the roomContainer linkStrings.
@@ -172,7 +170,7 @@ public class WorldLoader {
 	 * @return
 	 * @throws Exception throws exception because of rebuildWorld().
 	 */
-	public static List<Room> LoadWorld(String path, Time time) throws Exception {
+	public static List<Room> LoadWorld(String path, Time time) throws IllegalArgumentException, IOException {
 		List<RoomContainer> roomContainers = readWorld(path);
 		return rebuildWorld(roomContainers, time);
 	}
@@ -201,7 +199,7 @@ public class WorldLoader {
 		boolean isLocked;
 		String key;
 
-		public void setAttribute(String key, String value) throws Exception {
+		public void setAttribute(String key, String value) throws IllegalArgumentException {
 			switch (key) {
 				case "id":
 					setId(value);
@@ -234,7 +232,7 @@ public class WorldLoader {
 					setKey(value);
 					break;
 				default:
-					throw new Exception("Unknown key " + key);
+					throw new IllegalArgumentException("Unknown key " + key);
 			}
 		}
 
@@ -305,11 +303,11 @@ public class WorldLoader {
 			}
 		}
 
-		public void setKey(String item) throws Exception {
+		public void setKey(String item) throws IllegalArgumentException {
 			if (item.equalsIgnoreCase("")) {
 				isLocked = false;
 			} else if (ItemType.get(item) == ItemType.NONE) {
-				throw new Exception("Invalid room key in map.wop file; key " + item + " does not exsist.");
+				throw new IllegalArgumentException("Invalid room key in map.wop file; key " + item + " does not exsist.");
 			} else {
 				isLocked = true;
 				key = item;
@@ -337,9 +335,9 @@ public class WorldLoader {
 		 * Get a room-object from the RoomContainer.
 		 *
 		 * @return room-object based on RoomContainer type.
-		 * @throws Exception throws exception if room isn't found.
+		 * @throws IllegalArgumentException throws exception if room isn't found.
 		 */
-		public Room getRoom() throws Exception {
+		public Room getRoom() throws IllegalArgumentException {
 			Room r;
 			switch (this.type) {
 				case "base":
@@ -358,7 +356,7 @@ public class WorldLoader {
 					r = new Exit(this.description, this.id);
 					break;
 				default:
-					throw new Exception("Unknown room type " + this.type);
+					throw new IllegalArgumentException("Unknown room type " + this.type);
 			}
 			return r;
 		}

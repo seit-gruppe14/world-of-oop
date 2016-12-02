@@ -193,18 +193,7 @@ public class Time implements ObservableStringValue {
 	}
 
 	/**
-	 * Adds an {@link InvalidationListener} which will be notified whenever the
-	 * {@code Observable} becomes invalid. If the same
-	 * listener is added more than once, then it will be notified more than
-	 * once. That is, no check is made to ensure uniqueness.
-	 * <p>
-	 * Note that the same actual {@code InvalidationListener} instance may be
-	 * safely registered for different {@code Observables}.
-	 * <p>
-	 *
-	 * @param listener The listener to register
-	 * @throws NullPointerException if the listener is null
-	 * @see #removeListener(InvalidationListener)
+	 * Not supported
 	 */
 	@Override
 	public void addListener(InvalidationListener listener) {
@@ -212,17 +201,7 @@ public class Time implements ObservableStringValue {
 	}
 
 	/**
-	 * Removes the given listener from the list of listeners, that are notified
-	 * whenever the value of the {@code Observable} becomes invalid.
-	 * <p>
-	 * If the given listener has not been previously registered (i.e. it was
-	 * never added) then this method call is a no-op. If it had been previously
-	 * added then it will be removed. If it had been added more than once, then
-	 * only the first occurrence will be removed.
-	 *
-	 * @param listener The listener to remove
-	 * @throws NullPointerException if the listener is null
-	 * @see #addListener(InvalidationListener)
+	 * Not supported
 	 */
 	@Override
 	public void removeListener(InvalidationListener listener) {

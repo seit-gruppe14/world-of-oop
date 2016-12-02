@@ -9,6 +9,7 @@ import zuulFramework.worldofzuul.entities.ItemType;
 import zuulFramework.worldofzuul.entities.Player;
 import zuulFramework.worldofzuul.rooms.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,8 +91,11 @@ public class Game implements ITimeEventAble {
 		List<Room> rooms = null;
 		try {
 			rooms = WorldLoader.LoadWorld(mapLocation, time);
-		} catch (Exception e) {
+		} catch (IllegalArgumentException | IOException e) {
+			System.out.println("Unable to load world file.");
+			System.out.println(e.getMessage());
 			e.printStackTrace();
+			System.exit(404);
 		}
 		System.out.println(rooms);
 		// The first room in the list, will always be the room the player starts in
