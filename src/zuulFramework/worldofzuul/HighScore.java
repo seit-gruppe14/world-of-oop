@@ -37,7 +37,7 @@ public class HighScore {
      *
      * @return
      */
-    public static ObservableList<String> showScore() {
+    public static ObservableList<String> showScore() throws IOException {
 	ObservableList<String> scoreList = FXCollections.observableArrayList();
 
 	//Tries to run the code below, if the code cannot be run, 
@@ -85,7 +85,9 @@ public class HighScore {
 	    }
 
 	} catch (FileNotFoundException ex) {
-
+	    FileWriter fileWriter = null;
+	    fileWriter = new FileWriter("score.txt", Boolean.TRUE);
+	    fileWriter.close();
 	}
 
 	return scoreList;
