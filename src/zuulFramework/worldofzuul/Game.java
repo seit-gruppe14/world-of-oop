@@ -12,8 +12,7 @@ import zuulFramework.worldofzuul.rooms.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  * The "main" in the game
@@ -274,7 +273,6 @@ public class Game implements ITimeEventAble {
 				// TODO Exit the game once done
 				HighScore.showScore();
 			    } catch (IOException ex) {
-				
 			    }
 			} else {
 				this.player.clearBoughtItems();

@@ -434,7 +434,6 @@ public class Controller implements Initializable {
 	    try {
 		quitHighScoreList.itemsProperty().set(HighScore.showScore());
 	    } catch (IOException ex) {
-		
 	    }
 		startPane.setVisible(false);
 		gamePane.setVisible(false);
