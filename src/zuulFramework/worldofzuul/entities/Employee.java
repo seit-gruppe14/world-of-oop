@@ -13,23 +13,23 @@ import zuulFramework.worldofzuul.rooms.Room;
  */
 public class Employee extends MovingEntity implements ITimeEventAble {
 
-	public Employee(Room currentRoom) {
-		this.setCurrentRoom(currentRoom);
-	}
+    public Employee(Room currentRoom) {
+        this.setCurrentRoom(currentRoom);
+    }
 
-	@Override
-	public int getTimeBetweenEvents() {
-		//We want an amount of time between Employee actions (Subject to change).
-		return 60;
-	}
+    @Override
+    public int getTimeBetweenEvents() {
+        //We want an amount of time between Employee actions (Subject to change).
+        return 60;
+    }
 
-	@Override
-	public void timeCallback(int timeAt, Game game) {
-		move();
-	}
+    @Override
+    public void timeCallback(int timeAt, Game game) {
+        move();
+    }
 
-	@Override
-	public void addToScene(ObservableList<Node> drawAt, Offset offset) {
-		super.addToScene(drawAt, offset, Paint.valueOf("#0000FF"));
-	}
+    @Override
+    public void addToScene(ObservableList<Node> drawAt, Offset offset) {
+        super.addToScene(drawAt, offset, Paint.valueOf("#0000FF"));
+    }
 }
