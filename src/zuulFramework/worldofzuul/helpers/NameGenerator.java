@@ -62,8 +62,8 @@ public class NameGenerator {
 	public static String pickRandomName() {
 		randomNames();
 		String name;
-		int pickRandomNumber = (int) (Math.random() * 44);
-		int pickSecondRandomNumber = (int) (Math.random() * 44);
+		int pickRandomNumber = (int) (Math.random() * words.length);
+		int pickSecondRandomNumber = (int) (Math.random() * words.length);
 		name = words[pickRandomNumber] + words[pickSecondRandomNumber];
 		return name;
 	}
