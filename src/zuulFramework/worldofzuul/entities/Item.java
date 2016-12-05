@@ -11,56 +11,56 @@ import zuulFramework.worldofzuul.helpers.NameGenerator;
  * @author frede
  */
 public class Item {
-	private ItemType type;
-	private double weight;
-	private String name;
-	private int price;
+    private ItemType type;
+    private double weight;
+    private String name;
+    private int price;
 
-	/**
-	 * Constructs an item with the type ItemType.
-	 *
-	 * @param type is a specified ItemType.
-	 */
-	public Item(ItemType type) {
-		this.type = type;
-		this.weight = type.getWeight();
-		this.name = NameGenerator.pickRandomName();
-		this.price = type.getPrice();
-	}
+    /**
+     * Constructs an item with the type ItemType.
+     *
+     * @param type is a specified ItemType.
+     */
+    public Item(ItemType type) {
+        this.type = type;
+        this.weight = type.getWeight();
+        this.name = NameGenerator.pickRandomName();
+        this.price = type.getPrice();
+    }
 
-	public ItemType getType() {
-		return type;
-	}
+    public ItemType getType() {
+        return type;
+    }
 
-	public void setType(ItemType type) {
-		this.type = type;
-	}
+    public void setType(ItemType type) {
+        this.type = type;
+    }
 
-	public double getWeight() {
-		return this.weight;
-	}
+    public double getWeight() {
+        return this.weight;
+    }
 
-	public void setWeight(double weight) {
-		this.weight = weight;
-	}
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
 
-	public String getName() {
-		return this.name;
-	}
+    public String getName() {
+        return this.name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public int getPrice() {
-		return this.price;
-	}
+    public int getPrice() {
+        return this.price;
+    }
 
-	public void setPrice(int price) {
-		this.price = price;
-	}
+    public void setPrice(int price) {
+        this.price = price;
+    }
 
-	public String toString() {
-		return this.name;
-	}
+    public String toString() {
+        return this.name;
+    }
 }

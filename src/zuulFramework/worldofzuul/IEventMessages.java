@@ -9,7 +9,7 @@ package zuulFramework.worldofzuul;
  * @author Christian
  */
 public interface IEventMessages {
-	void handle(String s);
+    void handle(String s);
 
 }
 

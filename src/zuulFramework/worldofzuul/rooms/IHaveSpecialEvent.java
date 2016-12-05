@@ -12,6 +12,6 @@ import zuulFramework.worldofzuul.Game;
  */
 public interface IHaveSpecialEvent {
 
-	String doSpecialEvent(Game game);
+    String doSpecialEvent(Game game);
 
 }

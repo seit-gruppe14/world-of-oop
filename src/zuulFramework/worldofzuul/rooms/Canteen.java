@@ -8,28 +8,28 @@ import zuulFramework.worldofzuul.entities.Player;
  */
 public class Canteen extends Room implements ICanPay {
 
-	/**
-	 * @param description
-	 */
-	public Canteen(String description, int id) {
-		super(description, id);
-	}
+    /**
+     * @param description
+     */
+    public Canteen(String description, int id) {
+        super(description, id);
+    }
 
-	/**
-	 * Buys food, depends on how much life the player wants to heal himself with
-	 *
-	 * @param player the player that wants to buy food
-	 * @return always returns true when a player buys food
-	 */
-	@Override
-	public String buy(Player player, Game game) {
+    /**
+     * Buys food, depends on how much life the player wants to heal himself with
+     *
+     * @param player the player that wants to buy food
+     * @return always returns true when a player buys food
+     */
+    @Override
+    public String buy(Player player, Game game) {
 
-		player.removeMoney(((100 - player.getLife())));
-		player.setLife(100);
+        player.removeMoney(((100 - player.getLife())));
+        player.setLife(100);
 
-		return "Your life has been restored";
-		/*
-		if (command.hasSecondWord()) {
+        return "Your life has been restored";
+        /*
+        if (command.hasSecondWord()) {
             // Use command to define how much life a player wishes for, depends on
             // how much food they buy
 
@@ -56,6 +56,6 @@ public class Canteen extends Room implements ICanPay {
         }
         return false;
         */
-	}
+    }
 
 }
