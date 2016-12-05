@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * The "main" in the game
  */
@@ -257,28 +258,29 @@ public class Game implements ITimeEventAble {
         return 60;
     }
 
-    /**
-     * Handles the callback that checks if the game has ended.
-     *
-     * @param timeAt
-     */
-    @Override
-    public void timeCallback(int timeAt, Game game) {
-        // If the current time is more than 22 o'clock
-        if (timeAt >= gameEndTime) {
-            // If the time is up, and the player is in an exit room, then they should end the game
-            if (this.player.getCurrentRoom() instanceof Exit) {
-                // TODO Exit the game once done
-                HighScore.showScore();
-            } else {
-                this.player.clearBoughtItems();
-                // The time is up, but the player cannot yet leave.
-                // sooo.. Game over!!
-                gameOver("You did not manage to get to the exit before IKEA closed. \n"
-                    + "The security guards threw you out, and destroyed all the things you bought.\n");
-            }
-        }
-    }
+	/**
+	 * Handles the callback that checks if the game has ended.
+	 *
+	 * @param timeAt
+	 */
+	@Override
+	public void timeCallback(int timeAt, Game game) {
+		// If the current time is more than 22 o'clock
+		if (timeAt >= gameEndTime) {
+			// If the time is up, and the player is in an exit room, then they should end the game
+			if (this.player.getCurrentRoom() instanceof Exit) {
+				try {// TODO Exit the game once done
+				HighScore.showScore();} catch (IOException ex) {
+			    }
+			} else {
+				this.player.clearBoughtItems();
+				// The time is up, but the player cannot yet leave.
+				// sooo.. Game over!!
+				gameOver("You did not manage to get to the exit before IKEA closed. \n"
+					+ "The security guards threw you out, and destroyed all the things you bought.\n");
+			}
+		}
+	}
 
     /**
      * Marks the game for gameover

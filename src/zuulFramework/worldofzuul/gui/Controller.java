@@ -26,6 +26,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public class Controller implements Initializable {
@@ -118,15 +120,17 @@ public class Controller implements Initializable {
      * @param resources
      */
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        otherDirections = FXCollections.observableArrayList();
-        otherDirectionsDropdown.setItems(otherDirections);
-        highScoreList.itemsProperty().set(HighScore.showScore());
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		otherDirections = FXCollections.observableArrayList();
+		otherDirectionsDropdown.setItems(otherDirections);
+		try {highScoreList.itemsProperty().set(HighScore.showScore());} catch (IOException ex) {
 
-        // Display possible maps that can be played
-        try (Stream<Path> paths = Files.walk(Paths.get(""))) {
-            ObservableList<String> mapFiles = FXCollections.observableArrayList();
+	    }
+
+		// Display possible maps that can be played
+		try (Stream<Path> paths = Files.walk(Paths.get(""))) {
+			ObservableList<String> mapFiles = FXCollections.observableArrayList();
 
 
             paths
@@ -422,16 +426,17 @@ public class Controller implements Initializable {
 
     }
 
-    public void quitGame() {
+	public void quitGame() {
 
-        scoreLabel.setText(this.game.getHighScore().calcScore(game.getItemList()) + "");
-        quitHighScoreList.itemsProperty().set(HighScore.showScore());
-        startPane.setVisible(false);
-        gamePane.setVisible(false);
-        quitPane.setVisible(true);
-        saveMessageLabel.setVisible(false);
-        saveButton.setDisable(false);
-    }
+		scoreLabel.setText(this.game.getHighScore().calcScore(game.getItemList()) + "");
+		try {quitHighScoreList.itemsProperty().set(HighScore.showScore());} catch (IOException ex) {
+	    }
+		startPane.setVisible(false);
+		gamePane.setVisible(false);
+		quitPane.setVisible(true);
+		saveMessageLabel.setVisible(false);
+		saveButton.setDisable(false);
+	}
 
     public void gameOver() {
         quitText.setText("GAME OVER!");
@@ -462,23 +467,25 @@ public class Controller implements Initializable {
             game.getHighScore().printScoreToFile(nameField.getText(), this.game.getHighScore().calcScore(game.getItemList()));
         } catch (IOException ex) {
 
-        }
-        saveButton.setDisable(true);
-        saveMessageLabel.setVisible(true);
-        quitHighScoreList.itemsProperty().set(HighScore.showScore());
+	}
+	saveButton.setDisable(true);
+	saveMessageLabel.setVisible(true);
+	try {quitHighScoreList.itemsProperty().set(HighScore.showScore());} catch (IOException ex) {
+	    }
     }
 
     @FXML
     private void onPlayAgainButtonClicked(ActionEvent event) {
-        highScoreList.itemsProperty().set(HighScore.showScore());
-        textArea.clear();
-        mapPane.getChildren().clear();
-        clock.setText(game.getTime().getNiceFormattedTime());
-        updateHealthBar();
-        updateWeightBar();
-        setPlayerInventoryTabel();
-        updateRoomInventoryTabel();
-        setAskCombBox();
+	try {highScoreList.itemsProperty().set(HighScore.showScore());} catch (IOException ex) {
+	    }
+	textArea.clear();
+	mapPane.getChildren().clear();
+	clock.setText(game.getTime().getNiceFormattedTime());
+	updateHealthBar();
+	updateWeightBar();
+	setPlayerInventoryTabel();
+	updateRoomInventoryTabel();
+	setAskCombBox();
 
         drawInitialRoom();
 
