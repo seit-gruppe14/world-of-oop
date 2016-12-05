@@ -26,6 +26,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public class Controller implements Initializable {
@@ -122,7 +124,12 @@ public class Controller implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		otherDirections = FXCollections.observableArrayList();
 		otherDirectionsDropdown.setItems(otherDirections);
-		highScoreList.itemsProperty().set(HighScore.showScore());    
+	    try {
+		highScoreList.itemsProperty().set(HighScore.showScore());
+	    } catch (IOException ex) {
+		
+	    }
+                
 		// Display possible maps that can be played
 		try (Stream<Path> paths = Files.walk(Paths.get(""))) {
 			ObservableList<String> mapFiles = FXCollections.observableArrayList();
@@ -424,7 +431,10 @@ public class Controller implements Initializable {
 	public void quitGame() {
 		
 		scoreLabel.setText(this.game.getHighScore().calcScore(game.getItemList()) + "");
+	    try {
 		quitHighScoreList.itemsProperty().set(HighScore.showScore());
+	    } catch (IOException ex) {
+	    }
 		startPane.setVisible(false);
 		gamePane.setVisible(false);
 		quitPane.setVisible(true);
@@ -464,12 +474,18 @@ public class Controller implements Initializable {
 	}
 	saveButton.setDisable(true);
 	saveMessageLabel.setVisible(true);
-	quitHighScoreList.itemsProperty().set(HighScore.showScore());
+	    try {
+		quitHighScoreList.itemsProperty().set(HighScore.showScore());
+	    } catch (IOException ex) {
+	    }
     }
 
     @FXML
     private void onPlayAgainButtonClicked(ActionEvent event) {
-	highScoreList.itemsProperty().set(HighScore.showScore());
+	    try {
+		highScoreList.itemsProperty().set(HighScore.showScore());
+	    } catch (IOException ex) {
+	    }
 	textArea.clear();
 	mapPane.getChildren().clear();
 	clock.setText(game.getTime().getNiceFormattedTime());
