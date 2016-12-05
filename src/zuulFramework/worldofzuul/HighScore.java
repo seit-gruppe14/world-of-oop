@@ -19,6 +19,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Christian
@@ -37,7 +39,7 @@ public class HighScore {
      *
      * @return
      */
-    public static ObservableList<String> showScore() throws IOException {
+    public static ObservableList<String> showScore() {
 	ObservableList<String> scoreList = FXCollections.observableArrayList();
 
 	//Tries to run the code below, if the code cannot be run, 
@@ -85,9 +87,12 @@ public class HighScore {
 	    }
 
 	} catch (FileNotFoundException ex) {
-	    FileWriter fileWriter = null;
-	    fileWriter = new FileWriter("score.txt", Boolean.TRUE);
-	    fileWriter.close();
+	    try {
+		FileWriter fileWriter = null;
+		fileWriter = new FileWriter("score.txt", Boolean.TRUE);
+		fileWriter.close();
+	    } catch (IOException ex1) {
+	    }
 	}
 
 	return scoreList;
