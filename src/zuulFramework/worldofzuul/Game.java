@@ -269,9 +269,8 @@ public class Game implements ITimeEventAble {
 		if (timeAt >= gameEndTime) {
 			// If the time is up, and the player is in an exit room, then they should end the game
 			if (this.player.getCurrentRoom() instanceof Exit) {
-				try {// TODO Exit the game once done
-				HighScore.showScore();} catch (IOException ex) {
-			    }
+				//TODO Exit the game once done
+				HighScore.showScore();
 			} else {
 				this.player.clearBoughtItems();
 				// The time is up, but the player cannot yet leave.

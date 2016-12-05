@@ -124,10 +124,8 @@ public class Controller implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		otherDirections = FXCollections.observableArrayList();
 		otherDirectionsDropdown.setItems(otherDirections);
-		try {highScoreList.itemsProperty().set(HighScore.showScore());} catch (IOException ex) {
-
-	    }
-
+		highScoreList.itemsProperty().set(HighScore.showScore());
+		
 		// Display possible maps that can be played
 		try (Stream<Path> paths = Files.walk(Paths.get(""))) {
 			ObservableList<String> mapFiles = FXCollections.observableArrayList();
@@ -429,8 +427,7 @@ public class Controller implements Initializable {
 	public void quitGame() {
 
 		scoreLabel.setText(this.game.getHighScore().calcScore(game.getItemList()) + "");
-		try {quitHighScoreList.itemsProperty().set(HighScore.showScore());} catch (IOException ex) {
-	    }
+		quitHighScoreList.itemsProperty().set(HighScore.showScore());
 		startPane.setVisible(false);
 		gamePane.setVisible(false);
 		quitPane.setVisible(true);
@@ -470,14 +467,12 @@ public class Controller implements Initializable {
 	}
 	saveButton.setDisable(true);
 	saveMessageLabel.setVisible(true);
-	try {quitHighScoreList.itemsProperty().set(HighScore.showScore());} catch (IOException ex) {
-	    }
+	quitHighScoreList.itemsProperty().set(HighScore.showScore());
     }
 
     @FXML
     private void onPlayAgainButtonClicked(ActionEvent event) {
-	try {highScoreList.itemsProperty().set(HighScore.showScore());} catch (IOException ex) {
-	    }
+	highScoreList.itemsProperty().set(HighScore.showScore());
 	textArea.clear();
 	mapPane.getChildren().clear();
 	clock.setText(game.getTime().getNiceFormattedTime());

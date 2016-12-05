@@ -15,6 +15,8 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Christian
@@ -33,7 +35,7 @@ public class HighScore {
      *
      * @return
      */
-    public static ObservableList<String> showScore() throws IOException {
+    public static ObservableList<String> showScore() {
         ObservableList<String> scoreList = FXCollections.observableArrayList();
 
         //Tries to run the code below, if the code cannot be run,
@@ -81,9 +83,12 @@ public class HighScore {
             }
 
         } catch (FileNotFoundException ex) {
-            FileWriter fileWriter = null;
-            fileWriter = new FileWriter("score.txt", Boolean.TRUE);
-            fileWriter.close();
+	    try {
+		FileWriter fileWriter = null;
+		fileWriter = new FileWriter("score.txt", Boolean.TRUE);
+		fileWriter.close();
+	    } catch (IOException ex1) {
+	    }
         }
 
         return scoreList;
