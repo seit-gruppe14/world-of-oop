@@ -24,7 +24,7 @@ public class TimeItem extends Item implements IHaveSpecialEvent {
      * Extends the game time
      * 
      * @param game An instance of game
-     * @return a fine message to the player
+     * @return a fine message to the player about the time being extended
      */
     @Override
     public String doSpecialEvent(Game game) {
