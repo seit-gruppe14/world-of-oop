@@ -13,7 +13,7 @@ public interface ICanPay {
      *
      * @param player The player who buys something
      * @param game   The game instance running
-     * @return A boolean indicating if the purchase was successful
+     * @return A string with a message about what exactly happened
      */
     String buy(Player player, Game game);
 }

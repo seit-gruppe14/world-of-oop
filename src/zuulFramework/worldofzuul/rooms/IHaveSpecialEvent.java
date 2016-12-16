@@ -8,10 +8,16 @@ package zuulFramework.worldofzuul.rooms;
 import zuulFramework.worldofzuul.Game;
 
 /**
- * @author thananya
+ * Implement by classes that needs to do special things
  */
 public interface IHaveSpecialEvent {
 
+    /**
+     * Called when the class should do it's special event
+     *
+     * @param game The game instance the event was triggered on
+     * @return A String descripting what happened
+     */
     String doSpecialEvent(Game game);
 
 }

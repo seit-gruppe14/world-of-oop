@@ -15,26 +15,50 @@ import zuulFramework.worldofzuul.gui.Offset;
 
 import java.util.*;
 
+/**
+ * A basic room
+ */
 public class Room implements IDrawable {
     /**
      * Describes the current room.
      */
     protected String description;
+    /**
+     * Describes the items types the room should contain
+     */
     protected ObservableList<ItemType> itemTypes = FXCollections.observableArrayList();
     /**
      * The entities currently in the room
      */
     // Use a set, as it can't contain duplicates, which we don't want
     protected Set<Entity> entities = new HashSet<>();
+    /**
+     * Contains the lines that was drawn for the room
+     */
     private ArrayList<Line> lines = new ArrayList<>();
+    /**
+     * The id of the room
+     */
     private int id;
+    /**
+     * Indicates if the room is locked, and the player shouldn't have access to the room
+     */
     private boolean isLocked;
+    /**
+     * The key that will unlock the room
+     */
     private String key;
     /**
      * A map of rooms used save exits.
      */
     private HashMap<String, Room> exits;
+    /**
+     * Indicates if the room has been drawn
+     */
     private boolean hasDrawn = false;
+    /**
+     * The offset with which the room should be drawn
+     */
     private Offset location = null;
 
     /**
@@ -42,6 +66,7 @@ public class Room implements IDrawable {
      * whom are stored in a hashmap.
      *
      * @param description the description of the room
+     * @param id The id of the room
      */
     public Room(String description, int id) {
         // Set the description to be whatever the used said the description was.
@@ -87,7 +112,7 @@ public class Room implements IDrawable {
      * Gets a longer description of the room
      * which is description + a list of exists
      *
-     * @return String
+     * @return A longer description as a String
      */
     public String getLongDescription() {
         //Gives the player the description in a sentence + direction and neighbor.
@@ -324,8 +349,8 @@ public class Room implements IDrawable {
     /**
      * Draws room and adds it to the current JavaFX scene
      *
-     * @param drawAt
-     * @param offset
+     * @param drawAt A list where the element should be put into and get drawn
+     * @param offset The absolute offset at which the room should be drawn
      */
     @Override
     public void addToScene(ObservableList<Node> drawAt, Offset offset) {
@@ -414,13 +439,20 @@ public class Room implements IDrawable {
         }
     }
 
-    // TODO add comment on this
+    /**
+     * Updates the drawning on the room. Is a noop in this class
+     */
     @Override
     public void updateDraw() {
 
     }
 
-    //TODO add comment ont his
+    /**
+     * Calculates an offset for this room, from the provided room
+     *
+     * @param r The room to which the offset should be calculated
+     * @return An offset to the other room
+     */
     public Offset calculateOffsetToRoom(Room r) {
         if (r == this) {
             return new Offset();
@@ -438,7 +470,16 @@ public class Room implements IDrawable {
         return null;
     }
 
-    //TODO add comment on this
+
+    /**
+     * Recursively calculates offset to a goal
+     *
+     * @param r             The room to calculate to
+     * @param rooms         The rooms to go through in this iteration
+     * @param currentOffset The current offset calculated
+     * @param searchedRooms The rooms that has already be searched
+     * @return The offset to the room if found, otherwise null.
+     */
     private Offset calculateOffset(Room r, Set<Map.Entry<String, Room>> rooms, Offset currentOffset, List<Room> searchedRooms) {
 
         for (Map.Entry<String, Room> subEntry : rooms) {
@@ -469,6 +510,10 @@ public class Room implements IDrawable {
         return this.location;
     }
 
+    /**
+     * Get a set of non-kardinal directions, such as for the electronics rooms.
+     * @return A set of directions
+     */
     public Set<String> getOtherDirections() {
         Set<String> directions = new HashSet<>();
         getExits().entrySet().forEach(stringRoomEntry -> {

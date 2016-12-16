@@ -30,7 +30,8 @@ public class SalesRoom extends Room {
      * ItemType, which will be placed in an arraylist.
      *
      * @param description gives the room a description.
-     * @param itemTypes   specifies the ItemType in the room.
+     * @param id The id of the room
+     * @param itemTypes specifies the ItemType in the room.
      */
     public SalesRoom(String description, int id, ItemType... itemTypes) {
         super(description, id);
@@ -70,10 +71,20 @@ public class SalesRoom extends Room {
         return null;
     }
 
+    /**
+     * Gets a list of items in the room
+     *
+     * @return
+     */
     public ObservableList<Item> getItems() {
         return items;
     }
 
+    /**
+     * Gets a specific item in the room based on the name
+     * @param itemName The name of the item to fetch
+     * @return The item found, or null if nothing was found
+     */
     public Item getItem(String itemName) {
         for (int itemNumber = 0; itemNumber < items.size(); itemNumber++) {
             if (items.get(itemNumber).getName().equalsIgnoreCase(itemName)) {

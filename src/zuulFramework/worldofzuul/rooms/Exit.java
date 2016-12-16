@@ -20,7 +20,7 @@ public class Exit extends Room implements ICanPay {
      *
      * @param player the player that wants to buy the items
      * @param game   the current game
-     * @return true (can always pay)
+     * @return A message about what happened
      */
 
     @Override

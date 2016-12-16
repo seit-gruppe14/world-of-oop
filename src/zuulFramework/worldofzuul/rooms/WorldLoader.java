@@ -22,7 +22,8 @@ public class WorldLoader {
      *
      * @param path which itemStrings a file path.
      * @return a list of RoomContainers
-     * @throws Exception on illegal file content.
+     * @throws IllegalArgumentException If the file format is not correct.
+     * @throws IOException Triggered if anything goes wrong when accessing the .wop file
      */
     private static List<RoomContainer> readWorld(String path) throws IllegalArgumentException, IOException {
         List<RoomContainer> rooms = new ArrayList<>();
@@ -102,7 +103,7 @@ public class WorldLoader {
      * @param roomContainers which are the roomContainers created in the readWorld method.
      * @param time           which itemStrings used for the time handlers when monsters are added to the rooms.
      * @return a list of rooms in the world.
-     * @throws Exception if the RoomContainer doesn't have an id attached.
+     * @throws IllegalArgumentException if the RoomContainer doesn't have an id attached.
      */
     private static List<Room> rebuildWorld(List<RoomContainer> roomContainers, Time time) throws IllegalArgumentException {
         List<Room> rooms = new ArrayList<>();
@@ -165,10 +166,12 @@ public class WorldLoader {
     }
 
     /**
+     * Loads a world from the specified .wop file
+     *
      * @param path which itemStrings a file path.
      * @param time game time.
-     * @return
-     * @throws Exception throws exception because of rebuildWorld().
+     * @return A list of all the rooms in the world file
+     * @throws IllegalArgumentException Thrown if something goes wrong in parsing file
      */
     public static List<Room> LoadWorld(String path, Time time) throws IllegalArgumentException, IOException {
         List<RoomContainer> roomContainers = readWorld(path);
@@ -199,6 +202,13 @@ public class WorldLoader {
         boolean isLocked;
         String key;
 
+        /**
+         * Sets an attribute on the container
+         *
+         * @param key   The key to set
+         * @param value The value to set to the key to
+         * @throws IllegalArgumentException Thrown if the key doesn't exist
+         */
         public void setAttribute(String key, String value) throws IllegalArgumentException {
             switch (key) {
                 case "id":
@@ -236,30 +246,58 @@ public class WorldLoader {
             }
         }
 
+        /**
+         * Sets the name
+         * @param name The new name of the room
+         */
         public void setName(String name) {
             this.name = name;
         }
 
+        /**
+         * Sets the id
+         * @param id The id of the room
+         */
         public void setId(String id) {
             this.id = Integer.parseInt(id);
         }
 
+        /**
+         * Sets the type of the room
+         * @param type The type of the room
+         */
         public void setType(String type) {
             this.type = type;
         }
 
+        /**
+         * Sets the description of the container
+         * @param description The description
+         */
         public void setDescription(String description) {
             this.description = description;
         }
 
+        /**
+         * Sets the number of monsters that should be generated in the room
+         * @param numberOfMonsters The number of monsters
+         */
         public void setNumberOfMonsters(String numberOfMonsters) {
             this.numberOfMonsters = Integer.parseInt(numberOfMonsters);
         }
 
+        /**
+         * Sets the number of employees that should be added to the room
+         * @param numberOfEmployees The number of employees
+         */
         public void setNumberOfEmployees(String numberOfEmployees) {
             this.numberOfEmployees = Integer.parseInt(numberOfEmployees);
         }
 
+        /**
+         * Sets number of special items that should be generated
+         * @param specialItem The number of special items
+         */
         public void setSpecialItem(String specialItem) {
             this.specialItem = Integer.parseInt(specialItem);
         }
@@ -303,6 +341,11 @@ public class WorldLoader {
             }
         }
 
+        /**
+         * Sets the type of key that should be used
+         * @param item The name of the item that should become the key
+         * @throws IllegalArgumentException Thrown if the specified itemtype doesn't exist.
+         */
         public void setKey(String item) throws IllegalArgumentException {
             if (item.equalsIgnoreCase("")) {
                 isLocked = false;
