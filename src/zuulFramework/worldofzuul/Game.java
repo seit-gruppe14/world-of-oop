@@ -2,8 +2,6 @@ package zuulFramework.worldofzuul;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import zuulFramework.worldofzuul.commands.CommandWord;
-import zuulFramework.worldofzuul.commands.Parser;
 import zuulFramework.worldofzuul.entities.Item;
 import zuulFramework.worldofzuul.entities.ItemType;
 import zuulFramework.worldofzuul.entities.Player;
@@ -24,7 +22,6 @@ public class Game implements ITimeEventAble {
     /**
      * Handles reading commands from the user
      */
-    private Parser parser;
 
     private Time time;
     /**
@@ -71,9 +68,6 @@ public class Game implements ITimeEventAble {
         // Create all the rooms in the game
         createRooms(mapLocation);
 
-        // Initialize the parser for reading in commands
-        parser = new Parser();
-
         // Add own time callback
         // witch takes an instance of the Game object as a parameter
         time.addTimeEvent(this);
@@ -114,7 +108,7 @@ public class Game implements ITimeEventAble {
         stringBuilder.append("But be careful as the öther shöppers might beat yöu tö it or tramble yöu tö death!").append("\n");
         stringBuilder.append("Are yöu ready?").append("\n");
         stringBuilder.append("\n");
-        stringBuilder.append(String.format("If you need assistance type '%s' tö ask öne öf the blönde IKEA emplöyees.%n", CommandWord.HELP)).append("\n");
+        stringBuilder.append(("If you need assistance type '%s' tö ask öne öf the blönde IKEA emplöyees.")).append("\n");
         stringBuilder.append(player.getCurrentRoom().getLongDescription()).append("\n");
         addEventMessages(stringBuilder.toString());
     }
