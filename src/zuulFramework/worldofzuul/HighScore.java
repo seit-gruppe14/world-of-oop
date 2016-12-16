@@ -131,6 +131,7 @@ public class HighScore {
     /**
      * @param score The score that was calculated then gets written in a .txt
      *              file.
+     * @param name The name of the player to add for the score
      * @throws IOException if something went wrong when accessing the file
      */
     public void printScoreToFile(String name, int score) throws IOException {

@@ -82,7 +82,7 @@ public class Room implements IDrawable {
     /**
      * Gets the id of the room
      *
-     * @return
+     * @return The id of the room
      */
     public int getId() {
         return id;
@@ -134,6 +134,7 @@ public class Room implements IDrawable {
      * Searches for a room with the items the user is asking for.
      *
      * @param itemType The itemtype to search for
+     * @return A string containing a description of where to find the item
      */
     public String askForHelp(ItemType itemType) {
 
@@ -249,7 +250,7 @@ public class Room implements IDrawable {
     /**
      * Gets all the exists of a given room.
      *
-     * @return
+     * @return A map of all the exists
      */
     public Map<String, Room> getExits() {
         return this.exits;
@@ -329,7 +330,7 @@ public class Room implements IDrawable {
     /**
      * Unlock the room using a item
      *
-     * @param item
+     * @param item The item that should be used for attempting to unlock the room
      * @return true if room is successfully unlocked, otherwise false
      */
     public boolean unlockRoom(Item item) {

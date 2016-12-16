@@ -74,7 +74,7 @@ public class SalesRoom extends Room {
     /**
      * Gets a list of items in the room
      *
-     * @return
+     * @return A list of items in the room
      */
     public ObservableList<Item> getItems() {
         return items;

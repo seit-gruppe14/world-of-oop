@@ -172,6 +172,7 @@ public class WorldLoader {
      * @param time game time.
      * @return A list of all the rooms in the world file
      * @throws IllegalArgumentException Thrown if something goes wrong in parsing file
+     * @throws IOException Happens if something goes wrong when reading files
      */
     public static List<Room> LoadWorld(String path, Time time) throws IllegalArgumentException, IOException {
         List<RoomContainer> roomContainers = readWorld(path);
