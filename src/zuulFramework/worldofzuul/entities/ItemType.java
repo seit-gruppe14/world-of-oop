@@ -57,7 +57,7 @@ public enum ItemType {
     /**
      * Get a price of a certain item. This value is the price +- 5% of the price itself.
      *
-     * @return
+     * @return the price of a certain item
      */
     public int getPrice() {
         return (int) (this.price + this.price * ((Math.random() - 0.5) * 0.1));

@@ -119,9 +119,9 @@ public class Player extends InventoryEntity {
     }
 
     /**
-     * Gets a list of all the items the player has bough
+     * Gets a list of all the items the player has bought
      *
-     * @return
+     * @return the bought item
      */
     public ObservableList<Item> getBoughtItems() {
         return this.boughtItems;
@@ -148,9 +148,9 @@ public class Player extends InventoryEntity {
      * Input String direction
      * Returns null to signal no adjecent room,
      * returns next room to signal room change or locked room.
-     *
-     * @param direction
-     * @return Room
+     * 
+     * @param direction the direction of the exit
+     * @return the next room else null
      */
     public Room goRoom(String direction) {
         Room nextRoom = this.currentRoom.getExit(direction);

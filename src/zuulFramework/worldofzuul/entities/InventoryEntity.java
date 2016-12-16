@@ -56,7 +56,7 @@ public abstract class InventoryEntity extends MovingEntity {
      * telling the player that the item isn't avaiable.
      *
      * @param itemName which is a item name String
-     * @param game
+     * @param game An instance of the game
      * @return null if the item was picked up without issues otherwise a
      * string with an error message
      */
