@@ -2,10 +2,6 @@ package zuul;
 
 import zuulFramework.worldofzuul.gui.GameGUI;
 
-/**
- *
- *
- */
 public class Zuul {
 
     /**

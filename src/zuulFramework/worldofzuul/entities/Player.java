@@ -16,9 +16,7 @@ import zuulFramework.worldofzuul.rooms.IHaveSpecialEvent;
 import zuulFramework.worldofzuul.rooms.Room;
 import zuulFramework.worldofzuul.rooms.SalesRoom;
 
-/**
- * @author Christian
- */
+
 public class Player extends InventoryEntity {
     /**
      * The life indicates the remaining life of the Player

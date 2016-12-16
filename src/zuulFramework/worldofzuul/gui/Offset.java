@@ -2,9 +2,7 @@ package zuulFramework.worldofzuul.gui;
 
 import zuulFramework.worldofzuul.Direction;
 
-/**
- * Created by Rasmus Hansen .
- */
+
 public class Offset {
     //X offset
     public final double X;

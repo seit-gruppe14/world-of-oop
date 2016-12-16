@@ -5,9 +5,6 @@
  */
 package zuulFramework.worldofzuul;
 
-/**
- * @author Christian
- */
 public interface IEventMessages {
     
     /**

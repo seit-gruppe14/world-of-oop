@@ -3,9 +3,7 @@ package zuulFramework.worldofzuul.gui;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 
-/**
- * Created by Rasmus Hansen .
- */
+
 public interface IDrawable {
     /**
      * Should add an obejct to the scene

@@ -7,9 +7,6 @@ package zuulFramework.worldofzuul.entities;
 
 import zuulFramework.worldofzuul.helpers.NameGenerator;
 
-/**
- * @author frede
- */
 public class Item {
     private ItemType type;
     private double weight;

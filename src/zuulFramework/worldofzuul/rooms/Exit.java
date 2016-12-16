@@ -6,9 +6,7 @@ import zuulFramework.worldofzuul.entities.Player;
 
 import java.util.List;
 
-/**
- * Created by Rasmus Hansen .
- */
+
 public class Exit extends Room implements ICanPay {
 
     public Exit(String description, int id) {

@@ -8,9 +8,7 @@ package zuulFramework.worldofzuul.entities;
 import zuulFramework.worldofzuul.Game;
 import zuulFramework.worldofzuul.rooms.IHaveSpecialEvent;
 
-/**
- * @author Caoda
- */
+
 public class TimeItem extends Item implements IHaveSpecialEvent {
 
     /**

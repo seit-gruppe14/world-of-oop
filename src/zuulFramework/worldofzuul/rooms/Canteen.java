@@ -3,9 +3,7 @@ package zuulFramework.worldofzuul.rooms;
 import zuulFramework.worldofzuul.Game;
 import zuulFramework.worldofzuul.entities.Player;
 
-/**
- * Created by Rasmus Hansen .
- */
+
 public class Canteen extends Room implements ICanPay {
 
     /**

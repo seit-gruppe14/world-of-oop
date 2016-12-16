@@ -12,9 +12,7 @@ import zuulFramework.worldofzuul.rooms.SalesRoom;
 
 import java.util.List;
 
-/**
- * Created by Rasmus Hansen .
- */
+
 public class Monster extends InventoryEntity implements ITimeEventAble {
     private static final double PICK_UP_CHANCE = 0.02;
     private static final double INFLICT_DAMAGE_CHANCE = 0.01;

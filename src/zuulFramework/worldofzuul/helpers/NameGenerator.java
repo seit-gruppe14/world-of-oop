@@ -5,9 +5,7 @@
  */
 package zuulFramework.worldofzuul.helpers;
 
-/**
- * @author frede
- */
+
 public class NameGenerator {
     static private String[] words = new String[45];
 

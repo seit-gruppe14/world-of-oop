@@ -5,9 +5,7 @@ import javafx.event.EventHandler;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
-/**
- * Created by Rasmus Hansen .
- */
+
 public class MoveTransition extends BaseTransition {
 
     private Circle toAnimate;
