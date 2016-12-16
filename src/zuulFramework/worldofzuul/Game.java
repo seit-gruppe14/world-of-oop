@@ -183,7 +183,7 @@ public class Game implements ITimeEventAble {
      * Makes the player able to pick up items in the room and adds messages to
      * the addEventMessages system based on the succes of the action. 
      * @param selectedItem a string of the name of the item the entity picks up. 
-     * @throws IllegalArgumentException. 
+     * @throws IllegalArgumentException throws exception if the method is called outside of a salesRoom.  
      */
     public void pickUp(String selectedItem) throws IllegalArgumentException {
         time.updateTime(5);
