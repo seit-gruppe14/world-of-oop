@@ -25,6 +25,12 @@ public final class Direction {
      */
     public final static String SOUTH = "south";
 
+    /**
+     * Checks if the direction is a kardinal direction
+     *
+     * @param d The direction to check against
+     * @return true if d is a cardinal direction, otherwise false
+     */
     public static boolean isDirection(String d) {
         return d.equalsIgnoreCase(EAST) ||
             d.equalsIgnoreCase(WEST) ||
