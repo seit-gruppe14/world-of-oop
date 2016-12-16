@@ -48,7 +48,7 @@ public class Game implements ITimeEventAble {
     /**
      * Creates a new game, with default values
      *
-     * @param mapLocation
+     * @param mapLocation The file path to the .wop file.
      */
     public Game(String mapLocation) {
         // Initialize a new time,
@@ -79,7 +79,7 @@ public class Game implements ITimeEventAble {
     /**
      * Create the rooms in the game and any exits between them
      *
-     * @param mapLocation
+     * @param mapLocation The file path to the .wop file.
      */
     private void createRooms(String mapLocation) {
         //Initializing the different rooms
@@ -142,7 +142,7 @@ public class Game implements ITimeEventAble {
 
     /**
      * Adds a direction message to the addEventMessage system if there is an employee present.  
-     * @param itemType
+     * @param itemType The types of items in the game. 
      */
     public void askForHelp(String itemType) {
         if (this.player.getCurrentRoom().hasEmployee()) {
@@ -158,7 +158,7 @@ public class Game implements ITimeEventAble {
      * Moves the player in the direction,
      * and uses addEventMessages a printable signal string that JavaFX can handle.
      * 
-     * @param direction
+     * @param direction a string of the direction the entity moves. 
      */
     public void handleRoomMovement(String direction) {
         Room nextRoom = this.player.goRoom(direction);
@@ -182,8 +182,10 @@ public class Game implements ITimeEventAble {
     /**
      * Makes the player able to pick up items in the room and adds messages to
      * the addEventMessages system based on the succes of the action. 
+     * @param selectedItem a string of the name of the item the entity picks up. 
+     * @throws IllegalArgumentException. 
      */
-    public void pickUp(String selectedItem) throws Exception {
+    public void pickUp(String selectedItem) throws IllegalArgumentException {
         time.updateTime(5);
         if (player.getCurrentRoom() instanceof SalesRoom) {
             Item currentItem = this.player.pickUp(selectedItem, this);
@@ -197,13 +199,14 @@ public class Game implements ITimeEventAble {
                 }
             }
         } else {
-            throw new Exception("Error on item pickup\n");
+            throw new IllegalArgumentException("Error on item pickup\n");
         }
     }
 
     /**
      * Makes the player able to drop their items from their inventory and adds a
      * message to the addEventMessages system. 
+     * @param selectedItem a string of the name of the item the entity drops.
      */
     public void drop(Item selectedItem) {
         // Check if the player can drop an item off in this room.
@@ -247,7 +250,8 @@ public class Game implements ITimeEventAble {
 	/**
 	 * Handles the callback that checks if the game has ended.
 	 *
-	 * @param timeAt
+	 * @param timeAt an int of the current time in the game. 
+         * @param game the instance of game. 
 	 */
 	@Override
 	public void timeCallback(int timeAt, Game game) {
@@ -255,7 +259,6 @@ public class Game implements ITimeEventAble {
 		if (timeAt >= gameEndTime) {
 			// If the time is up, and the player is in an exit room, then they should end the game
 			if (this.player.getCurrentRoom() instanceof Exit) {
-				//TODO Exit the game once done
 				HighScore.showScore();
 			} else {
 				this.player.clearBoughtItems();
@@ -341,7 +344,7 @@ public class Game implements ITimeEventAble {
     
     /**
      * adds an eventMessage to the eventMessage system. 
-     * @param eventMessage 
+     * @param eventMessage a message. 
      */
     public void addEventMessages(String eventMessage) {
         this.eventMessagesCallback.handle(eventMessage);
@@ -349,7 +352,7 @@ public class Game implements ITimeEventAble {
     
     /**
      * sets an instance of the eventMessage interface to this object. 
-     * @param i IEventMessages
+     * @param i IEventMessages an object that is called when there are new messages. 
      */
 
     public void addMessageListener(IEventMessages i) {
