@@ -104,7 +104,7 @@ public class Game implements ITimeEventAble {
     }
 
     /**
-     * Prints the welcome message and a description of the current room
+     * Adds a welcome message to the AddEventMessage system. 
      */
     public void getWelcomeMessage() {
         StringBuilder stringBuilder = new StringBuilder();
@@ -120,11 +120,7 @@ public class Game implements ITimeEventAble {
     }
 
     /**
-     * Returns the item help discription, which tells the player what items is
-     * needed to fully complete the game, the string is formatted to be handled
-     * be JavaFX.
-     *
-     * @return String
+     * Adds a message that shows the items that needs to bought to the addEventMessage system. 
      */
     public void printHelp() {
         List<ItemType> itemsToBuy = new ArrayList<ItemType>();
@@ -151,11 +147,8 @@ public class Game implements ITimeEventAble {
     }
 
     /**
-     * Input String itemType, and return an string that describes the direction
-     * towards the itemTypes that JavaFX can handle.
-     *
+     * Adds a direction message to the addEventMessage system if there is an employee present.  
      * @param itemType
-     * @return String direction
      */
     public void askForHelp(String itemType) {
         if (this.player.getCurrentRoom().hasEmployee()) {
@@ -168,11 +161,10 @@ public class Game implements ITimeEventAble {
     }
 
     /**
-     * Input String direction, moves the player in the direction,
-     * and returns a printable signal string that JavaFX can handle.
-     *
+     * Moves the player in the direction,
+     * and uses addEventMessages a printable signal string that JavaFX can handle.
+     * 
      * @param direction
-     * @return String
      */
     public void handleRoomMovement(String direction) {
         Room nextRoom = this.player.goRoom(direction);
@@ -193,10 +185,9 @@ public class Game implements ITimeEventAble {
             addEventMessages("There is no room in that direction!\n");
     }
 
-    //TODO integrate this into JavaFX
-
     /**
-     * The player is able to pick up items in the room
+     * Makes the player able to pick up items in the room and adds messages to
+     * the addEventMessages system based on the succes of the action. 
      */
     public void pickUp(String selectedItem) throws Exception {
         time.updateTime(5);
@@ -217,7 +208,8 @@ public class Game implements ITimeEventAble {
     }
 
     /**
-     * A player can drop their items from their inventory
+     * Makes the player able to drop their items from their inventory and adds a
+     * message to the addEventMessages system. 
      */
     public void drop(Item selectedItem) {
         // Check if the player can drop an item off in this room.
@@ -250,7 +242,7 @@ public class Game implements ITimeEventAble {
     /**
      * Sets the time between each and all callbacks
      *
-     * @return
+     * @return the time between the callbacks. 
      */
     @Override
     public int getTimeBetweenEvents() {
@@ -285,6 +277,7 @@ public class Game implements ITimeEventAble {
      * Marks the game for gameover
      *
      * @param description String
+     * @return a game over message. 
      */
     public String gameOver(String description) {
         return this.gameOverMessage = description;
@@ -320,7 +313,7 @@ public class Game implements ITimeEventAble {
     /**
      * Get the list of game item types
      *
-     * @return
+     * @return a list of item types. 
      */
     public ObservableList<ItemType> getItemsTypeList() {
         return this.itemList;
@@ -334,7 +327,11 @@ public class Game implements ITimeEventAble {
     public Time getTime() {
         return this.time;
     }
-
+    
+    /**
+     * Get's the highScore instance of the game. 
+     * @return the instance of highScore. 
+     */
     public HighScore getHighScore() {
         return this.highScore;
     }
@@ -347,18 +344,37 @@ public class Game implements ITimeEventAble {
     public Room getStartRoom() {
         return startRoom;
     }
-
+    
+    /**
+     * adds an eventMessage to the eventMessage system. 
+     * @param eventMessage 
+     */
     public void addEventMessages(String eventMessage) {
         this.eventMessagesCallback.handle(eventMessage);
     }
+    
+    /**
+     * sets an instance of the eventMessage interface to this object. 
+     * @param i IEventMessages
+     */
 
     public void addMessageListener(IEventMessages i) {
         this.eventMessagesCallback = i;
     }
+    
+    /**
+     * Get's the time when IKEA closes.
+     * @return the time when the game ends. 
+     */
 
     public int getGameEndTime() {
         return gameEndTime;
     }
+    
+    /**
+     * Get's the list of the item types in the game. 
+     * @return a list of itemTypes.  
+     */
 
     public ObservableList<ItemType> getItemList() {
         return itemList;
