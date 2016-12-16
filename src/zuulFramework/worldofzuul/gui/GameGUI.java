@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 public class GameGUI extends Application {
     /**
      * Starts the program
-     * @param args 
+     * @param args the command line arguments that starts the application
      */
     public static void startGUI(String[] args) {
         launch(args);
