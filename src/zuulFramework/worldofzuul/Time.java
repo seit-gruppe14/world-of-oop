@@ -47,7 +47,7 @@ public class Time implements ObservableStringValue {
     /**
      * Return the list of TimeCallbacks.
      * 
-     * @return List<TimeCallBack>
+     * @return List of TimeCallback
      */
     public List<TimeCallback> getList() {
         return callbacks;

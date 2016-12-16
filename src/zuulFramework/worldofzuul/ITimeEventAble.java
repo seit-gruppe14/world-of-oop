@@ -7,6 +7,7 @@ package zuulFramework.worldofzuul;
 public interface ITimeEventAble {
     /**
      * Should return the wanted in game time between callbacks
+     * @return integer an time integer which representes the amount of time
      */
     int getTimeBetweenEvents();
 
@@ -14,6 +15,7 @@ public interface ITimeEventAble {
      * This method will be called whenever the time has been changed since last event happened.
      *
      * @param timeAt The time of the callback
+     * @param game an instanse of the Game class
      */
     void timeCallback(int timeAt, Game game);
 }
