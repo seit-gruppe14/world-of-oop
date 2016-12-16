@@ -9,6 +9,14 @@ package zuulFramework.worldofzuul;
  * @author Christian
  */
 public interface IEventMessages {
+    
+    /**
+     * This method is used to handle message strings which should be passed between
+     * the Backend and the GUI.
+     * The method should be defined in the GUI as an annonymous method, and linked
+     * to the backend.
+     * @param s String message which should be handled by the GUI
+     */
     void handle(String s);
 
 }

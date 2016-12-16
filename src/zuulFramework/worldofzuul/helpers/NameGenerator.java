@@ -58,7 +58,11 @@ public class NameGenerator {
         words[43] = "ITYD";
         words[44] = "ALBO";
     }
-
+    
+    /**
+     * Returns a random name based on som predefined name strings
+     * @return String name
+     */
     public static String pickRandomName() {
         randomNames();
         String name;
