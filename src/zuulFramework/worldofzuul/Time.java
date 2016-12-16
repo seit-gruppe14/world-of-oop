@@ -33,20 +33,30 @@ public class Time implements ObservableStringValue {
     private List<TimeCallback> callbacks;
     private List<ChangeListener<? super String>> listeners = new ArrayList<>();
 
+    /**
+     * The class constructor, sets the time instance.
+     * 
+     * @param game an instance of the Game class
+     */
     public Time(Game game) {
         this.game = game;
         this.callbacks = new ArrayList<TimeCallback>();
 
     }
 
+    /**
+     * Return the list of TimeCallbacks.
+     * 
+     * @return List<TimeCallBack>
+     */
     public List<TimeCallback> getList() {
         return callbacks;
     }
 
     /**
-     * Gets the current time nicely formatted as a string
-     *
-     * @return A string like "13:37"
+     * Return the current time nicely formatted as a string.
+     * 
+     * @return String formatted time like "13:37"
      */
     public String getNiceFormattedTime() {
         // Calculate the hours
@@ -208,6 +218,11 @@ public class Time implements ObservableStringValue {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Returns the current time
+     * 
+     * @return integer format of the time
+     */
     public int getCurrentTime() {
         return time;
     }
