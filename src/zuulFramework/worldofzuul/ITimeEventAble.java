@@ -11,7 +11,7 @@ public interface ITimeEventAble {
     int getTimeBetweenEvents();
 
     /**
-     * This method will be called whenever the time has been since last event happened.
+     * This method will be called whenever the time has been changed since last event happened.
      *
      * @param timeAt The time of the callback
      */

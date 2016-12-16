@@ -27,6 +27,9 @@ public abstract class MovingEntity extends Entity implements IDrawable {
     private List<Transition> transitions = new ArrayList<>();
     private MoveTransition moveTransition;
 
+    /**
+     * Moves the entity
+     */
     public void move() {
         Set<Map.Entry<String, Room>> rooms;
         rooms = currentRoom.getExits().entrySet();
@@ -45,12 +48,24 @@ public abstract class MovingEntity extends Entity implements IDrawable {
         }
     }
 
+    /**
+     * Sets the current room to be the targeted room
+     * 
+     * @param targetRoom is the targeted room the entity wishes to move to
+     */
     @Override
     public void setCurrentRoom(Room targetRoom) {
         super.setCurrentRoom(targetRoom);
         updateDraw();
     }
 
+    /**
+     * Adds an entity to the scene
+     * 
+     * @param drawAt An ObservableList
+     * @param offset An instance of Offset
+     * @param color An instance of Paint
+     */
     void addToScene(ObservableList<Node> drawAt, Offset offset, Paint color) {
         offset = offset.add(Offset.getRandomOffsetForRoom());
         Circle circle = new Circle(offset.X, offset.Y, 5, color);
@@ -60,6 +75,9 @@ public abstract class MovingEntity extends Entity implements IDrawable {
         addWaitingAnimation();
     }
 
+    /**
+     * Makes the entity move around in the room while waiting for a new user interaction
+     */
     private void addWaitingAnimation() {
         Path path = new Path();
         path.getElements().add(new MoveTo(drawed.getCenterX(), drawed.getCenterY()));
@@ -88,10 +106,18 @@ public abstract class MovingEntity extends Entity implements IDrawable {
         transitions.add(pathTransition);
     }
 
+    /**
+     * Delays the entities randomly
+     * 
+     * @return A random number
+     */
     protected double moveStartDelay() {
         return Math.random() * 3000;
     }
 
+    /**
+     * Redraws the moved entity everytime a new event occured
+     */
     @Override
     public void updateDraw() {
         if (drawed != null) {

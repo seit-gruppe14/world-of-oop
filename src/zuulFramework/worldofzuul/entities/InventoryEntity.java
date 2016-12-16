@@ -14,7 +14,7 @@ public abstract class InventoryEntity extends MovingEntity {
      */
     private static final double MAX_CARRY_WEIGHT = 100.0;
     /**
-     * The array list items contains the player's items
+     * The ObservableList items contains the player's items
      */
     protected ObservableList<Item> items = FXCollections.observableArrayList();
 
@@ -93,6 +93,11 @@ public abstract class InventoryEntity extends MovingEntity {
         this.items = items;
     }
 
+    /**
+     * Gets the maximum weight the entity is able to carry
+     * 
+     * @return The maximum weight for the entity
+     */
     public double getMaxCarryWeight() {
         return MAX_CARRY_WEIGHT;
     }

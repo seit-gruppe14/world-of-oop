@@ -176,6 +176,13 @@ public class Player extends InventoryEntity {
         }
     }
 
+    /**
+     * Picks up an item
+     * 
+     * @param itemName an item to be picked up
+     * @param game An instance of game
+     * @return the item
+     */
     @Override
     public Item pickUp(String itemName, Game game) {
         SalesRoom sr = ((SalesRoom) currentRoom);
@@ -190,11 +197,22 @@ public class Player extends InventoryEntity {
         }
     }
 
+    /**
+     * Delays the moves of the player
+     * 
+     * @return the delay time
+     */
     @Override
     protected double moveStartDelay() {
         return 0;
     }
 
+    /**
+     * Adds the player to the scene
+     * 
+     * @param drawAt An ObservableList
+     * @param offset An instance of Offset
+     */
     @Override
     public void addToScene(ObservableList<Node> drawAt, Offset offset) {
         super.addToScene(drawAt, offset, Paint.valueOf("#000000"));

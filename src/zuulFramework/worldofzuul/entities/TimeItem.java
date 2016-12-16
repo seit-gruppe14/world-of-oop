@@ -13,13 +13,21 @@ import zuulFramework.worldofzuul.rooms.IHaveSpecialEvent;
  */
 public class TimeItem extends Item implements IHaveSpecialEvent {
 
+    /**
+     * Constructs the TimeItem
+     */
     public TimeItem() {
         super(ItemType.SPECIAL);
     }
 
+    /**
+     * Extends the game time
+     * 
+     * @param game An instance of game
+     * @return a fine message to the player
+     */
     @Override
     public String doSpecialEvent(Game game) {
-        //game.extendGameTime(60);
         game.extendGameTime(60);
         return "IKEA will be closing one hour later than scheduled! :)";
     }

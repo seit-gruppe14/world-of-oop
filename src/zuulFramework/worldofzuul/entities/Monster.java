@@ -33,6 +33,11 @@ public class Monster extends InventoryEntity implements ITimeEventAble {
         return (int) (Math.random() * 6 + 4);
     }
 
+    /**
+     * Gets a message when damage is taken
+     * 
+     * @return a fine text when damage is inflicted to the player
+     */
     public String damageMessages() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(SillyMessages.getDamageMessage()).append(" You took ").append(inflictDamage()).append(" damage.").append("\n");
@@ -93,6 +98,12 @@ public class Monster extends InventoryEntity implements ITimeEventAble {
         move();
     }
 
+    /**
+     * Adds a monster to the scene
+     * 
+     * @param drawAt An ObservableList
+     * @param offset An instance of Offset
+     */
     @Override
     public void addToScene(ObservableList<Node> drawAt, Offset offset) {
         super.addToScene(drawAt, offset, Paint.valueOf("#FF0000"));
