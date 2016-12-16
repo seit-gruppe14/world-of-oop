@@ -48,7 +48,7 @@ public class Offset {
     }
     /**
      * adds two offsets together
-     * @param other
+     * @param other Offset to b added
      * @return a new offset based on two previous one added together
      */
     public Offset add(Offset other) {
