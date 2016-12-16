@@ -17,12 +17,20 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * @author Christian
+ * Helps calculating highscore
  */
 public class HighScore {
 
+    /**
+     * The game instanse highscore works around
+     */
     private Game game;
 
+    /**
+     * Creates a new instance of highscores
+     *
+     * @param game The game instance highscore should be calculated around
+     */
     public HighScore(Game game) {
         this.game = game;
 
@@ -31,7 +39,7 @@ public class HighScore {
     /**
      * Reads from a .txt file and prints the first five lines
      *
-     * @return
+     * @return A list of the scores
      */
     public static ObservableList<String> showScore() {
         ObservableList<String> scoreList = FXCollections.observableArrayList();
@@ -95,7 +103,7 @@ public class HighScore {
     /**
      * Calculates the score and prints it into a .txt file
      *
-     * @param listOfItems
+     * @param listOfItems The list of items that was bought during the game
      * @return Gives the calculated score.
      */
     public int calcScore(ObservableList<ItemType> listOfItems) {
@@ -123,7 +131,7 @@ public class HighScore {
     /**
      * @param score The score that was calculated then gets written in a .txt
      *              file.
-     * @throws IOException
+     * @throws IOException if something went wrong when accessing the file
      */
     public void printScoreToFile(String name, int score) throws IOException {
         FileWriter fileWriter = null;
