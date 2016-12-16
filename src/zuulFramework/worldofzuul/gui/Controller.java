@@ -179,7 +179,7 @@ public class Controller implements Initializable {
     // TODO finish comment
 
     /**
-     *
+     * Draws the initial room, and creates the variables needed for the drawRoom method.
      */
     private void drawInitialRoom() {
         Room startRoom = game.getPlayer().getCurrentRoom();
@@ -194,6 +194,9 @@ public class Controller implements Initializable {
     // TODO finish comment
 
     /**
+     * iterates through all the rooms in a collection and, calls a new method to draw them, before it calls itself again
+     * It will add the room currently being drawn to a list of drawnrooms
+     * 
      * @param drawnRooms
      * @param entries
      * @param startRoom
@@ -210,7 +213,9 @@ public class Controller implements Initializable {
 
     /**
      * This method handles the move buttons, the event types are north, west, south, east.
-     *
+     * roomInventory(), healthbar() and playerInventoryLabel() will also be updated
+     * Ends the game if time exceeds maxTime
+     * 
      * @param event
      */
     @FXML
@@ -237,6 +242,9 @@ public class Controller implements Initializable {
         setPlayerInventoryTabel();
     }
 
+    /**
+     * 
+     */
     private void setOtherDirectionsValues() {
         // Due to this method being called from a selected callback, it needs to defer the actual thing
         // it needs to do, to avoid causing a crash with modifying the observable (otherDirections) at
@@ -252,14 +260,14 @@ public class Controller implements Initializable {
     }
 
     /**
-     * Call this method to update the health bar
+     * Updates the health bar
      */
     private void updateHealthBar() {
         this.healthBar.setProgress(((double) (this.game.getPlayer().getLife())) / 100);
     }
 
     /**
-     * Call this method to update the weight bar
+     * Updates the weight bar
      */
     private void updateWeightBar() {
         this.weightBar.setProgress(this.game.getPlayer().getCarryWeight() / 100);
@@ -272,10 +280,9 @@ public class Controller implements Initializable {
         this.comboBoxAsk.setItems(this.game.getItemsTypeList());
     }
 
-    //TODO Observable list into player and room
-
+    
     /**
-     * Call this method when updating the player items observable list.
+     * Updates the player items observable list.
      */
     private void setPlayerInventoryTabel() {
         this.tableColumnPlayerInventoryName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
@@ -285,7 +292,7 @@ public class Controller implements Initializable {
     }
 
     /**
-     * Call this method when updating the room items observable list.
+     * Updates the room items observable list.
      */
     private void updateRoomInventoryTabel() {
         if (this.game.getPlayer().getCurrentRoom() instanceof Exit) {
@@ -302,15 +309,15 @@ public class Controller implements Initializable {
             this.tableColumnRoomInventoryPrice.setCellValueFactory(new PropertyValueFactory<Item, Integer>("price"));
             this.tableViewRoomInventory.setItems(currentRoom.getItems());
         } else {
-            //Sets a empty observable array list to handle an none-salesroom
+            //Sets a empty observable array list to handle a none-salesroom
             this.tableViewRoomInventory.setItems(FXCollections.observableArrayList());
         }
     }
 
     /**
-     * Handles the item selection on room inventory, and adds the selected item
+     * Handles item selection on room inventory, and adds the selected item
      * to the player when double clicking.
-     *
+     * 
      * @param event MouseClickEvent transformed to a double click event.
      */
     @FXML
@@ -323,7 +330,11 @@ public class Controller implements Initializable {
             updateWeightBar();
         }
     }
-
+    /**
+     * Handles item selevtion on player inventory, and adds the selected item to the room inventory when double clicked
+     * 
+     * @param event MouseClickEvent transformed to a double click event
+     */
     @FXML
     private void onPlayerItemDrop(MouseEvent event) {
         // Sets a current selected Item which is used for checking with last selected item.
@@ -336,6 +347,13 @@ public class Controller implements Initializable {
             }
         }
     }
+    
+    /**
+     * Call this method if you want to handle a doubleclick event. 
+     * looks if the same 'event' has been clicked twice within a specified amount of time
+     * @param selectedItem
+     * @return true if the same event was clicked twice within a specified amount of time, false if otherwise. 
+     */
 
     private boolean isDoubleClick(Item selectedItem) {
         // First if statement handles an error event if no item has been selected before.
@@ -364,6 +382,11 @@ public class Controller implements Initializable {
         }
         return false;
     }
+    
+    /**
+     * Handles the pay event, will update Weight, health and the room inventory table.
+     * @param event 
+     */
 
     @FXML
     private void onPayButtonClick(ActionEvent event) {
@@ -378,7 +401,7 @@ public class Controller implements Initializable {
         updateHealthBar();
         updateRoomInventoryTabel();
     }
-
+    
     @FXML
     private void onAskComboBoxSelect(ActionEvent event) {
         String itemType = this.comboBoxAsk.getSelectionModel().getSelectedItem().toString();
@@ -389,7 +412,11 @@ public class Controller implements Initializable {
     private void onHelpButtonClick(ActionEvent event) {
         this.game.printHelp();
     }
-
+    
+    /**
+     * starts a new game
+     * @param event 
+     */
     @FXML
     private void onStartNewGameClicked(ActionEvent event) {
         // If nothing is selected, then we can't start the game

@@ -6,7 +6,9 @@ import zuulFramework.worldofzuul.Direction;
  * Created by Rasmus Hansen .
  */
 public class Offset {
+    //X offset
     public final double X;
+    //Y offset
     public final double Y;
 
     public Offset(double x, double y) {
@@ -17,7 +19,11 @@ public class Offset {
     public Offset() {
         this(0, 0);
     }
-
+    /**
+     * creates a new Offset that should represent one of the four cardinal directions
+     * @param direction representing one of the four cardinal directions
+     * @return a new offset repsenting a cardinal direction given as koordinates
+     */
     public static Offset getOffset(String direction) {
         switch (direction) {
             case Direction.NORTH:
@@ -33,10 +39,18 @@ public class Offset {
         }
     }
 
+    /**
+     * generates and offset with some random values between 0 and 95
+     * @return a new offset with random values
+     */
     public static Offset getRandomOffsetForRoom() {
         return new Offset(5 + Math.random() * 90, 5 + Math.random() * 90);
     }
-
+    /**
+     * adds two offsets together
+     * @param other
+     * @return a new offset based on two previous one added together
+     */
     public Offset add(Offset other) {
         return new Offset(other.X + X, other.Y + Y);
     }
